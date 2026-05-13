@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diễn giả - Leaders Talk - GHN Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff5200;
+      --blue: #009be0;
+      --blue-2: #006fad;
+      --yellow: #f8b200;
+      --ink: #281812;
+      --brown: #5c4037;
+      --cream: #fff8f6;
+      --soft-blue: #f0f8ff;
+      --soft-yellow: #fffbe6;
+      --line: #e5f1f7;
+      --slate: #475569;
+      --page: clamp(24px, 4vw, 64px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #f9f9fc;
+      color: var(--ink);
+      font-family: "Be Vietnam Pro", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ── Top Navigation Bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-inner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 0 32px;
+    }
+
+    .brand {
+      flex: 0 0 204px;
+      color: var(--orange);
+      font-family: Montserrat, sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 32px;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: var(--slate);
+      font-size: 16px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+      border-bottom: 2px solid transparent;
+      transition: color 160ms ease, border-color 160ms ease;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: var(--orange);
+    }
+
+    .nav a.active {
+      font-weight: 600;
+      border-color: var(--orange);
+    }
+
+    .search {
+      position: relative;
+      flex: 0 0 221px;
+      margin-left: auto;
+    }
+
+    .search input {
+      width: 100%;
+      height: 42px;
+      padding: 10px 16px 10px 40px;
+      color: #6b7280;
+      background: #f3f3f6;
+      border: 1px solid #e5beb2;
+      border-radius: 8px;
+      font: 400 16px/20px "Be Vietnam Pro", sans-serif;
+      outline: none;
+    }
+
+    .search::before {
+      content: "⌕";
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-52%);
+      color: rgba(92, 64, 55, 0.7);
+      font-size: 20px;
+    }
+
+    /* ── Hero Section ── */
+    .section {
+      padding: 72px var(--page);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+      gap: 54px;
+      min-height: 678px;
+      padding-top: 44px;
+      padding-bottom: 54px;
+      background: var(--cream);
+    }
+
+    .hero-copy {
+      align-self: center;
+      max-width: 570px;
+    }
+
+    .hot-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 8px 18px;
+      margin-bottom: 22px;
+      color: var(--orange);
+      background: rgba(255, 82, 0, 0.1);
+      border-radius: 9999px;
+      font-family: Montserrat, sans-serif;
+      font-size: 15px;
+      transform: rotate(-2deg);
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: Montserrat, sans-serif;
+    }
+
+    h1 {
+      max-width: 590px;
+      color: var(--ink);
+      font-size: clamp(40px, 4.4vw, 72px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -1.28px;
+      text-transform: uppercase;
+    }
+
+    h1 .accent {
+      color: var(--orange);
+    }
+
+    .hero-copy p {
+      max-width: 520px;
+      margin: 26px 0 32px;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 174px;
+      min-height: 60px;
+      padding: 16px 32px;
+      border-radius: 9999px;
+      font: 400 16px/24px Montserrat, sans-serif;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--orange);
+      box-shadow: 0 10px 15px -3px rgba(255, 82, 0, 0.2), 0 4px 6px -4px rgba(255, 82, 0, 0.2);
+    }
+
+    .btn-outline {
+      color: var(--orange);
+      border: 2px solid var(--orange);
+    }
+
+    .hero-visual {
+      position: relative;
+      align-self: center;
+      min-height: 600px;
+    }
+
+    .speaker-hero {
+      height: 600px;
+      overflow: hidden;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.18), transparent 26%),
+        linear-gradient(135deg, #171717, #0e0e0e 54%, #1f1f1f);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+    }
+
+    .speaker-figure {
+      width: min(82%, 430px);
+      aspect-ratio: 0.72;
+      border-radius: 42% 42% 12px 12px;
+      background:
+        radial-gradient(circle at 50% 19%, #ffd7bf 0 11%, transparent 11.5%),
+        linear-gradient(90deg, transparent 0 30%, #214f86 30% 70%, transparent 70%),
+        linear-gradient(#111, #111);
+      position: relative;
+    }
+
+    .speaker-figure::before {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      bottom: 0;
+      height: 62%;
+      background: linear-gradient(135deg, #195b96, #0e355a);
+      border-radius: 28px 28px 0 0;
+    }
+
+    .speaker-figure::after {
+      content: "Professional Speaker";
+      position: absolute;
+      left: 50%;
+      bottom: -36px;
+      transform: translateX(-50%);
+      font: 700 13px/1 Montserrat, sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .floating {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    .floating.top {
+      right: -14px;
+      top: -11px;
+      transform: rotate(3deg);
+    }
+
+    .floating.bottom {
+      left: -24px;
+      bottom: -46px;
+      transform: rotate(-2deg);
+    }
+
+    .floating-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      font-weight: 700;
+    }
+
+    .floating.top .floating-icon {
+      color: var(--orange);
+      background: rgba(255, 82, 0, 0.1);
+    }
+
+    .floating.bottom .floating-icon {
+      color: var(--blue);
+      background: rgba(0, 155, 224, 0.1);
+    }
+
+    .floating strong {
+      display: block;
+      color: #ff5201;
+      font-family: Montserrat, sans-serif;
+      font-size: 40px;
+      font-weight: 400;
+      line-height: 28px;
+      text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .floating span {
+      display: block;
+      margin-top: 6px;
+      color: var(--brown);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 16px;
+    }
+
+    /* ── Benefits Section ── */
+    .benefits {
+      background: var(--cream);
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin: 0 auto 64px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      color: var(--ink);
+      font-size: clamp(36px, 3.75vw, 48px);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .section-heading p {
+      margin: 16px auto 0;
+      color: var(--brown);
+      font-size: 20px;
+      line-height: 24px;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 32px;
+    }
+
+    .benefit-card {
+      min-height: 288px;
+      padding: 32px;
+      background: #fff;
+      border-top: 4px solid var(--card-color);
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-box {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 24px;
+      color: var(--card-color);
+      background: color-mix(in srgb, var(--card-color) 10%, white);
+      border-radius: 12px;
+      font-size: 24px;
+    }
+
+    .benefit-card h3 {
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+      margin-bottom: 12px;
+    }
+
+    .benefit-card p {
+      margin: 0;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    /* ── Sub-tab Strip ── */
+    .strip {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      min-height: 63px;
+      padding: 16px var(--page);
+      background: #00a0fa;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .strip a {
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      transition: color 160ms ease, border-color 160ms ease;
+    }
+
+    .strip a:hover {
+      color: #fff;
+    }
+
+    .strip a.active {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    /* ── Speaker Cards Section (new design) ── */
+    .speakers-page {
+      background: #f9f9fc;
+      padding-top: 72px;
+      padding-bottom: 96px;
+    }
+
+    .speakers-page .section-title {
+      margin-bottom: 56px;
+    }
+
+    .speakers-page .section-title h2 {
+      color: var(--ink);
+      font-size: clamp(36px, 3.2vw, 48px);
+      font-weight: 700;
+      line-height: 58px;
+    }
+
+    .speakers-page .title-rule {
+      width: 227px;
+      height: 6px;
+      margin-top: 10px;
+      background: var(--blue);
+      border-radius: 9999px;
+    }
+
+    .speaker-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 48px 56px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .spk-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #e0ddd7;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      border-radius: 14px;
+      transition: transform 260ms ease, box-shadow 260ms ease;
+      cursor: pointer;
+    }
+
+    .spk-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.10);
+    }
+
+    .spk-card-image {
+      position: relative;
+      width: 100%;
+      height: 349px;
+      background: #f0ede8;
+      display: grid;
+      place-items: center;
+    }
+
+    .spk-avatar {
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--orange);
+      border: 4px solid #fff;
+      border-radius: 9999px;
+      color: #fff;
+      font-family: Montserrat, sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 42px;
+      text-align: center;
+    }
+
+    .spk-card-body {
+      width: 100%;
+      padding: 30px 20px;
+    }
+
+    .spk-card-body h3 {
+      color: #333;
+      font-family: Montserrat, sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 20px;
+      letter-spacing: -0.325px;
+      text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+
+    .spk-card-body p {
+      margin: 0;
+      color: #666;
+      font-family: "Be Vietnam Pro", sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    /* ── Profile Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.62);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 240ms ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-panel {
+      position: relative;
+      width: 570px;
+      max-width: calc(100vw - 40px);
+      max-height: calc(100vh - 80px);
+      background: #fff;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(24px) scale(0.96);
+      transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-overlay.active .modal-panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 24px;
+      top: 24px;
+      z-index: 3;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      background: none;
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      color: #6e7880;
+      font-size: 20px;
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .modal-close:hover {
+      background: #f1f5f9;
+      color: #333;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 32px 32px 24px;
+    }
+
+    .modal-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .modal-avatar {
+      width: 72px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--blue);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-radius: 9999px;
+      color: #fff;
+      font-family: Montserrat, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 33px;
+    }
+
+    .modal-avatar-badge {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 24px;
+      height: 24px;
+      background: #f67700;
+      border: 2px solid #fff;
+      border-radius: 9999px;
+    }
+
+    .modal-identity {
+      padding-top: 3px;
+      min-width: 0;
+    }
+
+    .modal-identity h2 {
+      color: #333;
+      font-family: Montserrat, sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 20px;
+      letter-spacing: -0.325px;
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+
+    .modal-identity p {
+      margin: 0;
+      color: #666;
+      font-family: "Be Vietnam Pro", sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    .modal-body {
+      padding: 0 40px 32px;
+      overflow-y: auto;
+      max-height: 400px;
+    }
+
+    .modal-section-title {
+      color: #171c1f;
+      font-family: Montserrat, sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 21px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      margin: 0 0 20px;
+    }
+
+    .modal-bio {
+      margin: 0;
+      color: #444;
+      font-family: "Be Vietnam Pro", sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+
+    .modal-bio li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .modal-panel {
+        width: 100%;
+        max-height: calc(100vh - 40px);
+        border-radius: 16px;
+      }
+
+      .modal-header {
+        padding: 24px 20px 16px;
+      }
+
+      .modal-body {
+        padding: 0 20px 24px;
+      }
+
+      .modal-identity h2 {
+        font-size: 18px;
+      }
+    }
+
+    /* ── Footer ── */
+    .footer-spacer {
+      height: 64px;
+      background: #000;
+    }
+
+    footer {
+      min-height: 164px;
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      padding: 28px var(--page);
+    }
+
+    .footer-title {
+      margin: 0 0 14px;
+      color: #0f172a;
+      font-family: Montserrat, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 28px;
+    }
+
+    .footer-info {
+      margin: 0;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    /* ── Responsive ── */
+    @media (min-width: 1440px) {
+      .section,
+      .hero {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .nav-inner {
+        gap: 18px;
+        padding: 0 20px;
+      }
+
+      .nav {
+        gap: 18px;
+        overflow-x: auto;
+      }
+
+      .search {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 460px;
+      }
+
+      .speaker-hero {
+        height: 460px;
+      }
+
+      .benefit-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .speaker-card-grid {
+        gap: 32px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        height: auto;
+        padding: 14px 0;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .brand {
+        flex: none;
+      }
+
+      .section,
+      .hero {
+        padding: 48px 20px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .benefit-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .speaker-card-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .floating {
+        position: static;
+        margin-top: 16px;
+        transform: none;
+      }
+
+      .floating.top,
+      .floating.bottom {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">GHN Learning</a>
+      <nav class="nav" aria-label="Điều hướng chính">
+        <a href="index.html">Trang chủ</a>
+        <a href="index.html#office">Khối Văn Phòng</a>
+        <a href="index.html#market">Khối Thị Trường</a>
+        <a href="index.html#heavy">Khối Hàng Nặng</a>
+        <a class="active" href="leaders-talk.html">Leaders Talk</a>
+      </nav>
+      <label class="search" aria-label="Tìm kiếm khóa học">
+        <input type="search" placeholder="Tìm kiếm khóa học...">
+      </label>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── Hero Section ── -->
+    <section class="hero section" id="overview">
+        <div class="hero-copy">
+          <div class="hot-badge">SỰ KIỆN HOT NHẤT 2026</div>
+          <h1>Học để hành<br><span class="accent">Không phải để dành</span></h1>
+          <p>Leaders Talk không dành cho người chỉ muốn ngồi nghe cho hết giờ. Đây là nơi những Business Leader thật bước lên sân khấu để bóc tách các vấn đề đau đầu nhất trong công việc: đội ngũ không chạy, KPI không đạt, vận hành rối, quyết định sai và áp lực chồng áp lực. Không slide màu mè, không lý thuyết sách vở, chỉ có câu chuyện thật, góc nhìn thật và những cuộc tranh luận thẳng đến tận gốc vấn đề. Bạn đến không phải để "học thêm một kiến thức", mà để mang về tư duy, giải pháp và câu trả lời thực chiến cho chính bài toán mình đang mắc kẹt.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#">Đăng ký ngay</a>
+          </div>
+        </div>
+      <div class="hero-visual">
+        <div class="speaker-hero">
+          <div class="speaker-figure" aria-hidden="true"></div>
+        </div>
+        <div class="floating top">
+          <div class="floating-icon">♟</div>
+          <div><strong>20+</strong><span>Diễn giả</span></div>
+        </div>
+        <div class="floating bottom">
+          <div class="floating-icon">✺</div>
+          <div><strong>500+</strong><span>Học viên/Workshop</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Benefits Section ── -->
+    <section class="section benefits" id="benefits">
+      <div class="section-heading">
+        <h2>Bạn sẽ nhận được gì?</h2>
+        <p>Mỗi workshop đều được thiết kế để mang lại giá trị thực tế nhất cho công việc hàng ngày của bạn.</p>
+      </div>
+      <div class="benefit-grid">
+        <article class="benefit-card" style="--card-color: #ff5200">
+          <div class="icon-box">♙</div>
+          <h3>Góc nhìn thực chiến</h3>
+          <p>Không phải lý thuyết. Bạn được nghe cách người thật đang xử lý vấn đề thật – thứ bạn có thể đem về áp dụng ngay ngày mai.</p>
+        </article>
+        <article class="benefit-card" style="--card-color: #009be0">
+          <div class="icon-box">✣</div>
+          <h3>Đào sâu pain point</h3>
+          <p>Những vấn đề "đau nhưng ít ai nói" sẽ được mang lên bàn: đội ngũ, KPI, vận hành, áp lực… và mổ xẻ đến tận gốc.</p>
+        </article>
+        <article class="benefit-card" style="--card-color: #f8b200">
+          <div class="icon-box">♢</div>
+          <h3>Tranh luận trực diện</h3>
+          <p>Không chỉ nghe – bạn được hỏi thẳng, phản biện, challenge diễn giả để tìm ra góc nhìn phù hợp nhất với mình.</p>
+        </article>
+        <article class="benefit-card" style="--card-color: #006fad">
+          <div class="icon-box">▣</div>
+          <h3>Giải pháp thực tế</h3>
+          <p>Rời buổi không chỉ có insight, mà có luôn cách làm cụ thể để xử lý bài toán bạn đang mắc kẹt.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ── Sub-tab Strip ── -->
+    <nav class="strip" aria-label="Leaders Talk sections">
+      <a href="leaders-talk.html">Tổng quan</a>
+      <a href="workshop.html">Workshop</a>
+      <a class="active" href="dien-gia.html">Diễn giả</a>
+    </nav>
+
+    <section class="section" id="speakers">
+      <div class="speaker-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; max-width: 900px; margin: 0 auto;">
+        <article class="speaker-card" style="background: #fff; border: 1px solid #e0ddd7; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <div style="width: 96px; height: 96px; background: #ff5200; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; font-weight: 400; margin-bottom: 20px;">AN</div>
+          <h3 style="margin: 0 0 8px; font-size: 24px; font-weight: 700; color: #333; text-transform: uppercase;">LƯƠNG DŨNG NHÂN</h3>
+          <p style="margin: 0; color: #666; font-size: 15px;">Giám đốc Đào tạo các Hệ thống Giáo dục AFY</p>
+        </article>
+        <article class="speaker-card" style="background: #fff; border: 1px solid #e0ddd7; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <div style="width: 96px; height: 96px; background: #ff5200; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; font-weight: 400; margin-bottom: 20px;">AN</div>
+          <h3 style="margin: 0 0 8px; font-size: 24px; font-weight: 700; color: #333; text-transform: uppercase;">HOÀNG GIANG</h3>
+          <p style="margin: 0; color: #666; font-size: 15px;">Head of C2C</p>
+        </article>
+        <article class="speaker-card" style="background: #fff; border: 1px solid #e0ddd7; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <div style="width: 96px; height: 96px; background: #ff5200; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; font-weight: 400; margin-bottom: 20px;">AN</div>
+          <h3 style="margin: 0 0 8px; font-size: 24px; font-weight: 700; color: #333; text-transform: uppercase;">NGUYỄN LÂM HOÀNG YẾN</h3>
+          <p style="margin: 0; color: #666; font-size: 15px;">Sáng lập AI & Data Platforms Director</p>
+        </article>
+        <article class="speaker-card" style="background: #fff; border: 1px solid #e0ddd7; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <div style="width: 96px; height: 96px; background: #ff5200; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; font-weight: 400; margin-bottom: 20px;">AN</div>
+          <h3 style="margin: 0 0 8px; font-size: 24px; font-weight: 700; color: #333; text-transform: uppercase;">NGUYỄN MINH TRUNG</h3>
+          <p style="margin: 0; color: #666; font-size: 15px;">Giám đốc Tổng hợp khối Nhân sự tại Tập đoàn Xây dựng Hoà Bình</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="footer-spacer" aria-hidden="true"></div>
+  <footer>
+    <div>
+      <p class="footer-title">Phòng Học tập và Phát triển</p>
+      <p class="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM<br>☎️ Nguyễn Ngọc Mai Trâm (Training Manager) - 090 272 1104<br>📩 Email: tramnnm@ghn.vn</p>
+    </div>
+  </footer>
+
+  <!-- ── Profile Modal ── -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose" aria-label="Đóng">✕</button>
+      <div class="modal-header">
+        <div class="modal-avatar-wrap">
+          <div class="modal-avatar" id="modalAvatar">LN</div>
+          <div class="modal-avatar-badge"></div>
+        </div>
+        <div class="modal-identity">
+          <h2 id="modalName">Lương Dũng Nhân</h2>
+          <p id="modalRole">Giám đốc Đào tạo của Hệ thống Giáo dục ATY</p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h3 class="modal-section-title">Giới thiệu</h3>
+        <div class="modal-bio" id="modalBio"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const speakerData = {
+      "luong-dung-nhan": {
+        name: "Lương Dũng Nhân",
+        role: "Giám đốc Đào tạo của Hệ thống Giáo dục ATY",
+        initials: "LN",
+        bio: `<ul>
+          <li>Nghiên cứu sinh Tiến sĩ Generative AI tại Edgewood University (Hoa Kỳ).</li>
+          <li>Thạc sĩ Lãnh đạo Giáo dục – University of Queensland (Úc).</li>
+          <li>Sở hữu chứng chỉ PCC từ Liên đoàn Khai vấn Quốc tế ICF.</li>
+          <li>Đồng sáng lập Hệ thống Giáo dục ATY, CEO WISEDUCATION và nhà sáng lập AIMastermind – đơn vị tiên phong đào tạo AI lấy con người làm trung tâm tại Việt Nam.</li>
+          <li>Có kinh nghiệm đồng hành và hợp tác cùng AIA, VietinBank, Dai-ichi Life, VTV News, VUS, Home Credit...</li>
+          <li>Đồng thời điều phối và phát triển chuyên môn cho hàng trăm chuyên gia độc lập.</li>
+        </ul>`
+      },
+      "hoang-giang": {
+        name: "Hoàng Giang",
+        role: "Head of C2C",
+        initials: "HG",
+        bio: `<p style="color:#5C4037;font-size:14px;line-height:24px;">Sẽ được cập nhật sau...</p>`
+      },
+      "nguyen-lam-hoang-yen": {
+        name: "Nguyễn Lâm Hoàng Yên",
+        role: "Acting Core AI & Data Platform Director",
+        initials: "NY",
+        bio: `<p style="color:#5C4037;font-size:14px;line-height:24px;">Sẽ được cập nhật sau...</p>`
+      },
+      "nguyen-minh-trung": {
+        name: "Nguyễn Minh Trung",
+        role: "Cựu Phó Tổng Giám Đốc Khối Nhân lực tại Tập đoàn Xây dựng Hoà Bình",
+        initials: "MT",
+        bio: `<ul>
+          <li>Cựu Phó Tổng Giám Đốc Khối Nhân lực tại Tập đoàn Xây dựng Hoà Bình – một trong những tập đoàn xây dựng hàng đầu Việt Nam.</li>
+          <li>Hơn 20 năm kinh nghiệm trong lĩnh vực quản trị nhân sự, phát triển tổ chức và xây dựng văn hóa doanh nghiệp.</li>
+          <li>Chuyên gia tư vấn chiến lược nhân sự cho nhiều doanh nghiệp lớn trong và ngoài nước.</li>
+        </ul>`
+      }
+    };
+
+    const overlay = document.getElementById("profileModal");
+    const modalAvatar = document.getElementById("modalAvatar");
+    const modalName = document.getElementById("modalName");
+    const modalRole = document.getElementById("modalRole");
+    const modalBio = document.getElementById("modalBio");
+    const modalClose = document.getElementById("modalClose");
+
+    function openModal(speakerId) {
+      const data = speakerData[speakerId];
+      if (!data) return;
+
+      modalAvatar.textContent = data.initials;
+      modalName.textContent = data.name;
+      modalRole.textContent = data.role;
+      modalBio.innerHTML = data.bio;
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      overlay.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".spk-card[data-speaker]").forEach((card) => {
+      card.addEventListener("click", () => {
+        openModal(card.dataset.speaker);
+      });
+    });
+
+    modalClose.addEventListener("click", closeModal);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+  </script>
+
+  <style>
+    /* Page Transitions */
+    body { overflow-x: hidden; }
+    .slide-out-left { animation: slideOutLeft 0.3s forwards ease-in-out; }
+    .slide-out-right { animation: slideOutRight 0.3s forwards ease-in-out; }
+    .slide-in-left { animation: slideInLeft 0.3s forwards ease-in-out; }
+    .slide-in-right { animation: slideInRight 0.3s forwards ease-in-out; }
+    .fade-in { animation: fadeIn 0.3s forwards ease-in-out; }
+    
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideOutLeft { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-30px); opacity: 0; } }
+    @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(30px); opacity: 0; } }
+    @keyframes slideInLeft { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes slideInRight { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const transitionType = sessionStorage.getItem('pageTransition');
+      if (transitionType === 'forward') {
+        document.body.classList.add('slide-in-right');
+      } else if (transitionType === 'backward') {
+        document.body.classList.add('slide-in-left');
+      } else {
+        document.body.classList.add('fade-in');
+      }
+      sessionStorage.removeItem('pageTransition');
+
+      const pages = ['index.html', 'leaders-talk.html', 'workshop.html', 'dien-gia.html'];
+      
+      document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+          
+          e.preventDefault();
+          
+          let currentPath = window.location.pathname.split('/').pop();
+          if (!currentPath) currentPath = 'index.html';
+          
+          const targetPath = href.split('/').pop();
+          
+          const currentIndex = pages.indexOf(currentPath);
+          const targetIndex = pages.indexOf(targetPath);
+          
+          let direction = 'forward';
+          if (currentIndex !== -1 && targetIndex !== -1) {
+            direction = targetIndex > currentIndex ? 'forward' : 'backward';
+          }
+          
+          sessionStorage.setItem('pageTransition', direction);
+          
+          if (direction === 'forward') {
+            document.body.classList.add('slide-out-left');
+          } else {
+            document.body.classList.add('slide-out-right');
+          }
+          
+          setTimeout(() => {
+            window.location.href = href;
+          }, 250);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
