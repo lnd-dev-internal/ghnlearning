@@ -46,7 +46,7 @@ a{text-decoration:none;color:inherit}
 .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;width:100%}
 .card{background:#fff;border:1px solid #E5BEB2;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
 .card:hover{box-shadow:0 8px 24px rgba(255,82,0,.12);transform:translateY(-2px)}
-.card-thumb{width:100%;height:180px;object-fit:cover;display:block}
+.card-thumb{width:100%;height:200px;object-fit:contain;display:block;background:#f0f7ff;padding:0}
 .card-body{display:flex;flex-direction:column;justify-content:space-between;padding:16px;flex:1}
 .card-title{font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;line-height:28px;color:#1A1C1E;margin-bottom:8px}
 .card-meta{display:flex;align-items:center;gap:8px;margin-bottom:auto;color:#5C4037;font-size:12px;line-height:16px;font-weight:500}
@@ -98,7 +98,7 @@ a{text-decoration:none;color:inherit}
   .section-border{padding:24px 0 0!important;border-bottom:none!important;}
   .section-title{font-size:18px!important;line-height:28px!important;color:#F37021!important;letter-spacing:0!important;}
   .card-grid{grid-template-columns:1fr!important;gap:16px!important;}
-  .card-thumb{height:160px!important;}
+  .card-thumb{height:180px!important;}
   .footer-wrap{width:100%!important;padding:16px 24px!important;margin-top:40px!important;border-top:1px solid #EBEEF0!important;background:#fff!important;}
   .footer{width:100%!important;height:auto!important;flex-direction:column!important;align-items:flex-start!important;padding:24px 0!important;gap:16px!important;background:transparent!important;border-top:none!important;}
   .footer > div:first-child{display:flex;flex-direction:column;gap:8px;border-top:1px solid #F1F5F9;padding-top:24px;width:100%;}
@@ -120,7 +120,7 @@ a{text-decoration:none;color:inherit}
     <div class="sub-nav"><a href="newbie.html" class="sub-nav-item">Chương trình Hội nhập</a><a href="cskh.html" class="sub-nav-item">Nhân viên Chăm sóc Khách hàng</a><a href="fieldsale.html" class="sub-nav-item">Nhân viên Field Sale</a></div>
     <a href="index.html" class="nav-item"><div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div><div class="nav-text">Khối Thị Trường</div></a>
     <div class="sub-nav"><a href="am-kynang-chuyenmon.html" class="sub-nav-item">Quản lý Khu vực</a><a href="nvxl.html" class="sub-nav-item">Nhân viên Xử lý</a><a href="nvpttt.html" class="sub-nav-item">Nhân viên Phát triển Thị trường</a><a href="nvph.html" class="sub-nav-item">Nhân viên Phân hàng</a></div>
-    <a href="hangnang.html" class="nav-item active"><div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg></div><div class="nav-text">Khối Hàng Nặng</div></a>
+    <a href="hangnang.html" class="nav-item active"><div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg></div><div class="nav-text">Khối B2B</div></a>
     <div class="sub-nav" style="padding-bottom:20px;"><a href="freight.html" class="sub-nav-item" style="font-weight:700;color:#FF5200;">Nhân viên Xử lý</a></div>
           <a href="leaders-talk.html" class="nav-item" data-done="1">
             <div class="nav-icon">
@@ -170,7 +170,7 @@ a{text-decoration:none;color:inherit}
       </div>
       <div class="nav-item">
         <a class="nav-link nav-trigger active" href="hangnang.html">
-          <span>Kh&#7889;i H&#224;ng N&#7863;ng</span>
+          <span>Kh&#7889;i B2B</span>
           <svg class="nav-caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <div class="nav-menu">
@@ -230,7 +230,7 @@ a{text-decoration:none;color:inherit}
       <div class="mobile-role-info"><div class="role-container"><div class="role-avatar"><svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.2 6.7C2.2 4.55 3.95 2.8 6.1 2.8H15.9C18.05 2.8 19.8 4.55 19.8 6.7V14.1C19.8 15.62 18.57 16.85 17.05 16.85H4.95C3.43 16.85 2.2 15.62 2.2 14.1V6.7Z" fill="#70BCFF"/><path d="M4.65 2.8V1.9C4.65 1.18 5.23 0.6 5.95 0.6H8.15C8.87 0.6 9.45 1.18 9.45 1.9V2.8" stroke="#70BCFF" stroke-width="1.2" stroke-linecap="round"/><path d="M12.55 2.8V1.9C12.55 1.18 13.13 0.6 13.85 0.6H16.05C16.77 0.6 17.35 1.18 17.35 1.9V2.8" stroke="#70BCFF" stroke-width="1.2" stroke-linecap="round"/><path d="M7 8.5V11.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M11 7.6V11.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M15 8.5V11.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg></div><div class="role-title">NV Xử lý Hàng nặng</div></div></div>
       <div class="mobile-chip-nav"><a href="freight.html" class="chip">Hàng giao</a><a href="freight-lay.html" class="chip active">Hàng lấy</a><a href="freight-tra.html" class="chip">Hàng trả</a><a href="freight-lc.html" class="chip">Luân chuyển</a><a href="freight-khac.html" class="chip">Khác</a></div>
       <div class="breadcrumb">
-        <a href="hangnang.html">Khối Hàng Nặng</a>
+        <a href="hangnang.html">Khối B2B</a>
         <span class="breadcrumb-sep">›</span>
         <a href="freight.html">Nhân viên Xử lý</a>
         <span class="breadcrumb-sep">›</span>
