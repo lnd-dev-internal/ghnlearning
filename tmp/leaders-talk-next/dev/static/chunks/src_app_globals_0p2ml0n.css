@@ -1,0 +1,109 @@
+/* [project]/src/app/globals.css [app-client] (css) */
+*, :before, :after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --lightningcss-light: initial;
+  --lightningcss-dark: ;
+  color-scheme: light;
+}
+
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #1a1202;
+  background: #f0efea;
+  font-family: Plus Jakarta Sans, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+canvas {
+  display: block;
+}
+
+[data-canvas-wrapper], [data-canvas-wrapper] canvas {
+  pointer-events: none !important;
+}
+
+#scroll-root {
+  z-index: 1;
+  height: 600vh;
+  position: relative;
+}
+
+#section-1 {
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+#section-2 {
+  height: 100vh;
+  position: absolute;
+  top: 200vh;
+  left: 0;
+  right: 0;
+}
+
+#section-3 {
+  height: 100vh;
+  position: absolute;
+  top: 300vh;
+  left: 0;
+  right: 0;
+}
+
+#section-stats {
+  height: 100vh;
+  position: absolute;
+  top: 400vh;
+  left: 0;
+  right: 0;
+}
+
+#section-4 {
+  height: 100vh;
+  position: absolute;
+  top: 500vh;
+  left: 0;
+  right: 0;
+}
+
+#section-1 > *, #section-2 > *, #section-3 > *, #section-stats > *, #section-4 > * {
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+#section-1 a, #section-1 button, #section-2 a, #section-2 button, #section-3 a, #section-3 button, #section-stats a, #section-stats button, #section-4 a, #section-4 button {
+  pointer-events: auto;
+}
+
+h1, h2, h3, [class*="heading"], [class*="title"] {
+  font-synthesis: weight;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #508cff40;
+  border-radius: 999px;
+}
+
+::selection {
+  color: #fff;
+  background: #508cff59;
+}
+
+/*# sourceMappingURL=src_app_globals_0p2ml0n.css.map*/

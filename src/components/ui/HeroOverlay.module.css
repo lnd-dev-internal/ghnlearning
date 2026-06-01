@@ -1,0 +1,229 @@
+/*
+ * HeroOverlay: fills its 100vh slot via height: 100%.
+ * Light theme — #3d3d3d text, orange TALK box animation.
+ */
+.hero {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 2.5rem 3rem 2.8rem;
+}
+
+/* ── Top-center logo ── */
+.logoMark {
+  display: flex;
+  align-items: center;
+  justify-self: center;   /* center in the grid row */
+  opacity: 0;
+}
+.logoImg {
+  width: auto;
+  height: auto;
+  max-height: 130px;
+  object-fit: contain;
+}
+
+/* ── Center block ── */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* ── Main title ── */
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(3.2rem, 8.5vw, 8rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;         /* tighter = chunkier, bolder feel */
+  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
+  opacity: 0;
+  animation: titleFadeIn 0.7s ease 0.4s forwards;
+  pointer-events: none;
+  user-select: none;
+  /* Lay out as inline-flex so LEADERS + TALK sit on same baseline */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+@keyframes titleFadeIn {
+  to { opacity: 1; }
+}
+
+/* ── LEADERS span ── */
+.titleLeaders {
+  color: #3d3d3d;
+}
+
+/* ── TALK wrapper ── */
+.titleTalk {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Orange rectangle that slides in from the left */
+.talkBg {
+  position: absolute;
+  top: -0.06em;
+  bottom: -0.06em;
+  left: -0.08em;
+  right: -0.08em;
+  background: #FF5200;
+  border-radius: 4px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  /* Starts after title fade-in (0.4s + 0.7s ≈ 1.1s) */
+  animation: talkBgSlide 0.42s cubic-bezier(0.22, 1, 0.36, 1) 1.15s forwards;
+  z-index: 0;
+}
+
+/* TALK letters — dark initially, switch to white as box lands */
+.talkText {
+  position: relative;
+  z-index: 1;
+  color: #3d3d3d;
+  /* Switch to white ~halfway through box animation */
+  animation: talkColorFlip 0s linear 1.37s forwards;
+}
+
+@keyframes talkBgSlide {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes talkColorFlip {
+  to { color: #ffffff; }
+}
+
+/* ── Divider line — orange ── */
+.line {
+  width: 5rem;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(255, 82, 0, 0.65), transparent);
+  transform-origin: center;
+  transform: scaleX(0);
+}
+
+/* ── Sub-tagline ── */
+.tagline {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.72rem, 1.4vw, 0.90rem);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(61, 61, 61, 0.40);
+  text-align: center;
+  opacity: 0;
+}
+
+/* ── CTA group ── */
+.ctaGroup {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ctaPrimary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1.65rem;
+  background: #FF5200;
+  color: #fff;
+  border-radius: 999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: background 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+  pointer-events: auto;
+  box-shadow: 0 4px 20px rgba(255, 82, 0, 0.30);
+}
+.ctaPrimary:hover {
+  background: #E84800;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(255, 82, 0, 0.42);
+}
+.ctaPrimary:active { transform: translateY(0); }
+
+.ctaSecondary {
+  display: flex;
+  align-items: center;
+  padding: 0.72rem 1.65rem;
+  border: 1.5px solid rgba(61, 61, 61, 0.18);
+  color: rgba(61, 61, 61, 0.60);
+  border-radius: 999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 220ms ease, color 220ms ease, transform 220ms ease;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+}
+.ctaSecondary:hover {
+  border-color: rgba(255, 82, 0, 0.45);
+  color: #FF5200;
+  transform: translateY(-2px);
+}
+.ctaSecondary:active { transform: translateY(0); }
+
+/* ── Bottom zone ── */
+.bottomZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  padding-bottom: 0.5rem;
+  opacity: 0;
+}
+
+/* ── Scroll indicator — orange ── */
+.scrollHint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+.scrollTrack {
+  width: 1.5px;
+  height: 3.5rem;
+  background: rgba(255, 82, 0, 0.12);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+.scrollDot {
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1.5px;
+  height: 40%;
+  background: linear-gradient(to bottom, transparent, rgba(255, 82, 0, 0.85), transparent);
+  border-radius: 999px;
+  animation: scrollDown 2.2s ease-in-out infinite;
+}
+.scrollLabel {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  color: rgba(61, 61, 61, 0.35);
+}
+
+@keyframes scrollDown {
+  0%   { top: -40%; opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { top: 110%; opacity: 0; }
+}

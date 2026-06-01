@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ── Reset ────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { color-scheme: light; }
+
+html, body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #F0EFEA;
+  color: #1A1202;
+  overflow-x: hidden;
+}
+
+canvas { display: block; }
+
+/* ── Canvas wrapper: never intercepts events ─────────────────────────────── */
+[data-canvas-wrapper],
+[data-canvas-wrapper] canvas {
+  pointer-events: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL ROOT — the SINGLE 400vh scrollable container.
+   Sections are absolutely positioned inside it at their scroll offsets.
+   Body height = 400vh → window scrolls 300vh.
+   ═══════════════════════════════════════════════════════════════════════════ */
+#scroll-root {
+  position: relative;
+  height: 600vh;    /* 100 hero + 100 spacer + 100 s2 + 100 s3 + 100 stats + 100 s4 */
+  z-index: 1;
+}
+
+/* ── Section slots: absolutely positioned in scroll-root ─────────────────── */
+
+/* Hero: visible at scroll 0 */
+#section-1 {
+  position: absolute;
+  top: 0;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+/* Mục đích: enters viewport after 1 page of scrolling (at 100vh scroll)     */
+/* Placed at top: 200vh so it appears in viewport at scroll ≈ 100vh           */
+#section-2 {
+  position: absolute;
+  top: 200vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+/* Core values: enters viewport at scroll ≈ 200vh */
+#section-3 {
+  position: absolute;
+  top: 300vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+/* Stats (speakers + students): enters viewport at scroll ≈ 300vh */
+#section-stats {
+  position: absolute;
+  top: 400vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+/* Gallery: enters viewport at scroll ≈ 400vh */
+#section-4 {
+  position: absolute;
+  top: 500vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+/* ── Overlay wrappers fill their parent slot ─────────────────────────────── */
+#section-1 > *,
+#section-2 > *,
+#section-3 > *,
+#section-stats > *,
+#section-4 > * {
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Re-enable clicks only on interactive children */
+#section-1 a, #section-1 button,
+#section-2 a, #section-2 button,
+#section-3 a, #section-3 button,
+#section-stats a, #section-stats button,
+#section-4 a, #section-4 button {
+  pointer-events: auto;
+}
+
+/* ── Anton bold via font-synthesis ──── */
+h1, h2, h3, [class*='heading'], [class*='title'] {
+  font-synthesis: weight;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(80, 140, 255, 0.25);
+  border-radius: 999px;
+}
+
+/* ── Selection ────────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(80, 140, 255, 0.35);
+  color: #fff;
+}

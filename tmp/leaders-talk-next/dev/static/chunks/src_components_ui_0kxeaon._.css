@@ -1,0 +1,242 @@
+/* [project]/src/components/ui/HeroOverlay.module.css [app-client] (css) */
+.HeroOverlay-module__c7WY7W__hero {
+  pointer-events: none;
+  grid-template-rows: auto 1fr auto;
+  padding: 2.5rem 3rem 2.8rem;
+  display: grid;
+  position: absolute;
+  inset: 0;
+}
+
+.HeroOverlay-module__c7WY7W__logoMark {
+  opacity: 0;
+  align-items: center;
+  gap: .55rem;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__logoIcon {
+  color: #82beffd9;
+  font-size: 1rem;
+}
+
+.HeroOverlay-module__c7WY7W__logoText {
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #bedcff99;
+  font-family: Space Grotesk, Inter, sans-serif;
+  font-size: .7rem;
+  font-weight: 600;
+}
+
+.HeroOverlay-module__c7WY7W__center {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__title {
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0 20px #a0c8ff66, 0 0 60px #64a0ff2e, 0 0 120px #5082ff14;
+  font-family: Space Grotesk, Arial Black, sans-serif;
+  font-size: clamp(3.2rem, 8.5vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  transition: opacity .1s linear;
+}
+
+.HeroOverlay-module__c7WY7W__line {
+  transform-origin: center;
+  background: linear-gradient(90deg, #0000, #64b4ff99, #0000);
+  width: 5rem;
+  height: 1px;
+  transform: scaleX(0);
+}
+
+.HeroOverlay-module__c7WY7W__tagline {
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #96c3ff73;
+  text-align: center;
+  opacity: 0;
+  font-family: Inter, sans-serif;
+  font-size: clamp(.72rem, 1.4vw, .9rem);
+  font-weight: 300;
+}
+
+.HeroOverlay-module__c7WY7W__scrollHint {
+  opacity: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__scrollTrack {
+  background: #508cff1f;
+  border-radius: 999px;
+  width: 1.5px;
+  height: 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.HeroOverlay-module__c7WY7W__scrollDot {
+  background: linear-gradient(#0000, #78beffe6, #0000);
+  border-radius: 999px;
+  width: 1.5px;
+  height: 40%;
+  animation: 2.2s ease-in-out infinite HeroOverlay-module__c7WY7W__scrollDown;
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.HeroOverlay-module__c7WY7W__scrollLabel {
+  letter-spacing: .28em;
+  color: #64a0ff59;
+  text-transform: uppercase;
+  font-family: Inter, sans-serif;
+  font-size: .56rem;
+}
+
+@keyframes HeroOverlay-module__c7WY7W__scrollDown {
+  0% {
+    opacity: 0;
+    top: -40%;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    top: 110%;
+  }
+}
+
+/* [project]/src/components/ui/Section2Overlay.module.css [app-client] (css) */
+.Section2Overlay-module__PTd-xq__wrapper {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.Section2Overlay-module__PTd-xq__content {
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  display: flex;
+  position: absolute;
+  bottom: 5vh;
+  left: 0;
+  right: 0;
+}
+
+.Section2Overlay-module__PTd-xq__heading {
+  letter-spacing: -.02em;
+  color: #fff;
+  opacity: 0;
+  text-shadow: 0 0 30px #a064ff59, 0 0 80px #7850ff26;
+  font-family: Space Grotesk, Inter, sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.Section2Overlay-module__PTd-xq__body {
+  color: #b4c8ff7a;
+  opacity: 0;
+  max-width: 520px;
+  font-family: Inter, sans-serif;
+  font-size: clamp(.82rem, 1.4vw, .96rem);
+  line-height: 1.75;
+}
+
+.Section2Overlay-module__PTd-xq__cta {
+  color: #fff;
+  pointer-events: auto;
+  opacity: 0;
+  background: linear-gradient(90deg, #4a6fff, #8b5cf6);
+  border-radius: 999px;
+  align-items: center;
+  gap: .55rem;
+  padding: .65rem 1.5rem;
+  font-family: Inter, sans-serif;
+  font-size: .86rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  display: inline-flex;
+}
+
+.Section2Overlay-module__PTd-xq__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px #6450ff73;
+}
+
+.Section2Overlay-module__PTd-xq__bottomDot {
+  opacity: 0;
+  transform-origin: bottom;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.Section2Overlay-module__PTd-xq__dotRing {
+  border: 1.5px solid #78a0ff38;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  animation: 2.5s ease-in-out infinite Section2Overlay-module__PTd-xq__breathe;
+  display: flex;
+}
+
+.Section2Overlay-module__PTd-xq__dotInner {
+  background: #8caaff80;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  animation: 2.5s ease-in-out infinite Section2Overlay-module__PTd-xq__innerPulse;
+}
+
+@keyframes Section2Overlay-module__PTd-xq__breathe {
+  0%, 100% {
+    border-color: #78a0ff38;
+    transform: scale(1);
+  }
+
+  50% {
+    border-color: #8cb4ff7a;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes Section2Overlay-module__PTd-xq__innerPulse {
+  0%, 100% {
+    opacity: .5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+/*# sourceMappingURL=src_components_ui_0kxeaon._.css.map*/

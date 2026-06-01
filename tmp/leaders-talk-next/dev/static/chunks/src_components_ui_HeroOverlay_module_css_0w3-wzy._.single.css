@@ -1,0 +1,246 @@
+/* [project]/src/components/ui/HeroOverlay.module.css [app-client] (css) */
+.HeroOverlay-module__c7WY7W__hero {
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  padding: 2.5rem 3rem 2.8rem;
+  display: grid;
+}
+
+.HeroOverlay-module__c7WY7W__logoMark {
+  opacity: 0;
+  justify-self: center;
+  align-items: center;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__logoImg {
+  object-fit: contain;
+  width: auto;
+  height: auto;
+  max-height: 130px;
+}
+
+.HeroOverlay-module__c7WY7W__center {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__title {
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  font-family: Anton, sans-serif;
+  font-size: clamp(3.2rem, 8.5vw, 8rem);
+  font-weight: 400;
+  line-height: 1;
+  animation: .7s .4s forwards HeroOverlay-module__c7WY7W__titleFadeIn;
+  display: flex;
+}
+
+@keyframes HeroOverlay-module__c7WY7W__titleFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.HeroOverlay-module__c7WY7W__titleLeaders {
+  color: #3d3d3d;
+}
+
+.HeroOverlay-module__c7WY7W__titleTalk {
+  align-items: center;
+  display: inline-flex;
+  position: relative;
+}
+
+.HeroOverlay-module__c7WY7W__talkBg {
+  transform-origin: 0;
+  z-index: 0;
+  background: #ff5200;
+  border-radius: 4px;
+  animation: .42s cubic-bezier(.22, 1, .36, 1) 1.15s forwards HeroOverlay-module__c7WY7W__talkBgSlide;
+  position: absolute;
+  inset: -.06em -.08em;
+  transform: scaleX(0);
+}
+
+.HeroOverlay-module__c7WY7W__talkText {
+  z-index: 1;
+  color: #3d3d3d;
+  animation: 0s linear 1.37s forwards HeroOverlay-module__c7WY7W__talkColorFlip;
+  position: relative;
+}
+
+@keyframes HeroOverlay-module__c7WY7W__talkBgSlide {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes HeroOverlay-module__c7WY7W__talkColorFlip {
+  to {
+    color: #fff;
+  }
+}
+
+.HeroOverlay-module__c7WY7W__line {
+  transform-origin: center;
+  background: linear-gradient(90deg, #0000, #ff5200a6, #0000);
+  width: 5rem;
+  height: 1.5px;
+  transform: scaleX(0);
+}
+
+.HeroOverlay-module__c7WY7W__tagline {
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #3d3d3d66;
+  text-align: center;
+  opacity: 0;
+  font-family: Plus Jakarta Sans, sans-serif;
+  font-size: clamp(.72rem, 1.4vw, .9rem);
+  font-weight: 400;
+}
+
+.HeroOverlay-module__c7WY7W__ctaGroup {
+  pointer-events: none;
+  justify-content: center;
+  align-items: center;
+  gap: .85rem;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__ctaPrimary {
+  color: #fff;
+  letter-spacing: .01em;
+  pointer-events: auto;
+  background: #ff5200;
+  border-radius: 999px;
+  align-items: center;
+  gap: .5rem;
+  padding: .72rem 1.65rem;
+  font-family: Plus Jakarta Sans, sans-serif;
+  font-size: .88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .22s, transform .22s, box-shadow .22s;
+  display: flex;
+  box-shadow: 0 4px 20px #ff52004d;
+}
+
+.HeroOverlay-module__c7WY7W__ctaPrimary:hover {
+  background: #e84800;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px #ff52006b;
+}
+
+.HeroOverlay-module__c7WY7W__ctaPrimary:active {
+  transform: translateY(0);
+}
+
+.HeroOverlay-module__c7WY7W__ctaSecondary {
+  color: #3d3d3d99;
+  pointer-events: auto;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border: 1.5px solid #3d3d3d2e;
+  border-radius: 999px;
+  align-items: center;
+  padding: .72rem 1.65rem;
+  font-family: Plus Jakarta Sans, sans-serif;
+  font-size: .88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color .22s, color .22s, transform .22s;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__ctaSecondary:hover {
+  color: #ff5200;
+  border-color: #ff520073;
+  transform: translateY(-2px);
+}
+
+.HeroOverlay-module__c7WY7W__ctaSecondary:active {
+  transform: translateY(0);
+}
+
+.HeroOverlay-module__c7WY7W__bottomZone {
+  opacity: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  padding-bottom: .5rem;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__scrollHint {
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+  display: flex;
+}
+
+.HeroOverlay-module__c7WY7W__scrollTrack {
+  background: #ff52001f;
+  border-radius: 999px;
+  width: 1.5px;
+  height: 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.HeroOverlay-module__c7WY7W__scrollDot {
+  background: linear-gradient(#0000, #ff5200d9, #0000);
+  border-radius: 999px;
+  width: 1.5px;
+  height: 40%;
+  animation: 2.2s ease-in-out infinite HeroOverlay-module__c7WY7W__scrollDown;
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.HeroOverlay-module__c7WY7W__scrollLabel {
+  letter-spacing: .12em;
+  color: #3d3d3d59;
+  font-family: Plus Jakarta Sans, sans-serif;
+  font-size: .82rem;
+}
+
+@keyframes HeroOverlay-module__c7WY7W__scrollDown {
+  0% {
+    opacity: 0;
+    top: -40%;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    top: 110%;
+  }
+}
+
+/*# sourceMappingURL=src_components_ui_HeroOverlay_module_css_0w3-wzy._.single.css.map*/
