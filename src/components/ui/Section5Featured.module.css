@@ -406,34 +406,35 @@
 .modalPanel::-webkit-scrollbar { width: 3px; }
 .modalPanel::-webkit-scrollbar-thumb { background: rgba(255,82,0,0.20); border-radius: 4px; }
 
-/* Close button */
+/* Close button — absolute over the cover image, top-right corner */
 .modalClose {
-  position: sticky;
-  top: 1rem;
-  left: calc(100% - 2.8rem);
-  float: right;
-  margin: 1rem 1rem 0 0;
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: rgba(26, 18, 2, 0.06);
-  border: 1px solid rgba(26, 18, 2, 0.14);
-  color: rgba(26, 18, 2, 0.55);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.90);
   font-size: 0.80rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 180ms, color 180ms;
-  z-index: 10;
+  z-index: 20;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
-.modalClose:hover { background: rgba(255, 82, 0, 0.10); color: #FF5200; }
+.modalClose:hover { background: rgba(255, 82, 0, 0.85); color: #ffffff; border-color: transparent; }
 
-/* Cover image */
+/* Cover image — relative so close button can overlay it */
 .modalCover {
   position: relative;
   height: 220px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .modalCoverBg {
   position: absolute;
@@ -528,14 +529,14 @@
 }
 
 .modalLead {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 0.95rem;
   line-height: 1.80;
   color: rgba(61, 61, 61, 0.80);
   font-style: italic;
 }
 .modalParagraph {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 0.90rem;
   line-height: 1.80;
   color: rgba(61, 61, 61, 0.72);
@@ -556,7 +557,7 @@
   gap: 0.5rem;
 }
 .modalList li {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 0.88rem;
   line-height: 1.75;
   color: rgba(61, 61, 61, 0.70);
@@ -565,7 +566,7 @@
 .modalQuote {
   border-left: 2px solid rgba(255, 82, 0, 0.45);
   padding-left: 1rem;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 0.88rem;
   font-style: italic;
   color: rgba(61, 61, 61, 0.60);
@@ -590,7 +591,7 @@
   margin-bottom: 0.3rem;
 }
 .modalEventBox p {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 0.82rem;
   color: rgba(61, 61, 61, 0.75);
   line-height: 1.6;

@@ -1,0 +1,211 @@
+/*
+ * IntroLoader — Horizontal door-split intro animation
+ * Two dark panels split open from center, revealing the site.
+ * Center: orange seam line + "LEADERS TALK" + spinning pinwheel.
+ */
+
+/* ── Root overlay ────────────────────────────────────────────────────────────── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  overflow: hidden;
+  pointer-events: all;
+}
+
+/* ── Panels ──────────────────────────────────────────────────────────────────── */
+.topPanel,
+.bottomPanel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.topPanel {
+  top: 0;
+  background: linear-gradient(175deg, #111010 0%, #0E0C0B 100%);
+}
+.bottomPanel {
+  bottom: 0;
+  background: linear-gradient(185deg, #0E0C0B 0%, #111010 100%);
+}
+
+/* ── Subtle tech grid ─────────────────────────────────────────────────────────── */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 70px 70px;
+  /* Fade grid toward edges */
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+}
+
+/* ── Radial vignette — deeper at edges ──────────────────────────────────────── */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 130% 140% at 50% 50%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* ── Scanning CRT line (top panel only) ─────────────────────────────────────── */
+.scanLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.022) 50%,
+    transparent 100%
+  );
+  animation: scan 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes scan {
+  0%   { top: -80px; }
+  100% { top: 100%; }
+}
+
+/* ── Corner brackets (L-shapes, all 4 corners) ───────────────────────────────── */
+.corner {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+.cornerTL {
+  top: 1.6rem; left: 1.6rem;
+  border-top: 1.5px solid rgba(255, 82, 0, 0.50);
+  border-left: 1.5px solid rgba(255, 82, 0, 0.50);
+}
+.cornerTR {
+  top: 1.6rem; right: 1.6rem;
+  border-top: 1.5px solid rgba(255, 82, 0, 0.50);
+  border-right: 1.5px solid rgba(255, 82, 0, 0.50);
+}
+.cornerBL {
+  bottom: 1.6rem; left: 1.6rem;
+  border-bottom: 1.5px solid rgba(255, 82, 0, 0.50);
+  border-left: 1.5px solid rgba(255, 82, 0, 0.50);
+}
+.cornerBR {
+  bottom: 1.6rem; right: 1.6rem;
+  border-bottom: 1.5px solid rgba(255, 82, 0, 0.50);
+  border-right: 1.5px solid rgba(255, 82, 0, 0.50);
+}
+
+/* ── Tiny top-left label ────────────────────────────────────────────────────── */
+.topLabel {
+  position: absolute;
+  top: 1.75rem;
+  left: 3.5rem;
+  font-family: 'Anton', sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  color: rgba(255, 82, 0, 0.35);
+  user-select: none;
+}
+
+/* ── Seam line — orange gradient at exact vertical center ────────────────────── */
+.seam {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-0.5px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 82, 0, 0.0)  4%,
+    rgba(255, 82, 0, 0.55) 20%,
+    rgba(255, 140, 60, 1.0) 50%,
+    rgba(255, 82, 0, 0.55) 80%,
+    rgba(255, 82, 0, 0.0)  96%,
+    transparent 100%
+  );
+  z-index: 6;
+  pointer-events: none;
+  transform-origin: center;
+  animation: seamPulse 2.2s ease-in-out infinite;
+  /* Soft glow under the line */
+  box-shadow:
+    0 0 12px rgba(255, 100, 20, 0.35),
+    0 0 30px rgba(255, 82, 0, 0.18);
+}
+@keyframes seamPulse {
+  0%, 100% { opacity: 0.65; }
+  50%       { opacity: 1.00; }
+}
+
+/* ── Brand container (below seam) ────────────────────────────────────────────── */
+.brandWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;        /* GSAP fades in */
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+  padding: 0.48rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 100px;
+  background: rgba(13, 11, 10, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 0 1px rgba(255, 82, 0, 0.12) inset,
+    0 4px 24px rgba(0, 0, 0, 0.50);
+}
+
+.brandText {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+  color: rgba(255, 255, 255, 0.78);
+  user-select: none;
+}
+
+/* ── Ambient glow below brand ─────────────────────────────────────────────────── */
+.brandGlow {
+  width: 120px;
+  height: 12px;
+  margin-top: 0.3rem;
+  background: radial-gradient(ellipse at center, rgba(255, 82, 0, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Pinwheel spin ────────────────────────────────────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.pinwheelSvg {
+  color: #FF5200;
+  animation: spin 1.5s linear infinite;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(255, 82, 0, 0.60));
+}

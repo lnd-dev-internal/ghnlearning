@@ -20,11 +20,12 @@
 .heading {
   font-family: 'Anton', sans-serif;
   font-size: clamp(2.2rem, 4.5vw, 3.5rem);
-  font-weight: 400;  /* Anton is inherently heavy */
+  font-weight: 400;
   color: #3d3d3d;
   line-height: 1.1;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-align: center;
+  text-transform: uppercase;       /* BỐN GIÁ TRỊ CỐT LÕI */
   opacity: 0;
 }
 .headingAccent {
@@ -83,12 +84,13 @@
 /* ── Title ── */
 .cardTitle {
   font-family: 'Anton', sans-serif;
-  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+  font-size: clamp(0.78rem, 1.1vw, 1.05rem);
   font-weight: 400;
   color: #3d3d3d;
   line-height: 1.2;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;             /* keep on one line */
 }
 
 /* ── Body ── */

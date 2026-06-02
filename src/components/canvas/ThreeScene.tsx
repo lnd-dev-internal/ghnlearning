@@ -13,7 +13,10 @@ export default function ThreeScene() {
       data-canvas-wrapper=""
       style={{
         position: "fixed",
-        inset: 0,
+        top: 64,
+        left: 0,
+        right: 0,
+        bottom: 0,
         zIndex: 0,
         background: "#F0EFEA",
         pointerEvents: "none",

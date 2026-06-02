@@ -70,14 +70,14 @@ function sampleTextPositions(text: string, count: number) {
   ctx.textAlign    = "center";
   ctx.textBaseline = "middle";
 
-  // Adaptive font size
-  let fontSize = 230;
-  ctx.font = `900 ${fontSize}px "Arial Black", "Arial Bold", Arial, sans-serif`;
+  // Adaptive font size — Anton is naturally bold/condensed, no weight needed
+  let fontSize = 240;
+  ctx.font = `${fontSize}px Anton, "Arial Black", Arial, sans-serif`;
 
   // Shrink until it fits
   while (ctx.measureText(text).width > W * 0.92 && fontSize > 80) {
     fontSize -= 5;
-    ctx.font = `900 ${fontSize}px "Arial Black", "Arial Bold", Arial, sans-serif`;
+    ctx.font = `${fontSize}px Anton, "Arial Black", Arial, sans-serif`;
   }
 
   ctx.fillText(text, W / 2, H / 2);
@@ -204,9 +204,24 @@ export default function ParticleText({
   const [pixelRatio, setPixelRatio]     = useState(1);
 
   useEffect(() => {
-    // Canvas sampling runs only in browser
-    setParticleData(sampleTextPositions(text, particleCount));
-    setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Ensure Anton font is loaded before canvas sampling
+    const loadAndSample = async () => {
+      try {
+        // Force Anton font to be loaded via FontFace API
+        const font = new FontFace(
+          "Anton",
+          "url(https://fonts.gstatic.com/s/anton/v25/1Ptgg87LROyAm0K08i4gS7lu.woff2)"
+        );
+        await font.load();
+        (document.fonts as FontFaceSet).add(font);
+        await document.fonts.ready;
+      } catch (e) {
+        console.warn("[ParticleText] Anton font load failed, using fallback", e);
+      }
+      setParticleData(sampleTextPositions(text, particleCount));
+      setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    };
+    loadAndSample();
   }, [text, particleCount]);
 
   // Update pixelRatio uniform when it becomes known

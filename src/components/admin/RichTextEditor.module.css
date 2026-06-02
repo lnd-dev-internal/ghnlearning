@@ -1,0 +1,309 @@
+.container {
+  border: 1px solid #e0ddd8;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  background: #fff;
+}
+
+.container:focus-within {
+  border-color: #FF5200;
+  box-shadow: 0 0 0 3px rgba(255, 82, 0, 0.1);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e0ddd8;
+  background: #fafafa;
+}
+
+.toolBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  color: #333;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.toolBtn:hover {
+  background: #f0ede8;
+}
+
+.toolBtn.active {
+  background: #FF5200;
+  color: #fff;
+}
+
+.sep {
+  width: 1px;
+  height: 20px;
+  background: #e0ddd8;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.colorGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.colorLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: underline;
+  text-decoration-color: #FF5200;
+  text-decoration-thickness: 2px;
+  padding: 0 2px;
+}
+
+.colorSwatches {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.colorSwatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.editorArea {
+  min-height: 280px;
+  padding: 16px 20px;
+  outline: none;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #1a1a1a;
+}
+
+.editorArea:empty::before {
+  content: attr(data-placeholder);
+  color: #aaa;
+  pointer-events: none;
+}
+
+/* Prose styles inside editor */
+.editorArea p {
+  margin-bottom: 0.8em;
+}
+
+.editorArea h2 {
+  font-family: 'Anton', sans-serif;
+  color: #FF5200;
+  font-size: 1.5em;
+  margin: 1em 0 0.4em;
+  line-height: 1.2;
+}
+
+.editorArea h3 {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  margin: 0.8em 0 0.3em;
+}
+
+.editorArea ul {
+  list-style: disc;
+  padding-left: 1.5em;
+  margin-bottom: 0.8em;
+}
+
+.editorArea ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 0.8em;
+}
+
+.editorArea li {
+  margin-bottom: 0.3em;
+}
+
+.editorArea strong, .editorArea b {
+  font-weight: 700;
+}
+
+.editorArea em, .editorArea i {
+  font-style: italic;
+}
+
+.editorArea a {
+  color: #FF5200;
+  text-decoration: underline;
+}
+
+.editorArea img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 0.5em 0;
+}
+
+/* ── CTA inline dialog ──────────────────────────────────────────────────── */
+.ctaOverlay {
+  position: relative;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid #e0ddd8;
+  padding: 0;
+  animation: ctaSlideDown 0.18s ease;
+}
+
+@keyframes ctaSlideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ctaDialog {
+  padding: 1rem 1.2rem 1.1rem;
+}
+
+.ctaHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.ctaTitle {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #FF5200;
+}
+
+.ctaClose {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: #999;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+.ctaClose:hover { background: #f0ede8; color: #333; }
+
+.ctaForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.ctaLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #555;
+  letter-spacing: 0.03em;
+}
+
+.ctaInput {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #e0ddd8;
+  border-radius: 7px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.82rem;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: #fafafa;
+}
+.ctaInput:focus {
+  border-color: #FF5200;
+  box-shadow: 0 0 0 2px rgba(255,82,0,0.10);
+  background: #fff;
+}
+
+.ctaPreviewWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: #f7f5f2;
+  border-radius: 8px;
+}
+.ctaPreviewLabel {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.68rem;
+  color: #999;
+  flex-shrink: 0;
+}
+.ctaPreviewBtn {
+  display: inline-block;
+  background: #FF5200;
+  color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 7px;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.ctaActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.2rem;
+}
+
+.ctaCancelBtn {
+  padding: 0.45rem 1rem;
+  border: 1px solid #e0ddd8;
+  border-radius: 7px;
+  background: transparent;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ctaCancelBtn:hover { background: #f0ede8; }
+
+.ctaInsertBtn {
+  padding: 0.45rem 1.2rem;
+  border: none;
+  border-radius: 7px;
+  background: #FF5200;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: background 0.15s, opacity 0.15s;
+}
+.ctaInsertBtn:hover { background: #e04800; }
+.ctaInsertBtn:disabled { opacity: 0.4; cursor: not-allowed; }

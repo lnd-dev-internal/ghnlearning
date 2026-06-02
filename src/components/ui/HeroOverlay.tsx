@@ -3,38 +3,78 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { onIntroComplete } from "@/lib/introEvents";
 import styles from "./HeroOverlay.module.css";
 
+
 export default function HeroOverlay() {
-  const lineRef    = useRef<HTMLDivElement>(null);
-  const taglineRef = useRef<HTMLParagraphElement>(null);
-  const bottomRef  = useRef<HTMLDivElement>(null);   // wraps CTAs + scroll hint
-  const logoRef    = useRef<HTMLDivElement>(null);
-  const titleRef   = useRef<HTMLHeadingElement>(null);
+  const lineRef     = useRef<HTMLDivElement>(null);
+  const taglineRef  = useRef<HTMLParagraphElement>(null);
+  const bottomRef   = useRef<HTMLDivElement>(null);
+  const logoRef     = useRef<HTMLDivElement>(null);
+  const titleRef    = useRef<HTMLHeadingElement>(null);
+  const talkBgRef   = useRef<HTMLSpanElement>(null);
+  const talkTextRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.3 });
-
-    tl.fromTo(logoRef.current,
-      { opacity: 0, y: -12 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
-    )
-    .fromTo(lineRef.current,
-      { scaleX: 0 },
-      { scaleX: 1, duration: 0.7, ease: "power2.inOut" }
-    )
-    .fromTo(taglineRef.current,
-      { opacity: 0, y: 14 },
-      { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
-      "-=0.3"
-    )
-    // Animate entire bottom zone (CTAs + scroll hint) as one unit
-    .fromTo(bottomRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
-      "-=0.2"
+    // Hide everything initially (CSS has opacity:0 on title already; make sure others are hidden too)
+    gsap.set(
+      [logoRef.current, lineRef.current, taglineRef.current, bottomRef.current],
+      { opacity: 0 }
     );
+    // Ensure orange box is collapsed and text starts dark
+    gsap.set(talkBgRef.current,   { scaleX: 0 });
+    gsap.set(talkTextRef.current, { color: "#3d3d3d" });
+
+    // Wait for intro doors to fully open, THEN run all hero animations
+    const cleanup = onIntroComplete(() => {
+      const tl = gsap.timeline({ delay: 0.15 });
+
+      // 1. Logo drops in
+      tl.fromTo(logoRef.current,
+        { opacity: 0, y: -12 },
+        { opacity: 1, y: 0, duration: 0.75, ease: "power2.out" }
+      )
+      // 2. Title fades in
+      .fromTo(titleRef.current,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
+        "-=0.3"
+      )
+      // 3. Orange box slides in (scaleX 0 → 1)
+      .to(talkBgRef.current, {
+        scaleX: 1,
+        duration: 0.42,
+        ease: "cubic.bezier(0.22, 1, 0.36, 1)",
+      }, "-=0.05")
+      // 4. TALK text turns white
+      .to(talkTextRef.current, {
+        color: "#ffffff",
+        duration: 0,
+      }, "-=0.22")
+      // 5. Divider line expands
+      .fromTo(lineRef.current,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.65, ease: "power2.inOut" },
+        "-=0.1"
+      )
+      // 6. Tagline fades up
+      .fromTo(taglineRef.current,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
+        "-=0.35"
+      )
+      // 7. CTAs + scroll hint
+      .fromTo(bottomRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
+        "-=0.25"
+      );
+    });
+
+    return cleanup;
   }, []);
+
 
   return (
     <div className={styles.hero}>
@@ -59,10 +99,10 @@ export default function HeroOverlay() {
         >
           <span className={styles.titleLeaders}>LEADERS&nbsp;</span>
           <span className={styles.titleTalk} aria-label="TALK">
-            {/* Orange box — slides from left */}
-            <span className={styles.talkBg} aria-hidden="true" />
-            {/* Dark text shown before box arrives, white after */}
-            <span className={styles.talkText}>TALK</span>
+            {/* Orange box — GSAP animates scaleX after intro */}
+            <span ref={talkBgRef} className={styles.talkBg} aria-hidden="true" />
+            {/* TALK text — GSAP switches color to white after box lands */}
+            <span ref={talkTextRef} className={styles.talkText}>TALK</span>
           </span>
         </h1>
         <div ref={lineRef} className={styles.line} />
@@ -86,11 +126,11 @@ export default function HeroOverlay() {
             </svg>
           </a>
           <a
-            href="#section-4"
+            href="/ky-truoc"
             className={styles.ctaSecondary}
             id="hero-cta-issues"
           >
-            Những số khác
+            Những kỳ trước
           </a>
         </div>
 

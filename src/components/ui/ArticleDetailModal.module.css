@@ -1,0 +1,126 @@
+/* ── Overlay ─────────────────────────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 11, 10, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+/* ── Panel ───────────────────────────────────────────────────────────────── */
+.panel {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+}
+.panel::-webkit-scrollbar { width: 3px; }
+.panel::-webkit-scrollbar-thumb { background: rgba(255, 82, 0, 0.25); border-radius: 4px; }
+
+/* ── Cover ───────────────────────────────────────────────────────────────── */
+.cover {
+  position: relative;
+  height: 220px;
+  flex-shrink: 0;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+}
+.coverImg { object-fit: cover; }
+.coverOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.35) 100%);
+}
+
+/* ── Close button ────────────────────────────────────────────────────────── */
+.closeBtn {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.90);
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 180ms;
+  z-index: 5;
+  backdrop-filter: blur(4px);
+}
+.closeBtn:hover { background: rgba(255, 82, 0, 0.85); }
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+.body {
+  padding: 1.5rem 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.categoryBadge {
+  background: rgba(255, 82, 0, 0.10);
+  color: #FF5200;
+  border: 1px solid rgba(255, 82, 0, 0.25);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.65rem;
+  border-radius: 100px;
+}
+.author {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.80rem;
+  color: rgba(61, 61, 61, 0.55);
+}
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #1a1208;
+  line-height: 1.30;
+  margin: 0.2rem 0 0;
+}
+.date {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(61, 61, 61, 0.40);
+  margin: 0;
+}
+
+/* ── Prose content ───────────────────────────────────────────────────────── */
+.content {
+  margin-top: 0.75rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.90rem;
+  line-height: 1.80;
+  color: rgba(61, 61, 61, 0.78);
+}
+.content p   { margin-bottom: 0.9em; }
+.content h2  { font-family: 'Anton', sans-serif; font-size: 1.05rem; color: #FF5200; margin: 1.4em 0 0.5em; font-weight: 400; }
+.content h3  { font-family: 'Anton', sans-serif; font-size: 0.92rem; color: #1a1208; margin: 1.2em 0 0.4em; font-weight: 400; }
+.content ul  { padding-left: 1.4em; margin-bottom: 0.9em; }
+.content li  { margin-bottom: 0.45em; }
+.content strong { color: #1a1208; font-weight: 700; }
+.content a   { color: #FF5200; text-decoration: underline; }

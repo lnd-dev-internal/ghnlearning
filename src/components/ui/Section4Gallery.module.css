@@ -37,7 +37,7 @@
   display: inline-flex;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 0.4em;            /* explicit gap so flexbox doesn't collapse space */
+  gap: 0.45em;           /* even space between "Khoảnh khắc" and orange box */
 }
 
 /* "Khoảnh khắc" — dark gray */
@@ -57,8 +57,8 @@
   position: absolute;
   top: -0.06em;
   bottom: -0.06em;
-  left:  0.05em;         /* slight inward — won’t overlap prev word */
-  right: -0.10em;        /* small right pad for breathing room */
+  left:  -0.12em;        /* symmetric inward breathing room on left */
+  right: -0.12em;        /* symmetric breathing room on right */
   background: #FF5200;
   border-radius: 4px;
   transform-origin: left center;
@@ -72,7 +72,7 @@
   position: relative;
   z-index: 1;
   color: #3d3d3d;
-  padding: 0 0.18em;     /* mirror the box right pad for visual centering */
+  padding: 0 0.12em;     /* equal horizontal padding inside the box */
   animation: danhNhoColorFlip 0s linear 0.82s forwards;
 }
 
@@ -117,7 +117,7 @@
   justify-content: center;
   gap: 8px;
   /* KEY: the whole strip tilts like a film reel */
-  transform: rotate(-8deg);
+  transform: rotate(-4deg);
 }
 
 /* ── Each row ── */

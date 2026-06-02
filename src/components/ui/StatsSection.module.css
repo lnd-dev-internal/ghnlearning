@@ -45,12 +45,12 @@
   margin-bottom: 0.5rem;
 }
 
-/* "Những con số biết nói" — Anton Bold */
+/* "Những con số biết nói" — Anton */
 .tag {
   font-family: 'Anton', sans-serif;
-  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #3d3d3d;
 }
@@ -118,29 +118,30 @@
 .counter {
   display: flex;
   align-items: baseline;
-  gap: 0.04em;
+  gap: 0.05em;
   line-height: 1;
   margin-bottom: 0.75rem;
 }
 
-/* Large tech number — Orbitron */
+/* Large number — Anton */
 .counterValue {
-  font-family: 'Orbitron', 'Anton', monospace;
+  font-family: 'Anton', sans-serif;
   font-size: clamp(4rem, 8.5vw, 7rem);
-  font-weight: 900;
+  font-weight: 400;       /* Anton has only one weight */
   color: #ffffff;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.04em; /* breathable — digits don't stick together */
   line-height: 1;
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.20);
 }
 
-/* + suffix — slightly smaller, semi-transparent white */
+/* + suffix — Anton, slightly smaller */
 .counterSuffix {
-  font-family: 'Orbitron', monospace;
+  font-family: 'Anton', sans-serif;
   font-size: clamp(2.4rem, 4.5vw, 4.2rem);
-  font-weight: 700;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.70);
   line-height: 1;
+  letter-spacing: 0.04em;
 }
 
 /* ── Label ── */

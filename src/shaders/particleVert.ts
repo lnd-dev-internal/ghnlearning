@@ -38,13 +38,15 @@ uniform float uIntroProgress;      // alpha: 0=hidden, 1=visible at text
 uniform float uScrollProgress;     // 0=at text, 1=disintegrated
 uniform float uAssemblyProgress;   // 0=flying, 1=sphere
 uniform float uSplitProgress;      // 0=sphere, 1=4 mini-circles
-uniform float uHideProgress;       // 0=visible, 1=fully hidden (stats section)
+uniform float uHideProgress;       // 0=visible, 1=fully hidden (legacy)
+uniform float uStatsProgress;      // 0=mini-circles, 1=stats numbers "20+" "500+"
 uniform float uPixelRatio;
 
 attribute vec3  aTextPos;    // text pixel positions
 attribute vec3  aFreePos;    // disintegration targets
 attribute vec3  aSpherePos;  // big sphere surface positions
 attribute vec3  aMiniPos;    // 4 mini-sphere positions
+attribute vec3  aStatsPos;   // "20+" / "500+" number positions
 attribute float aSize;
 attribute float aRandom;
 attribute vec3  aColor;
@@ -59,10 +61,16 @@ void main() {
   float assemble   = smoothstep(0.0, 1.0, uAssemblyProgress);
   float split      = smoothstep(0.0, 1.0, uSplitProgress);
 
+  // Stats: two sub-phases
+  // Phase A (0→0.45): particles disperse from mini-spheres (fall + scatter)
+  // Phase B (0.45→1.0): particles converge and fill number shapes
+  float statsRaw     = uStatsProgress;
+  float statsScatter = smoothstep(0.0, 0.45, statsRaw);
+  float statsAssem   = smoothstep(0.45, 1.0, statsRaw);
+
   // ── PHASE 1: particles at text positions (still + subtle drift) ────────────
   vec3 pos = aTextPos;
 
-  // Micro-drift so text particles feel alive, not frozen
   float atText = (1.0 - dis) * intro;
   float dT     = uTime * 0.07 + aRandom * 6.28;
   pos += vec3(
@@ -71,7 +79,7 @@ void main() {
     snoise(vec3(aRandom*2.3, 0.0, dT))
   ) * 0.014 * atText;
 
-  // ── PHASE 2: disintegration — noise flow upward ───────────────────────────
+  // ── PHASE 2: disintegration ───────────────────────────────────────────────
   float tN  = uTime * 0.18 + aRandom * 6.28318;
   vec3  ni  = vec3(aFreePos.x*0.35+tN, aFreePos.y*0.35+tN*0.6, aFreePos.z*0.35+tN*1.3);
   float str = 2.6 * dis * (1.0 - assemble);
@@ -93,61 +101,95 @@ void main() {
   pos = mix(pos, rotSphere, assemble);
 
   // ── PHASE 4: split into 4 mini-circles ────────────────────────────────────
-  // Rotate mini-spheres at the same rate for visual continuity
   vec3 rotMini = vec3(
     aMiniPos.x * cosA - aMiniPos.z * sinA,
     aMiniPos.y,
     aMiniPos.x * sinA + aMiniPos.z * cosA
   );
-  pos = mix(pos, rotMini, split * assemble); // only splits from sphere state
+  pos = mix(pos, rotMini, split * assemble);
+
+  // ── PHASE 5A: scatter — mini-circles burst upward then rain down ────────────
+  // Each particle gets a unique noise-driven arc before falling toward numbers
+  float sTN = uTime * 0.22 + aRandom * 6.28318;
+  vec3 sNoise = vec3(
+    snoise(vec3(sTN * 0.8, aRandom * 5.0, 0.7)),
+    snoise(vec3(aRandom * 4.0, sTN * 0.65, 1.5)),
+    snoise(vec3(0.5, sTN * 0.9, aRandom * 2.8))
+  );
+  // Burst outward then drift toward the target Y area
+  vec3 burstDir   = normalize(vec3(sNoise.x, abs(sNoise.y) + 0.5, sNoise.z));
+  vec3 scatterPos = rotMini + burstDir * (2.5 + aRandom * 2.0);
+  // Gravity: pull toward the number area (y ~ -1.5)
+  scatterPos.y   -= (2.5 + aRandom * 2.5) * statsScatter;
+  float inStats   = split * assemble;
+  pos = mix(pos, scatterPos, inStats * statsScatter);
+
+  // ── PHASE 5B: pour into outline — particle settles at its stroke position ─
+  // Use a smooth eased convergence so it feels like liquid filling the mold
+  float pourEase = statsAssem * statsAssem * (3.0 - 2.0 * statsAssem); // smoothstep
+  pos = mix(pos, aStatsPos, inStats * pourEase);
 
   // ── COLOR ──────────────────────────────────────────────────────────────────
   float midFlight = dis * (1.0 - assemble);
 
-  // Flight: deeper orange, slightly warmer
   vec3 flightColor = mix(aColor, vec3(0.88, 0.28, 0.0), 0.70);
-
-  // Sphere: rich deep orange
   vec3 orangeColor = vec3(
     mix(aColor.r, 0.92, 0.85),
     mix(aColor.g, 0.22, 0.80),
     mix(aColor.b, 0.00, 0.95)
   );
-  // Mini-circles: darker burnt orange
   vec3 miniColor = vec3(
     mix(aColor.r, 0.70, 0.88) * 0.75,
     mix(aColor.g, 0.14, 0.88) * 0.75,
     mix(aColor.b, 0.00, 0.98) * 0.75
   );
+  // Stats: bright white to contrast against orange cards
+  vec3 statsColor = vec3(1.0, 1.0, 1.0);
 
   vColor  = mix(aColor, flightColor, midFlight);
   vColor  = mix(vColor, orangeColor, assemble);
-  vColor  = mix(vColor, miniColor, split * assemble);
-
-  // No sparkle boost — not needed for NormalBlending light theme
+  vColor  = mix(vColor, miniColor,   inStats);
+  // Blend toward white as stats animation plays
+  float statsColorT = inStats * clamp(statsRaw * 2.2, 0.0, 1.0);
+  vColor  = mix(vColor, statsColor, statsColorT);
 
   // ── SIZE ───────────────────────────────────────────────────────────────────
   float sizeMult = 1.0 + midFlight * 1.5;
-  float sparkle  = 1.0 + snoise(vec3(aRandom*5.0, uTime*0.4, 0.0)) * 0.38;
-  sizeMult = mix(sizeMult, sparkle * 1.05, assemble);
-  // Mini-circles: SMALLER than sphere — reduces the overblown look
+  // Sphere: smaller particles = airy, sparse feel (less thick/overwhelming)
+  float sparkle  = 0.55 + snoise(vec3(aRandom*5.0, uTime*0.4, 0.0)) * 0.18;
+  sizeMult = mix(sizeMult, sparkle, assemble);
   float miniSizeBoost = 0.42 + snoise(vec3(aRandom*4.0, uTime*0.5, 1.0)) * 0.12;
-  sizeMult = mix(sizeMult, miniSizeBoost, split * assemble);
+  sizeMult = mix(sizeMult, miniSizeBoost, inStats);
+  // Scatter: tiny (particles look like rain drops)
+  float scatterSize = 0.28 + aRandom * 0.18;
+  sizeMult = mix(sizeMult, scatterSize, inStats * statsScatter);
+  // Assembly: bigger — crisp fat dots trace the outline visibly
+  float statsSizeBoost = 1.05 + aRandom * 0.35;
+  sizeMult = mix(sizeMult, statsSizeBoost, inStats * statsAssem);
 
   vec4 mvPos   = modelViewMatrix * vec4(pos, 1.0);
   gl_Position  = projectionMatrix * mvPos;
   gl_PointSize = aSize * sizeMult * uPixelRatio * (20.0 / -mvPos.z);
-  gl_PointSize = clamp(gl_PointSize, 0.5, 8.0);  /* crisp, not blurry */
+  // Allow larger dots during outline assembly (up to 12px) vs 8px otherwise
+  float maxSize = mix(8.0, 12.0, inStats * statsAssem);
+  gl_PointSize = clamp(gl_PointSize, 0.5, maxSize);
 
   // ── ALPHA ──────────────────────────────────────────────────────────────────
   float midAlpha  = 1.0 - midFlight * 0.08;
-  float sphAlpha  = 0.72 + aRandom * 0.24;  /* high contrast point cloud */
-  float miniAlpha = 0.62 + aRandom * 0.20;  // visible mini-circles
+  float sphAlpha  = 0.72 + aRandom * 0.24;
+  float miniAlpha = 0.62 + aRandom * 0.20;
+  // During scatter: particles fade to semi-transparent
+  float scatterAlpha = 0.25 + aRandom * 0.20;
+  // During assembly: opaque crisp dots form the numbers
+  float statsAlpha   = 0.82 + aRandom * 0.16;
+
   float baseAlpha = mix(midAlpha, sphAlpha, assemble);
-  baseAlpha       = mix(baseAlpha, miniAlpha, split * assemble);
+  baseAlpha       = mix(baseAlpha, miniAlpha,    inStats * (1.0 - statsRaw));
+  baseAlpha       = mix(baseAlpha, scatterAlpha, inStats * statsScatter);
+  baseAlpha       = mix(baseAlpha, statsAlpha,   inStats * statsAssem);
   vAlpha          = intro * baseAlpha;
 
-  // Fade out entirely during stats section
-  vAlpha *= (1.0 - uHideProgress);
+  // Legacy hide — only active when stats not playing
+  vAlpha *= (1.0 - uHideProgress * (1.0 - clamp(statsRaw * 3.0, 0.0, 1.0)));
 }
 `;

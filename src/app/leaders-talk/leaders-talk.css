@@ -1,0 +1,77 @@
+/* Leaders Talk specific CSS — scroll-based 3D layout */
+
+/* ── Canvas wrapper: never intercepts events ─────────────────────────────── */
+[data-canvas-wrapper],
+[data-canvas-wrapper] canvas {
+  pointer-events: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL ROOT — the SINGLE 600vh scrollable container.
+   ═══════════════════════════════════════════════════════════════════════════ */
+#scroll-root {
+  position: relative;
+  height: 600vh;
+  z-index: 1;
+}
+
+/* ── Section slots: absolutely positioned in scroll-root ─────────────────── */
+#section-1 {
+  position: absolute;
+  top: 0;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+#section-2 {
+  position: absolute;
+  top: 200vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+#section-3 {
+  position: absolute;
+  top: 300vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+#section-stats {
+  position: absolute;
+  top: 400vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+#section-4 {
+  position: absolute;
+  top: 500vh;
+  left: 0; right: 0;
+  height: 100vh;
+}
+
+/* ── Overlay wrappers fill their parent slot ─────────────────────────────── */
+#section-1 > *,
+#section-2 > *,
+#section-3 > *,
+#section-stats > *,
+#section-4 > * {
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Re-enable clicks only on interactive children */
+#section-1 a, #section-1 button,
+#section-2 a, #section-2 button,
+#section-3 a, #section-3 button,
+#section-stats a, #section-stats button,
+#section-4 a, #section-4 button {
+  pointer-events: auto;
+}
+
+/* ── Anton bold via font-synthesis ──── */
+h1, h2, h3, [class*='heading'], [class*='title'] {
+  font-synthesis: weight;
+}

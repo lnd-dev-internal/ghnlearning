@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { particleStore } from "@/lib/particleStore";
-import { sampleTextPositions } from "@/lib/textSampler";
+import { sampleTextPositions, sampleStatsPositions } from "@/lib/textSampler";
 import { fibonacciSphere, fourMiniSpheres } from "@/lib/sphereSampler";
 import { particleVertexShader } from "@/shaders/particleVert";
 import { particleFragmentShader } from "@/shaders/particleFrag";
@@ -30,7 +30,7 @@ function pickColor(): THREE.Color {
 }
 
 // ── Build per-particle geometry data ─────────────────────────────────────────
-function buildParticleData(textPos: Float32Array) {
+function buildParticleData(textPos: Float32Array, statsPos: Float32Array) {
   const spherePos     = fibonacciSphere(PARTICLE_COUNT);
   const miniSpherePos = fourMiniSpheres(PARTICLE_COUNT);
   const freePos       = new Float32Array(PARTICLE_COUNT * 3);
@@ -60,7 +60,7 @@ function buildParticleData(textPos: Float32Array) {
     randoms[i] = Math.random();
   }
 
-  return { spherePos, miniSpherePos, freePos, colors, sizes, randoms };
+  return { spherePos, miniSpherePos, freePos, colors, sizes, randoms, statsPos };
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -76,21 +76,40 @@ export default function ParticleSystem() {
 
   // ── Initialize ────────────────────────────────────────────────────────────
   useEffect(() => {
-    const textPos = sampleTextPositions("LEADERS TALK", PARTICLE_COUNT);
-    const { spherePos, miniSpherePos, freePos, colors, sizes, randoms } =
-      buildParticleData(textPos);
+    // Preload Anton font so canvas sampling gets the right thick glyphs
+    const loadAndInit = async () => {
+      try {
+        const font = new FontFace(
+          "Anton",
+          "url(https://fonts.gstatic.com/s/anton/v25/1Ptgg87LROyAm0K08i4gS7lu.woff2)"
+        );
+        await font.load();
+        (document.fonts as FontFaceSet).add(font);
+        await document.fonts.ready;
+      } catch {
+        // fallback to Arial Black if font fails
+      }
 
-    const g = geomRef.current;
-    g.setAttribute("position",      new THREE.BufferAttribute(textPos.slice(), 3));
-    g.setAttribute("aTextPos",      new THREE.BufferAttribute(textPos,         3));
-    g.setAttribute("aFreePos",      new THREE.BufferAttribute(freePos,         3));
-    g.setAttribute("aSpherePos",    new THREE.BufferAttribute(spherePos,       3));
-    g.setAttribute("aMiniPos",      new THREE.BufferAttribute(miniSpherePos,   3));
-    g.setAttribute("aColor",        new THREE.BufferAttribute(colors,          3));
-    g.setAttribute("aSize",         new THREE.BufferAttribute(sizes,           1));
-    g.setAttribute("aRandom",       new THREE.BufferAttribute(randoms,         1));
+      const textPos  = sampleTextPositions("LEADERS TALK", PARTICLE_COUNT);
+      const statsPos = sampleStatsPositions(PARTICLE_COUNT);
+      const { spherePos, miniSpherePos, freePos, colors, sizes, randoms } =
+        buildParticleData(textPos, statsPos);
 
-    setReady(true);
+      const g = geomRef.current;
+      g.setAttribute("position",      new THREE.BufferAttribute(textPos.slice(), 3));
+      g.setAttribute("aTextPos",      new THREE.BufferAttribute(textPos,         3));
+      g.setAttribute("aFreePos",      new THREE.BufferAttribute(freePos,         3));
+      g.setAttribute("aSpherePos",    new THREE.BufferAttribute(spherePos,       3));
+      g.setAttribute("aMiniPos",      new THREE.BufferAttribute(miniSpherePos,   3));
+      g.setAttribute("aStatsPos",     new THREE.BufferAttribute(statsPos,        3));
+      g.setAttribute("aColor",        new THREE.BufferAttribute(colors,          3));
+      g.setAttribute("aSize",         new THREE.BufferAttribute(sizes,           1));
+      g.setAttribute("aRandom",       new THREE.BufferAttribute(randoms,         1));
+
+      setReady(true);
+    };
+
+    loadAndInit();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -116,6 +135,7 @@ export default function ParticleSystem() {
     u.uAssemblyProgress.value = particleStore.assemblyProgress;
     u.uSplitProgress.value    = particleStore.splitProgress;
     u.uHideProgress.value     = particleStore.hideProgress;
+    u.uStatsProgress.value    = particleStore.statsProgress;
 
     // Camera parallax
     const { camera } = state;
@@ -141,6 +161,7 @@ export default function ParticleSystem() {
           uAssemblyProgress: { value: 0 },
           uSplitProgress:    { value: 0 },
           uHideProgress:     { value: 0 },
+          uStatsProgress:    { value: 0 },
           uPixelRatio:       { value: pixelRatio },
         }}
       />

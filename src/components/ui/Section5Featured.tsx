@@ -87,11 +87,8 @@ function ArticleModal({ onClose }: { onClose: () => void }) {
     <div ref={overlayRef} className={styles.modalOverlay} onClick={handleClose} role="dialog" aria-modal="true" aria-label="Bài viết">
       <div ref={panelRef} className={styles.modalPanel} onClick={e => e.stopPropagation()}>
 
-        {/* Close button */}
-        <button className={styles.modalClose} onClick={handleClose} aria-label="Đóng">✕</button>
-
-        {/* Cover poster — image only, no text overlay */}
-        <div className={styles.modalCover} aria-hidden="true">
+        {/* Cover poster — close button is absolutely positioned over it */}
+        <div className={styles.modalCover}>
           <div className={styles.modalCoverBg}>
             <Image
               src="/Wst5.png"
@@ -103,6 +100,8 @@ function ArticleModal({ onClose }: { onClose: () => void }) {
             />
           </div>
           <div className={styles.modalCoverOverlay} />
+          {/* Close button — floats over the image top-right */}
+          <button className={styles.modalClose} onClick={handleClose} aria-label="Đóng">✕</button>
         </div>
 
         {/* Article body */}
@@ -224,10 +223,13 @@ export default function Section5Featured() {
           <span style={{
             background: '#FF5200',
             color: '#ffffff',
-            padding: '0.04em 0.22em',
-            borderRadius: '5px',
+            padding: '0.08em 0.28em 0.12em',
+            borderRadius: '6px',
             display: 'inline-block',
-            verticalAlign: 'middle',
+            lineHeight: '1.1',
+            verticalAlign: 'baseline',
+            position: 'relative',
+            top: '-0.03em',
           }}>nổi bật</span>
         </div>
 

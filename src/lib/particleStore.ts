@@ -3,5 +3,6 @@ export const particleStore = {
   scrollProgress:   0,  // 0 = text → 1 = disintegrated
   assemblyProgress: 0,  // 0 = flying → 1 = sphere
   splitProgress:    0,  // 0 = sphere → 1 = 4 mini-circles (core values)
-  hideProgress:     0,  // 0 = visible → 1 = faded out (during stats section)
+  hideProgress:     0,  // 0 = visible → 1 = faded out (legacy, keep for shader compat)
+  statsProgress:    0,  // 0 = mini-circles → 1 = stats numbers "20+" "500+"
 };
