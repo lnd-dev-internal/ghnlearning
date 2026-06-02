@@ -1,10 +1,5 @@
 'use client';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Khối Văn Phòng – GHN L&D Portal',
-  description: 'Nâng cao năng suất làm việc với các kỹ năng thiết yếu dành riêng cho Khối Văn Phòng tại GHN',
-};
 
 export default function VanPhongPage() {
   return (

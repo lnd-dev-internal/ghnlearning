@@ -1,9 +1,5 @@
 'use client';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'B2B – GHN L&D Portal',
-};
 
 export default function HangNangPage() {
   return (

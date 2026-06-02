@@ -1,9 +1,5 @@
 'use client';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'GHN Newbie - Chương trình Hội nhập',
-};
 
 export default function NewbiePage() {
   return (

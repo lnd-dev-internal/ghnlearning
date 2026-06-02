@@ -1,9 +1,5 @@
 'use client';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Nhân viên Kinh doanh Thực địa - GHN Learning',
-};
 
 export default function FieldSalePage() {
   return (

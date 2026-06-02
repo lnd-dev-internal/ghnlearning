@@ -1,9 +1,5 @@
 'use client';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Nhân viên Chăm sóc Khách hàng - GHN Learning',
-};
 
 export default function CskhPage() {
   return (

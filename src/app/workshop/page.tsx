@@ -1,9 +1,5 @@
 'use client';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Workshop - Leaders Talk - GHN Learning',
-};
 
 export default function WorkshopPage() {
   return (

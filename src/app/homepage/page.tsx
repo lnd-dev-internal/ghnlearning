@@ -1,10 +1,5 @@
 'use client';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'GHN Learning - Homepage',
-  description: 'Trang chủ GHN Learning & Development Portal',
-};
 
 export default function HomepagePage() {
   return (
