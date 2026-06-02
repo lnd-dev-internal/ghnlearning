@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Article, createArticle, updateArticle, getArticles } from '@/lib/articleStore';
+import { Article, createArticle, updateArticle } from '@/lib/articleStore';
 import RichTextEditor from './RichTextEditor';
 import styles from './ArticleEditor.module.css';
 
@@ -41,8 +41,6 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
   }, [onClose]);
 
   const buildData = (status: 'published' | 'draft'): Omit<Article, 'id'> => {
-    const articles = getArticles();
-    const maxOrder = articles.length > 0 ? Math.max(...articles.map(a => a.order)) : 0;
     return {
       title: title.trim(),
       category,
@@ -53,7 +51,7 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
       content,
       status,
       pinned: article?.pinned ?? false,
-      order: article?.order ?? maxOrder + 1,
+      order: article?.order ?? Date.now(),
     };
   };
 
@@ -64,9 +62,9 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
       const data = buildData(status);
       let saved: Article;
       if (isNew) {
-        saved = createArticle(data);
+        saved = await createArticle(data);
       } else {
-        updateArticle(article!.id, data);
+        await updateArticle(article!.id, data);
         saved = { ...article!, ...data };
       }
       onSave(saved);
