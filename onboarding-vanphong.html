@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trải nghiệm vận hành – GHN L&D Portal</title>
+<title>Onboarding Nhân viên mới – Khối Văn phòng | GHN L&D Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600&display=swap&family=Lexend:wght@400;500;700" rel="stylesheet">
@@ -33,6 +33,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F9F9FC;display:flex;fle
 .nav-item:hover .nav-menu,.nav-item:focus-within .nav-menu{display:block;}
 .nav-menu a{display:block;padding:8px 16px;font-size:14px;color:#475569;white-space:nowrap;text-decoration:none;}
 .nav-menu a:hover{background:#f0f8ff;color:#ff5200;}
+.nav-menu a.active{color:#ff5200;font-weight:600;}
 
 /* IFRAME WRAPPER */
 .iframe-wrapper{flex:1;width:100%;overflow:hidden;position:relative;}
@@ -76,13 +77,10 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F9F9FC;display:flex;fle
   .nav-text{font-family:'Lexend';font-weight:500;font-size:14px;line-height:20px;color:#475569;}
   .sub-nav{display:flex;flex-direction:column;align-items:flex-start;padding:12px 16px 12px 48px;gap:12px;width:100%;box-sizing:border-box;}
   .sub-nav-item{font-family:'Lexend';font-weight:400;font-size:14px;line-height:20px;color:#475569;text-decoration:none;display:block;}
+  .sub-nav-item.active{color:#FF5200;font-weight:700;}
 
   .iframe-wrapper{flex:1;}
 }
-footer{min-height:164px;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-top:1px solid #e2e8f0;padding:28px 32px;}
-.footer-title{margin:0 0 14px;color:#0f172a;font-family:Montserrat,sans-serif;font-size:18px;font-weight:700;line-height:28px;}
-.footer-info{margin:0;color:#64748b;font-size:12px;line-height:16px;}
-.footer-right{color:#64748b;font-size:12px;line-height:16px;}
 </style>
 </head>
 <body>
@@ -95,15 +93,15 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
             <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
             <div class="nav-text">Trang chủ</div>
         </a>
-        <a href="vanphong.html" class="nav-item-m">
-            <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 2.8l7 7v7h-4v-6H9v6H5v-7l7-7z"/></svg></div>
-            <div class="nav-text">Khối Văn phòng</div>
+        <a href="vanphong.html" class="nav-item-m active">
+            <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#FF5200"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 2.8l7 7v7h-4v-6H9v6H5v-7l7-7z"/></svg></div>
+            <div class="nav-text" style="color:#FF5200;font-weight:600;">Khối Văn phòng</div>
         </a>
         <div class="sub-nav">
-            <a href="onboarding-vanphong.html" class="sub-nav-item">Onboarding Nh&#226;n vi&#234;n m&#7899;i</a>
-            <a href="newbie.html" class="sub-nav-item">Ch&#432;&#417;ng tr&#236;nh H&#7897;i nh&#7853;p</a>
-            <a href="cskh.html" class="sub-nav-item">Nh&#226;n vi&#234;n Ch&#259;m s&#243;c Kh&#225;ch h&#224;ng</a>
-            <a href="fieldsale.html" class="sub-nav-item">Nh&#226;n vi&#234;n Field Sale</a>
+            <a href="onboarding-vanphong.html" class="sub-nav-item active">Onboarding Nhân viên mới</a>
+            <a href="newbie.html" class="sub-nav-item">Chương trình Hội nhập</a>
+            <a href="cskh.html" class="sub-nav-item">Nhân viên Chăm sóc Khách hàng</a>
+            <a href="fieldsale.html" class="sub-nav-item">Nhân viên Field Sale</a>
         </div>
         <a href="index.html" class="nav-item-m">
             <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
@@ -126,9 +124,9 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
             <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg></div>
             <div class="nav-text">Leaders Talk</div>
         </a>
-        <a href="trai-nghiem-van-hanh.html" class="nav-item-m active">
-            <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#FF5200"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-            <div class="nav-text" style="color:#FF5200;font-weight:700;">Trải nghiệm vận hành</div>
+        <a href="trai-nghiem-van-hanh.html" class="nav-item-m" style="margin-top:4px;">
+            <div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+            <div class="nav-text">Trải nghiệm vận hành</div>
         </a>
     </div>
 </aside>
@@ -148,12 +146,12 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
     <div class="nav-links">
         <a class="nav-link" href="homepage.html">Trang chủ</a>
         <div class="nav-item">
-            <a class="nav-link nav-trigger" href="vanphong.html">
+            <a class="nav-link nav-trigger active" href="vanphong.html">
                 <span>Khối Văn Phòng</span>
                 <svg class="nav-caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <div class="nav-menu">
-                <a href="onboarding-vanphong.html">Onboarding Nh&#226;n vi&#234;n m&#7899;i</a>
+                <a href="onboarding-vanphong.html" class="active">Onboarding Nhân viên mới</a>
                 <a href="newbie.html">Chương trình Hội nhập</a>
                 <a href="cskh.html">Nhân viên CSKH</a>
                 <a href="fieldsale.html">Nhân viên Field Sale</a>
@@ -181,7 +179,7 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
             </div>
         </div>
         <a class="nav-link" href="http://localhost:3000" target="_blank" rel="noopener noreferrer">Leaders Talk</a>
-        <a class="nav-link active" href="trai-nghiem-van-hanh.html">Trải nghiệm vận hành</a>
+        <a class="nav-link" href="trai-nghiem-van-hanh.html">Trải nghiệm vận hành</a>
     </div>
     <div class="search-box">
         <svg class="search-icon" viewBox="0 0 18 18" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="#5C4037" stroke-width="1.5"/><path d="M12 12L16 16" stroke="#5C4037" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -189,24 +187,15 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
     </div>
 </nav>
 
-<!-- TNVH CONTENT IN IFRAME -->
+<!-- ONBOARDING CONTENT IN IFRAME -->
 <div class="iframe-wrapper">
     <iframe
-        src="tnvh/index.html"
-        title="Trải nghiệm vận hành tại GHN"
+        src="onboarding-vp/index.html"
+        title="Onboarding Nhân viên mới – Khối Văn phòng GHN"
         allowfullscreen
         loading="lazy"
     ></iframe>
 </div>
-
-<footer>
-  <div>
-    <p class="footer-title">Phòng Học tập và Phát triển</p>
-    <p class="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM</p>
-    <p class="footer-info">📩 Email: lnd@scommerce.asia</p>
-  </div>
-  <div class="footer-right">© 2026 GHN Learning &amp; Development</div>
-</footer>
 
 <script>
     const menuBtn = document.getElementById('menuBtn');
