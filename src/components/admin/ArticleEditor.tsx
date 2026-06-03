@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Article, createArticle, updateArticle } from '@/lib/articleStore';
+import { supabase } from '@/lib/supabase';
 import RichTextEditor from './RichTextEditor';
 import styles from './ArticleEditor.module.css';
 
@@ -32,6 +33,9 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
   const [content, setContent] = useState(article?.content ?? '');
   const [saving, setSaving] = useState(false);
   const [previewError, setPreviewError] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Close on Escape
   useEffect(() => {
@@ -71,6 +75,70 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Kiểm tra loại file
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Chỉ chấp nhận file ảnh (JPG, PNG, WebP, GIF...)');
+      return;
+    }
+    // Giới hạn 5MB
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('Ảnh quá lớn, vui lòng chọn ảnh dưới 5MB');
+      return;
+    }
+
+    setUploading(true);
+    setUploadError('');
+    try {
+      const ext = file.name.split('.').pop();
+      const fileName = `covers/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+      const { error: upErr } = await supabase.storage
+        .from('article-covers')
+        .upload(fileName, file, { upsert: false });
+
+      if (upErr) throw upErr;
+
+      const { data: urlData } = supabase.storage
+        .from('article-covers')
+        .getPublicUrl(fileName);
+
+      setCoverImage(urlData.publicUrl);
+      setPreviewError(false);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setUploadError(`Lỗi upload: ${msg}`);
+    } finally {
+      setUploading(false);
+      // Reset file input để có thể chọn lại cùng file
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleRemoveImage = async () => {
+    // Nếu là ảnh đã upload lên Supabase Storage → xóa file
+    const supabaseBase = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (supabaseBase && coverImage.startsWith(supabaseBase)) {
+      try {
+        // Lấy path sau "/object/public/article-covers/"
+        const marker = '/object/public/article-covers/';
+        const idx = coverImage.indexOf(marker);
+        if (idx !== -1) {
+          const filePath = coverImage.slice(idx + marker.length);
+          await supabase.storage.from('article-covers').remove([filePath]);
+        }
+      } catch {
+        // Bỏ qua lỗi xóa file — vẫn xóa khỏi form
+      }
+    }
+    setCoverImage('');
+    setPreviewError(false);
+    setUploadError('');
   };
 
   return (
@@ -154,25 +222,97 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
           {/* Cover Image */}
           <div className={styles.field}>
             <label className={styles.label}>ẢNH BÌA</label>
-            <input
-              className={styles.input}
-              value={coverImage}
-              onChange={e => { setCoverImage(e.target.value); setPreviewError(false); }}
-              placeholder="https://... hoặc /ten-anh.jpg"
-            />
-            <p className={styles.helpText}>Nhập URL ảnh hoặc đường dẫn tương đối (ví dụ: /cover.png)</p>
+
+            {/* Upload row: nút tải lên + ô URL */}
+            <div className={styles.coverRow}>
+              <input
+                className={styles.input}
+                value={coverImage}
+                onChange={e => { setCoverImage(e.target.value); setPreviewError(false); setUploadError(''); }}
+                placeholder="https://... hoặc /ten-anh.jpg"
+                style={{ flex: 1 }}
+              />
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleUpload}
+              />
+              <button
+                type="button"
+                className={styles.uploadBtn}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                title="Tải ảnh từ máy tính"
+              >
+                {uploading ? (
+                  <span className={styles.uploadSpinner} />
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                )}
+                {uploading ? 'Đang tải...' : 'Tải ảnh lên'}
+              </button>
+            </div>
+
+            <p className={styles.helpText}>Tải ảnh từ máy tính hoặc nhập URL ảnh (tối đa 5MB)</p>
+
+            {/* Upload error */}
+            {uploadError && (
+              <p className={styles.previewError}>⚠ {uploadError}</p>
+            )}
+
+            {/* Preview + nút xóa */}
             {coverImage && !previewError && (
-              <div className={styles.imagePreview}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={coverImage}
-                  alt="Xem trước ảnh bìa"
-                  onError={() => setPreviewError(true)}
-                />
+              <div className={styles.previewWrap}>
+                <div className={styles.imagePreview}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={coverImage}
+                    alt="Xem trước ảnh bìa"
+                    onError={() => setPreviewError(true)}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className={styles.removeBtn}
+                  onClick={handleRemoveImage}
+                  title="Xóa ảnh"
+                  aria-label="Xóa ảnh bìa"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path d="M10 11v6M14 11v6"/>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                  </svg>
+                  Xóa ảnh
+                </button>
               </div>
             )}
             {previewError && (
-              <p className={styles.previewError}>⚠ Không thể tải ảnh từ URL này</p>
+              <div className={styles.previewWrap}>
+                <p className={styles.previewError}>⚠ Không thể tải ảnh từ URL này</p>
+                <button
+                  type="button"
+                  className={styles.removeBtn}
+                  onClick={handleRemoveImage}
+                  title="Xóa ảnh"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path d="M10 11v6M14 11v6"/>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                  </svg>
+                  Xóa ảnh
+                </button>
+              </div>
             )}
           </div>
 

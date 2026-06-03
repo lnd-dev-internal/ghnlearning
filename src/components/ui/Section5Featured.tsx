@@ -111,7 +111,6 @@ export default function Section5Featured() {
   const allArticles = useArticles();
   const [modalOpen, setModalOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
 
   // Lấy bài được ghim đầu tiên (published)
   const pinnedArticle = allArticles
@@ -122,27 +121,19 @@ export default function Section5Featured() {
   const cta = pinnedArticle ? extractCta(pinnedArticle.content) : null;
 
   useEffect(() => {
-    gsap.fromTo(cardRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1, y: 0, duration: 1.0, ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
-        },
-      }
-    );
+    const section = sectionRef.current;
+    if (!section) return;
 
+    // Snap scroll khi cuộn vào section
     let isSnapping = false;
     ScrollTrigger.create({
-      trigger: sectionRef.current,
+      trigger: section,
       start: "top 55%",
       onEnter: () => {
         if (isSnapping) return;
         isSnapping = true;
         gsap.to(window, {
-          scrollTo: { y: sectionRef.current!, offsetY: 0 },
+          scrollTo: { y: section, offsetY: 0 },
           duration: 0.55,
           ease: "power3.inOut",
           onComplete: () => { isSnapping = false; },
@@ -192,7 +183,7 @@ export default function Section5Featured() {
         <div className={styles.container}>
 
           {/* Featured card */}
-          <div ref={cardRef} className={styles.card} id="featured-episode-card">
+          <div className={styles.card} id="featured-episode-card">
 
             {/* Top accent */}
             <div className={styles.cardTopAccent} aria-hidden="true" />

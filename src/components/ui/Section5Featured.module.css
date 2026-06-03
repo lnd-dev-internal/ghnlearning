@@ -92,10 +92,14 @@
   box-shadow:
     0 4px 40px rgba(255, 82, 0, 0.08),
     0 0 0 1px rgba(255,255,255,0.70) inset;
-  opacity: 0;   /* GSAP reveals */
   cursor: default;
   transition: box-shadow 300ms ease;
   position: relative;
+  animation: cardFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .card:hover {
   box-shadow:
