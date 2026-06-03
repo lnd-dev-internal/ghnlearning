@@ -28,6 +28,22 @@ const nextConfig: NextConfig = {
       { source: "/leaders-talk.html", destination: "/leaders-talk", permanent: true },
     ];
   },
+
+  // Rewrites cho các sub-pages chưa có Next.js route (serve HTML từ public/)
+  async rewrites() {
+    return [
+      { source: "/fieldsale-banhang", destination: "/fieldsale-banhang.html" },
+      { source: "/cskh-khieunai",     destination: "/cskh-khieunai.html"     },
+      { source: "/nvxl-lay",          destination: "/nvxl-lay.html"          },
+      { source: "/nvxl-tra",          destination: "/nvxl-tra.html"          },
+      { source: "/nvxl-luanchuyen",   destination: "/nvxl-luanchuyen.html"   },
+      { source: "/nvxl-khac",         destination: "/nvxl-khac.html"         },
+      { source: "/nvxl-kinhdoanh",    destination: "/nvxl-kinhdoanh.html"    },
+      { source: "/nvxl-botchat",      destination: "/nvxl-botchat.html"      },
+      { source: "/nvpttt-kinhdoanh",  destination: "/nvpttt-kinhdoanh.html"  },
+      { source: "/nvpttt-botchat",    destination: "/nvpttt-botchat.html"    },
+    ];
+  },
 };
 
 export default nextConfig;
