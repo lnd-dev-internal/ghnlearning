@@ -181,6 +181,7 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
             <label className={styles.label}>NỘI DUNG BÀI VIẾT</label>
             <RichTextEditor value={content} onChange={setContent} />
           </div>
+
         </div>
 
         {/* Footer */}

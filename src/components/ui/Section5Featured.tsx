@@ -5,68 +5,50 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useArticles } from "@/lib/articleStore";
+import type { Article } from "@/lib/articleStore";
 import styles from "./Section5Featured.module.css";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-/* ── Placeholder episode data ─────────────────────────────────────────── */
-const EPISODE = {
-  issue:   "SỐ 106",
-  badge:   "LEADERS TALK",
-  author:  "Nguyễn Thị Huỳnh Như",
-  title:   'Đằng sau làn sóng "Gõ Prompt Dạo": Khi AI không thể thay thế tư duy hệ thống của doanh nghiệp',
-  excerpt: 'Hầu hết nhân sự hiện nay đang đối thoại với Trí tuệ nhân tạo (AI) theo phương thức "giao tiếp tối giản". Tuy nhiên, cách tiếp cận này đang vô tình biến các mô hình ngôn ngữ lớn trở nên "rời rạc"...',
-  body: [
-    'Hầu hết nhân sự hiện nay đang đối thoại với Trí tuệ nhân tạo (AI) theo phương thức "giao tiếp tối giản": yêu cầu viết một email, tóm tắt một văn bản hay dịch một đoạn hội thoại. Tuy nhiên, cách tiếp cận mang tính bản năng này đang vô tình biến các mô hình ngôn ngữ lớn trở nên "rời rạc", đồng thời đẩy người dùng vào vòng lặp chỉnh sửa thủ công tốn thời gian.',
-    'Thực tế định hình một nghịch lý công nghệ: AI không thay thế tư duy của con người — nó chỉ khuếch đại những gì doanh nghiệp đã sở hữu. Sự kém hiệu quả trong vận hành không đến từ việc thiếu AI, mà đến từ việc thiếu một tư duy hệ thống đủ mạnh để điều phối AI.',
-    'Workshop lần này đặt ra một câu hỏi trọng tâm: Làm thế nào để xây dựng một "hệ sinh thái AI" thực sự phục vụ doanh nghiệp — thay vì chỉ là tập hợp rời rạc của các công cụ tự động hóa?',
-  ],
-  sections: [
-    {
-      heading: 'Trải nghiệm thực chiến: Giải quyết "bài toán thật"',
-      body:    'Điểm khác biệt của Workshop lần này nằm ở tính thực tiễn cao. Khán thính giả tham gia không chỉ dừng lại ở việc lắng nghe lý thuyết đơn thuần, mà trực tiếp mang theo các đầu việc lặp đi lặp lại hàng tuần của phòng ban mình lên lớp để phân tích và tối ưu.',
-      bullets: [
-        { bold: "Thiết lập bản đồ hybrid (Người và Máy):", text: " Vẽ sơ đồ quy trình, phân định rõ ràng các phân khúc tác vụ nào nên chuyển giao cho AI và những bước nào bắt buộc phải giữ lại yếu tố quản trị tối cao của con người." },
-        { bold: "Chuẩn hóa chuỗi tự động (Flow Automation):", text: " Kết nối các kỹ năng đơn lẻ thành một chuỗi vận hành tự động liên tục, giúp giải phóng áp lực thời gian cho nhân sự." },
-      ],
-      quote: '"Học quy hoạch hệ thống prompt một lần — Thụ hưởng mãi mãi."',
-    },
-    {
-      heading: "Công tác chuẩn bị trước giờ G",
-      body:    "Chương trình sẽ chính thức diễn ra vào cuối tuần này. Nhằm bảo đảm tính đồng bộ và chất lượng thực hành, Ban tổ chức khuyến nghị các thành viên tham gia hoàn thiện các bước chuẩn bị kỹ thuật trước khi tham gia.",
-      bullets: [
-        { bold: "Tải và cài đặt ứng dụng chuyên dụng Antigravity", text: " bằng email cá nhân." },
-        { bold: "Nghiên cứu kỹ lưỡng các tài liệu hướng dẫn", text: " đã được gửi kèm đến hộp thư hàng tuần." },
-        { bold: "Chuẩn bị máy tính cá nhân", text: " ở trạng thái sẵn sàng và sạc đầy năng lượng." },
-      ],
-    },
-  ],
-  event: {
-    time:     "10:00 – 12:00 | Ngày 29/05/2026 (Thứ Sáu)",
-    location: "Trực tiếp tại Learning Center hoặc Trực tuyến qua Google Meet",
-    speaker:  "Đinh Hồ Nho Thông",
-  },
-  ctaLabel: "Đăng ký ngay",
-  ctaUrl:   "https://docs.google.com/forms/d/e/1FAIpQLScPjDVT0jC-C4M92A9WTxwXXRVphKEsqRdKlIGUII__rbeljA/viewform?usp=dialog",
-};
+/* ── Parse CTA from article content HTML ─────────────────────────────────
+   Looks for the first <a> tag that has background:#FF5200 (CTA button style
+   inserted by the RichTextEditor toolbar). Returns { label, url } or null.
+──────────────────────────────────────────────────────────────────────────── */
+function extractCta(html: string): { label: string; url: string } | null {
+  if (!html) return null;
+  // We run this only client-side (no DOMParser on server)
+  if (typeof window === "undefined") return null;
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const anchors = doc.querySelectorAll("a");
+  for (const a of anchors) {
+    const bg = a.style.background || a.style.backgroundColor || "";
+    if (bg.toLowerCase().includes("ff5200") || bg.toLowerCase().includes("255, 82, 0")) {
+      const label = a.textContent?.trim() || "Đăng ký ngay";
+      const url = a.getAttribute("href") || "";
+      if (url) return { label, url };
+    }
+  }
+  return null;
+}
 
-/* ── Article Modal ────────────────────────────────────────────────────── */
-function ArticleModal({ onClose }: { onClose: () => void }) {
+/* ── Article Detail Modal ─────────────────────────────────────────────── */
+function ArticleModal({
+  article,
+  onClose,
+}: {
+  article: Article;
+  onClose: () => void;
+}) {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const panelRef   = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Mount animation
   useEffect(() => {
-    gsap.fromTo(overlayRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.25, ease: "power2.out" }
-    );
+    gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" });
     gsap.fromTo(panelRef.current,
       { y: 40, opacity: 0, scale: 0.97 },
-      { y: 0,  opacity: 1, scale: 1, duration: 0.40, ease: "power3.out" }
+      { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }
     );
-
-    // Lock body scroll
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
   }, []);
@@ -76,7 +58,6 @@ function ArticleModal({ onClose }: { onClose: () => void }) {
     gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, ease: "power2.in", onComplete: onClose });
   };
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
     window.addEventListener("keydown", handler);
@@ -87,12 +68,12 @@ function ArticleModal({ onClose }: { onClose: () => void }) {
     <div ref={overlayRef} className={styles.modalOverlay} onClick={handleClose} role="dialog" aria-modal="true" aria-label="Bài viết">
       <div ref={panelRef} className={styles.modalPanel} onClick={e => e.stopPropagation()}>
 
-        {/* Cover poster — close button is absolutely positioned over it */}
+        {/* Cover */}
         <div className={styles.modalCover}>
           <div className={styles.modalCoverBg}>
             <Image
-              src="/Wst5.png"
-              alt="Leaders Talk — Workshop cover"
+              src={article.coverImage || "/Wst5.png"}
+              alt={article.title}
               fill
               className={styles.modalCoverImg}
               quality={85}
@@ -100,60 +81,25 @@ function ArticleModal({ onClose }: { onClose: () => void }) {
             />
           </div>
           <div className={styles.modalCoverOverlay} />
-          {/* Close button — floats over the image top-right */}
           <button className={styles.modalClose} onClick={handleClose} aria-label="Đóng">✕</button>
         </div>
 
-        {/* Article body */}
+        {/* Article body — full content HTML (CTA button will show inside as part of content) */}
         <div className={styles.modalBody}>
-          {/* Meta */}
           <div className={styles.modalMeta}>
-            <span className={styles.modalBadge}>{EPISODE.badge}</span>
-            <span className={styles.modalAuthor}>{EPISODE.author}</span>
+            <span className={styles.modalBadge}>{article.category}</span>
+            <span className={styles.modalAuthor}>{article.author}</span>
           </div>
 
-          {/* Title */}
-          <h2 className={styles.modalTitle}>{EPISODE.title}</h2>
+          <h2 className={styles.modalTitle}>{article.title}</h2>
+          <p className={styles.modalLead}>{article.excerpt}</p>
 
-          {/* Intro paragraphs */}
-          {EPISODE.body.map((p, i) => (
-            <p key={i} className={i === 0 ? styles.modalLead : styles.modalParagraph}>{p}</p>
-          ))}
-
-          {/* Sections */}
-          {EPISODE.sections.map((sec, si) => (
-            <div key={si} className={styles.modalSection}>
-              <h3 className={styles.modalSectionHeading}>{sec.heading}</h3>
-              <p className={styles.modalParagraph}>{sec.body}</p>
-              {sec.bullets && (
-                <ul className={styles.modalList}>
-                  {sec.bullets.map((b, bi) => (
-                    <li key={bi}><strong>{b.bold}</strong>{b.text}</li>
-                  ))}
-                </ul>
-              )}
-              {sec.quote && (
-                <blockquote className={styles.modalQuote}>{sec.quote}</blockquote>
-              )}
-            </div>
-          ))}
-
-          {/* Event details */}
-          <div className={styles.modalEventBox}>
-            <h3 className={styles.modalEventTitle}>Thông tin chi tiết về sự kiện:</h3>
-            <p>🕙 <strong>Thời gian:</strong> {EPISODE.event.time}</p>
-            <p>📍 <strong>Địa điểm:</strong> {EPISODE.event.location}</p>
-            <p>🎤 <strong>Diễn giả:</strong> {EPISODE.event.speaker}</p>
-          </div>
-
-          {/* CTA */}
-          <a href={EPISODE.ctaUrl} className={styles.modalCta} id="modal-register-cta">
-            {EPISODE.ctaLabel}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"
-                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
+          {article.content && (
+            <div
+              className={styles.modalParagraph}
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -162,12 +108,20 @@ function ArticleModal({ onClose }: { onClose: () => void }) {
 
 /* ── Featured card ────────────────────────────────────────────────────── */
 export default function Section5Featured() {
+  const allArticles = useArticles();
   const [modalOpen, setModalOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const cardRef    = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Lấy bài được ghim đầu tiên (published)
+  const pinnedArticle = allArticles
+    .filter(a => a.pinned && a.status === "published")
+    .sort((a, b) => a.order - b.order)[0] ?? null;
+
+  // Extract CTA từ nội dung bài (nút CTA admin chèn bằng toolbar)
+  const cta = pinnedArticle ? extractCta(pinnedArticle.content) : null;
 
   useEffect(() => {
-    // Reveal card on scroll into view
     gsap.fromTo(cardRef.current,
       { opacity: 0, y: 50 },
       {
@@ -180,11 +134,10 @@ export default function Section5Featured() {
       }
     );
 
-    // Điểm neo (snap point): khi cuộn gần section-5 thì khóa vào nó
     let isSnapping = false;
     ScrollTrigger.create({
       trigger: sectionRef.current,
-      start: "top 55%",     // khi phần trên section-5 đi qua 55% viewport
+      start: "top 55%",
       onEnter: () => {
         if (isSnapping) return;
         isSnapping = true;
@@ -198,38 +151,41 @@ export default function Section5Featured() {
     });
   }, []);
 
+  // Chưa load xong hoặc không có bài ghim → ẩn section
+  if (allArticles.length === 0 || !pinnedArticle) return null;
+
   return (
     <>
       <section ref={sectionRef} id="section-5" className={styles.section} aria-label="Sự kiện nổi bật">
 
-        {/* ── Heading: direct child of section, NOT inside container ── */}
+        {/* Heading */}
         <div style={{
-          width: '100%',
-          maxWidth: '1140px',
+          width: "100%",
+          maxWidth: "1140px",
           fontFamily: "'Anton', sans-serif",
-          fontSize: 'clamp(2.4rem, 4.5vw, 4rem)',
-          fontWeight: '400',
-          color: '#3d3d3d',
-          letterSpacing: '0.03em',
+          fontSize: "clamp(2.4rem, 4.5vw, 4rem)",
+          fontWeight: "400",
+          color: "#3d3d3d",
+          letterSpacing: "0.03em",
           lineHeight: 1.1,
-          marginBottom: '1.5rem',
-          visibility: 'visible',
+          marginBottom: "1.5rem",
+          visibility: "visible",
           opacity: 1,
-          position: 'relative',
+          position: "relative",
           zIndex: 5,
-          textAlign: 'center',
+          textAlign: "center",
         }}>
-          Sự kiện{' '}
+          Sự kiện{" "}
           <span style={{
-            background: '#FF5200',
-            color: '#ffffff',
-            padding: '0.08em 0.28em 0.12em',
-            borderRadius: '6px',
-            display: 'inline-block',
-            lineHeight: '1.1',
-            verticalAlign: 'baseline',
-            position: 'relative',
-            top: '-0.03em',
+            background: "#FF5200",
+            color: "#ffffff",
+            padding: "0.08em 0.28em 0.12em",
+            borderRadius: "6px",
+            display: "inline-block",
+            lineHeight: "1.1",
+            verticalAlign: "baseline",
+            position: "relative",
+            top: "-0.03em",
           }}>nổi bật</span>
         </div>
 
@@ -238,15 +194,15 @@ export default function Section5Featured() {
           {/* Featured card */}
           <div ref={cardRef} className={styles.card} id="featured-episode-card">
 
-            {/* Top accent progress bar */}
+            {/* Top accent */}
             <div className={styles.cardTopAccent} aria-hidden="true" />
 
-            {/* Left: poster — clean, no overlay */}
+            {/* Left: poster */}
             <div className={styles.poster} aria-hidden="true">
               <div className={styles.posterBg}>
                 <Image
-                  src="/Wst5.png"
-                  alt="Leaders Talk Workshop"
+                  src={pinnedArticle.coverImage || "/Wst5.png"}
+                  alt={pinnedArticle.title}
                   fill
                   className={styles.posterImg}
                   quality={85}
@@ -258,66 +214,59 @@ export default function Section5Featured() {
 
             {/* Right: content */}
             <div className={styles.content}>
-              {/* Meta row: badge + reading time */}
+              {/* Meta */}
               <div className={styles.contentMeta}>
-                <span className={styles.badge}>{EPISODE.badge}</span>
-                <span className={styles.readTime}>⏱ 4 phút đọc</span>
+                <span className={styles.badge}>{pinnedArticle.category}</span>
+                <span className={styles.readTime}>⏱ {pinnedArticle.date}</span>
               </div>
 
-              <h2 className={styles.title}>{EPISODE.title}</h2>
-              <p className={styles.excerpt}>{EPISODE.excerpt}</p>
+              <h2 className={styles.title}>{pinnedArticle.title}</h2>
+              <p className={styles.excerpt}>{pinnedArticle.excerpt}</p>
 
-              {/* Divider */}
               <div className={styles.divider} aria-hidden="true" />
 
-              {/* Event badge */}
-              <div className={styles.eventBadge}>
-                <span className={styles.eventIcon}>📅</span>
-                <div className={styles.eventInfo}>
-                  <span className={styles.eventLabel}>Sự kiện diễn ra</span>
-                  <span className={styles.eventDate}>{EPISODE.event.time}</span>
-                </div>
-              </div>
+              <p className={styles.author}>— {pinnedArticle.author}</p>
 
-              <p className={styles.author}>— {EPISODE.author}</p>
+              {/* Buttons */}
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center", marginTop: "0.5rem" }}>
 
-              {/* Action buttons row */}
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', marginTop: '0.5rem' }}>
+                {/* "Đọc bài viết" — mở modal nội dung đầy đủ */}
                 <button
                   className={styles.readMore}
                   onClick={() => setModalOpen(true)}
                   id="featured-read-more"
-                  style={{ marginTop: 0, alignSelf: 'center' }}
+                  style={{ marginTop: 0, alignSelf: "center" }}
                 >
                   Đọc bài viết
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"
-                      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
 
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLScPjDVT0jC-C4M92A9WTxwXXRVphKEsqRdKlIGUII__rbeljA/viewform?usp=dialog"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  id="featured-register-cta"
-                  className={styles.registerBtn}
-                  style={{ alignSelf: 'center' }}
-                >
-                  Đăng ký ngay
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"
-                      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </a>
+                {/* CTA bên ngoài — lấy từ nút CTA admin chèn vào nội dung bài */}
+                {cta && (
+                  <a
+                    href={cta.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id="featured-register-cta"
+                    className={styles.registerBtn}
+                    style={{ alignSelf: "center" }}
+                  >
+                    {cta.label}
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Modal */}
-      {modalOpen && <ArticleModal onClose={() => setModalOpen(false)} />}
+      {/* Modal — toàn bộ nội dung bài (có cả nút CTA bên trong nếu admin chèn) */}
+      {modalOpen && <ArticleModal article={pinnedArticle} onClose={() => setModalOpen(false)} />}
     </>
   );
 }
