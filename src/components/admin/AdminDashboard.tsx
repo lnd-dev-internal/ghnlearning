@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import type { Article } from '@/lib/articleStore';
-import { useArticles, updateArticle, deleteArticle, createArticle } from '@/lib/articleStore';
+import { useArticles, updateArticle, deleteArticle } from '@/lib/articleStore';
 import ArticleEditor from './ArticleEditor';
 import styles from './AdminDashboard.module.css';
 
@@ -10,7 +10,7 @@ import styles from './AdminDashboard.module.css';
 export default function AdminDashboard() {
   const articles = useArticles();
   const [editTarget, setEditTarget] = useState<Article | null | undefined>(undefined);
-  const [saving, setSaving] = useState(false);
+
   // undefined = closed, null = new article, Article = editing
 
   const sorted = [...articles].sort((a, b) => {
@@ -31,18 +31,10 @@ export default function AdminDashboard() {
       await deleteArticle(a.id);
   };
 
-  const handleSave = async (article: Article) => {
-    setSaving(true);
-    try {
-      if (articles.find(a => a.id === article.id)) {
-        await updateArticle(article.id, article);
-      } else {
-        await createArticle(article);
-      }
-      setEditTarget(undefined);
-    } finally {
-      setSaving(false);
-    }
+  const handleSave = (_article: Article) => {
+    // ArticleEditor đã tự gọi createArticle/updateArticle rồi
+    // Chỉ cần đóng modal — realtime subscription sẽ tự refresh danh sách
+    setEditTarget(undefined);
   };
 
   return (
