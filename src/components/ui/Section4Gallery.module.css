@@ -1,0 +1,206 @@
+/*
+ * Section4Gallery — Film strip layout.
+ * 3 rows of cards, all tilted at the same angle (~−8°).
+ * Rows scroll continuously in alternating directions.
+ * Cards are tight together like actual film frames.
+ */
+
+/* ── Wrapper ── */
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* center headerBlock horizontally */
+  padding: 7vh 3.5rem 0;
+  overflow: hidden;
+  gap: 3rem;
+}
+
+/* ── Header block — centered ── */
+.headerBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* center heading + subtitle */
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 1140px;
+  opacity: 0;   /* GSAP reveals */
+  text-align: center;
+}
+
+.heading {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.45em;           /* even space between "Khoảnh khắc" and orange box */
+}
+
+/* "Khoảnh khắc" — dark gray */
+.headingGray {
+  color: #3d3d3d;
+}
+
+/* "đáng nhớ" wrapper with orange box animation */
+.headingHighlight {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Orange rectangle slides in from left, snug around text */
+.highlightBg {
+  position: absolute;
+  top: -0.06em;
+  bottom: -0.06em;
+  left:  -0.12em;        /* symmetric inward breathing room on left */
+  right: -0.12em;        /* symmetric breathing room on right */
+  background: #FF5200;
+  border-radius: 4px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: danhNhoBgSlide 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+  z-index: 0;
+}
+
+/* Text: starts gray, flips white when box lands */
+.highlightText {
+  position: relative;
+  z-index: 1;
+  color: #3d3d3d;
+  padding: 0 0.12em;     /* equal horizontal padding inside the box */
+  animation: danhNhoColorFlip 0s linear 0.82s forwards;
+}
+
+@keyframes danhNhoBgSlide {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes danhNhoColorFlip {
+  to { color: #ffffff; }
+}
+
+/* Subtitle — one line, centered */
+.subtext {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.88rem, 1.2vw, 1.0rem);
+  font-weight: 700;
+  line-height: 1.55;
+  color: rgba(61, 61, 61, 0.75);
+  text-align: center;
+  white-space: nowrap;   /* force single line */
+  max-width: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   FILM STRIP
+   The outer div clips; the inner div is the tilted band.
+   ═══════════════════════════════════════════════════════ */
+.filmOuter {
+  position: relative;
+  width: calc(100% + 7rem);   /* bleed past the left/right padding */
+  margin-left: -3.5rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+.filmInner {
+  position: absolute;
+  inset: -15% -8%;   /* overflow so rotation doesn't leave gaps */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  /* KEY: the whole strip tilts like a film reel */
+  transform: rotate(-4deg);
+}
+
+/* ── Each row ── */
+.filmRow {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;              /* tight gap = film frame look */
+  flex-shrink: 0;
+  /* Pauses on hover for any row (nice UX touch) */
+  user-select: none;
+}
+.filmRow:hover { animation-play-state: paused; }
+
+/* Continuous marquee animations */
+@keyframes scrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes scrollRight {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.rowLeft     { animation: scrollLeft  22s linear infinite; }
+.rowRight    { animation: scrollRight 28s linear infinite; }
+.rowLeftSlow { animation: scrollLeft  35s linear infinite; }
+
+/* ── Single film card ── */
+.filmCard {
+  flex-shrink: 0;
+  position: relative;
+  width: 280px;
+  aspect-ratio: 3 / 2;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(26, 18, 2, 0.08);
+  box-shadow:
+    0 2px 12px rgba(26, 18, 2, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.80);
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.filmCard:hover {
+  transform: scale(1.04) rotate(1deg);
+  box-shadow:
+    0 8px 30px rgba(255, 82, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  z-index: 10;
+}
+
+/* ── Real photo ── */
+.filmCardPhoto {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 350ms ease;
+}
+.filmCard:hover .filmCardPhoto {
+  transform: scale(1.06);
+}
+
+/* Subtle warm vignette overlay */
+.filmCardOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 120% at 50% 50%, transparent 50%, rgba(254,250,246,0.30) 100%),
+    linear-gradient(to bottom, transparent 55%, rgba(254,250,246,0.40) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Card label (bottom-left) ── */
+.filmCardLabel {
+  position: absolute;
+  bottom: 0.7rem;
+  left: 0.9rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.60rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26, 18, 2, 0.40);
+  z-index: 5;
+}
+
+/* Edge masks removed — film strip shows edge-to-edge */

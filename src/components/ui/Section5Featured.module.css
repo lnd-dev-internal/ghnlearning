@@ -1,0 +1,635 @@
+/*
+ * Section5Featured — Featured episode card + Article modal.
+ * Lives BELOW the scroll-root (normal document flow, no snap).
+ */
+
+/* ── Section wrapper ── */
+.section {
+  background: #F0EFEA;
+  padding: 8vh 3.5rem 10vh;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1140px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ── Section Heading: "Sự kiện nổi bật" — Anton ── */
+.sectionHeading {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.4rem, 4.5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: 0.03em;
+  color: #3d3d3d;           /* explicit fallback on the h2 itself */
+  display: flex;            /* block-level flex, not inline-flex */
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.4em;
+  width: 100%;              /* fill container so text doesn't clip */
+}
+.sectionHeadingGray {
+  color: #3d3d3d !important; /* forced — guard against any cascade */
+  white-space: nowrap;
+}
+.sectionHeadingHighlight {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;  /* align with "Sự kiện" text baseline */
+  flex-shrink: 0;
+}
+.sectionHeadingBg {
+  position: absolute;
+  top: -0.06em;
+  bottom: -0.06em;
+  left: 0.05em;
+  right: -0.10em;
+  background: #FF5200;
+  border-radius: 4px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: s5BgSlide 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  z-index: 0;
+}
+.sectionHeadingText {
+  position: relative;
+  z-index: 1;
+  color: #3d3d3d;
+  padding: 0 0.18em;
+  white-space: nowrap;
+  animation: s5ColorFlip 0s linear 0.62s forwards;
+}
+@keyframes s5BgSlide {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes s5ColorFlip {
+  to { color: #ffffff; }
+}
+
+/* Keep old label classes for compatibility (unused now) */
+.sectionLabel { display: none; }
+.labelDot { display: none; }
+
+
+/* ══════════════════════════════════════════════════════
+   FEATURED CARD
+   ══════════════════════════════════════════════════════ */
+.card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1.5px solid rgba(255, 82, 0, 0.14);
+  box-shadow:
+    0 4px 40px rgba(255, 82, 0, 0.08),
+    0 0 0 1px rgba(255,255,255,0.70) inset;
+  opacity: 0;   /* GSAP reveals */
+  cursor: default;
+  transition: box-shadow 300ms ease;
+  position: relative;
+}
+.card:hover {
+  box-shadow:
+    0 8px 60px rgba(255, 82, 0, 0.14),
+    0 0 0 1.5px rgba(255,82,0,0.18) inset;
+}
+
+/* ── Top accent animated bar ── */
+.cardTopAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg,
+    rgba(255,82,0,0) 0%,
+    rgba(255,82,0,0.9) 25%,
+    rgba(255,140,60,1.0) 50%,
+    rgba(255,82,0,0.9) 75%,
+    rgba(255,82,0,0) 100%
+  );
+  z-index: 10;
+  animation: accentShimmer 3s ease-in-out infinite;
+  transform-origin: left;
+}
+@keyframes accentShimmer {
+  0%   { opacity: 0.55; background-position: 0% 50%; }
+  50%  { opacity: 1.0;  background-position: 100% 50%; }
+  100% { opacity: 0.55; background-position: 0% 50%; }
+}
+
+/* ── Left: Poster ── */
+.poster {
+  position: relative;
+  min-height: 380px;
+  overflow: hidden;
+}
+.posterBg {
+  position: absolute;
+  inset: 0;
+}
+.posterImg {
+  object-fit: cover;
+  object-position: center;
+}
+/* posterBg::after removed — image shows in full original color */
+
+.posterContent {
+  position: absolute;
+  inset: 0;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 3;
+}
+.posterIssue {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: rgba(120, 190, 255, 0.50);
+  text-transform: uppercase;
+}
+.posterTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.75);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 30px rgba(60,140,255,0.35),
+    0 0 80px rgba(30,100,255,0.15);
+}
+.posterSteps {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.posterStep {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.8rem;
+  color: rgba(100, 170, 255, 0.40);
+  letter-spacing: 0.05em;
+}
+
+/* ── Right: Content ── */
+.content {
+  background: rgba(255, 255, 255, 0.96);
+  padding: 2.8rem 2.8rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  justify-content: center;
+}
+
+.contentMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.badge {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #fff;
+  background: #FF5200;
+  padding: 0.28rem 0.75rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.readTime {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.70rem;
+  color: rgba(26, 18, 2, 0.40);
+  letter-spacing: 0.04em;
+}
+
+/* ── Topic tags ── */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.tag {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: rgba(255, 82, 0, 0.80);
+  background: rgba(255, 82, 0, 0.07);
+  border: 1px solid rgba(255, 82, 0, 0.18);
+  border-radius: 100px;
+  padding: 0.22rem 0.70rem;
+  letter-spacing: 0.02em;
+  transition: background 180ms, border-color 180ms;
+}
+.tag:hover {
+  background: rgba(255, 82, 0, 0.14);
+  border-color: rgba(255, 82, 0, 0.35);
+}
+
+/* ── Divider ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 82, 0, 0.22) 30%,
+    rgba(255, 82, 0, 0.30) 50%,
+    rgba(255, 82, 0, 0.22) 70%,
+    transparent
+  );
+  margin: 0.2rem 0;
+}
+
+/* ── Event badge ── */
+.eventBadge {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(255, 82, 0, 0.07);
+  border: 1px solid rgba(255, 82, 0, 0.16);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+}
+.eventIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+.eventInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.eventLabel {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 82, 0, 0.70);
+}
+.eventDate {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(26, 18, 2, 0.80);
+  line-height: 1.4;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  font-weight: 400;
+  color: #1A1202;
+  line-height: 1.25;
+  letter-spacing: 0.03em;
+}
+
+.excerpt {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  line-height: 1.75;
+  color: rgba(26, 18, 2, 0.52);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.author {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: rgba(26, 18, 2, 0.38);
+}
+
+.readMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.72rem 1.6rem;
+  background: #FF5200;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 220ms, transform 220ms, box-shadow 220ms;
+  align-self: flex-start;
+  box-shadow: 0 4px 18px rgba(255,82,0,0.28);
+}
+.readMore:hover {
+  background: #E84800;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(255,82,0,0.42);
+}
+.readMore:active { transform: translateY(0); }
+
+/* Secondary outlined register button */
+.registerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1.6rem;
+  background: transparent;
+  color: #FF5200;
+  border: 2px solid #FF5200;
+  border-radius: 999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 220ms, color 220ms, transform 220ms, box-shadow 220ms;
+  align-self: flex-start;
+}
+.registerBtn:hover {
+  background: #FF5200;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,82,0,0.30);
+}
+.registerBtn:active { transform: translateY(0); }
+
+
+/* ══════════════════════════════════════════════════════
+   ARTICLE MODAL
+   ══════════════════════════════════════════════════════ */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 18, 2, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modalPanel {
+  position: relative;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(255, 82, 0, 0.12);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow:
+    0 24px 80px rgba(26, 18, 2, 0.20),
+    0 0 0 1px rgba(255,255,255,0.90) inset;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,82,0,0.20) transparent;
+}
+.modalPanel::-webkit-scrollbar { width: 3px; }
+.modalPanel::-webkit-scrollbar-thumb { background: rgba(255,82,0,0.20); border-radius: 4px; }
+
+/* Close button — absolute over the cover image, top-right corner */
+.modalClose {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.90);
+  font-size: 0.80rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 180ms, color 180ms;
+  z-index: 20;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.modalClose:hover { background: rgba(255, 82, 0, 0.85); color: #ffffff; border-color: transparent; }
+
+/* Cover image — relative so close button can overlay it */
+.modalCover {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.modalCoverBg {
+  position: absolute;
+  inset: 0;
+}
+.modalCoverImg {
+  object-fit: cover;
+  object-position: center top;
+}
+.modalCoverBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0,5,16,0.15) 0%, rgba(0,5,16,0.65) 100%),
+    radial-gradient(ellipse 70% 60% at 60% 40%, rgba(60,140,255,0.15) 0%, transparent 65%);
+  z-index: 2;
+}
+.modalCoverOverlay {
+  position: absolute;
+  inset: 0;
+  padding: 2rem;
+  display: flex;
+  align-items: flex-end;
+  z-index: 2;
+}
+.modalCoverText { display: flex; flex-direction: column; gap: 0.5rem; }
+.modalCoverIssue {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.60rem;
+  letter-spacing: 0.22em;
+  color: rgba(120,190,255,0.55);
+  text-transform: uppercase;
+}
+.modalCoverTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+  line-height: 1.2;
+  -webkit-text-stroke: 0.8px rgba(255,255,255,0.75);
+  paint-order: stroke fill;
+}
+.modalCoverSteps {
+  display: flex;
+  gap: 1.2rem;
+}
+.modalCoverSteps span {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.3rem;
+  color: rgba(100,170,255,0.45);
+}
+
+/* Body area */
+.modalBody {
+  padding: 2rem 2.2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modalMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.modalBadge {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.60rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #fff;
+  background: rgba(50,120,255,0.85);
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.modalAuthor {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  color: rgba(61, 61, 61, 0.55);
+  font-style: italic;
+}
+
+.modalTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-weight: 400;
+  color: #1A1202;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+
+.modalLead {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.80;
+  color: rgba(61, 61, 61, 0.80);
+  font-style: italic;
+}
+.modalParagraph {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.90rem;
+  line-height: 1.80;
+  color: rgba(61, 61, 61, 0.72);
+}
+
+/* Sections within modal */
+.modalSection { display: flex; flex-direction: column; gap: 0.75rem; }
+.modalSectionHeading {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.0rem;
+  color: #3d3d3d;
+  letter-spacing: 0.03em;
+}
+.modalList {
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.modalList li {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: rgba(61, 61, 61, 0.70);
+}
+.modalList li strong { color: #3d3d3d; }
+.modalQuote {
+  border-left: 2px solid rgba(255, 82, 0, 0.45);
+  padding-left: 1rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: rgba(61, 61, 61, 0.60);
+  line-height: 1.65;
+}
+
+/* Event box */
+.modalEventBox {
+  background: rgba(255, 82, 0, 0.06);
+  border: 1px solid rgba(255, 82, 0, 0.18);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.modalEventTitle {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.85rem;
+  color: #FF5200;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.3rem;
+}
+.modalEventBox p {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.82rem;
+  color: rgba(61, 61, 61, 0.75);
+  line-height: 1.6;
+}
+.modalEventBox p strong { color: #3d3d3d; }
+
+/* Modal CTA */
+.modalCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+  padding: 0.80rem 1.8rem;
+  background: #FF5200;
+  color: #fff;
+  border-radius: 999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.90rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  align-self: flex-start;
+  box-shadow: 0 4px 18px rgba(255,82,0,0.30);
+  transition: background 220ms, transform 220ms, box-shadow 220ms;
+}
+.modalCta:hover {
+  background: #E84800;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(255,82,0,0.45);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .card { grid-template-columns: 1fr; }
+  .poster { min-height: 240px; }
+  .section { padding: 6vh 1.5rem 8vh; }
+  .content { padding: 2rem 1.5rem; }
+  .modalOverlay { padding: 1rem; }
+  .modalBody { padding: 1.5rem 1.4rem 2rem; }
+}
