@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhân viên Xử lý - Quy trình khác - GHN Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;max-width:100%;min-height:1080px}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#F9F9FC;color:#1A1C1E;overflow-x:auto}
+a{text-decoration:none;color:inherit}
+.navbar{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 32px;width:100%;height:64px;background:#fff;border-bottom:1px solid #E5F1F7;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;line-height:32px;color:#FF5200;letter-spacing:-.5px}
+.logo span{color:#009BE0}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-link{font-weight:500;font-size:16px;line-height:24px;color:#475569}
+.nav-link.active{font-weight:600;color:#FF5200;border-bottom:2px solid #FF5200;padding-bottom:4px}
+.search-box{display:flex;align-items:center;position:relative}
+.search-box input{width:221px;height:42px;background:#F3F3F6;border:1px solid #E5BEB2;border-radius:8px;padding:10px 16px 10px 40px;font-family:'Be Vietnam Pro',sans-serif;font-size:16px;color:#6B7280;outline:none}
+.search-box input::placeholder{color:#6B7280}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;opacity:.6}
+.page{display:flex;flex-direction:column;max-width:1920px;width:100%;min-height:1080px;margin:0 auto;background:#F9F9FC}
+.main-content{display:flex;align-items:flex-start;padding:32px 64px 0;gap:48px;max-width:1920px;width:100%;flex:1}
+.sidebar{width:280px;flex-shrink:0;background:#fff;border-right:1px solid #E5F1F7;padding:24px 0 80px;min-height:calc(100vh - 96px);display:flex;flex-direction:column;border-radius:12px 0 0 12px}
+.sidebar-header{display:flex;align-items:center;padding:0 24px;gap:16px;min-height:64px;margin-bottom:32px}
+.sidebar-avatar{width:48px;height:48px;background:#70BCFF;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-role{font-family:'Montserrat',sans-serif;font-weight:600;font-size:20px;line-height:28px;color:#1A1C1E}
+.sidebar-nav{display:flex;flex-direction:column;padding:0 16px;gap:4px}
+.sidebar-link{display:flex;align-items:center;padding:12px 16px;gap:12px;border-radius:8px;transition:background .15s}
+.sidebar-link:hover{background:rgba(229,241,247,.4)}
+.sidebar-link.active{background:rgba(229,241,247,.3);border-left:4px solid #FF5200;border-radius:0 8px 8px 0;padding-left:12px}
+.sidebar-link-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;line-height:1}
+.sidebar-link-text{font-size:14px;line-height:20px;color:#6B7280}
+.sidebar-link.active .sidebar-link-text{font-weight:600;color:#FF5200}
+.content{flex:1;display:flex;flex-direction:column;gap:24px;min-width:0}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.breadcrumb a{font-size:14px;line-height:20px;color:#6B7280}
+.breadcrumb a:hover{color:#FF5200}
+.breadcrumb-sep{font-size:14px;line-height:20px;color:#CBD5E1}
+.breadcrumb-cur{font-size:14px;line-height:20px;color:#FF5200;font-weight:600}
+.section-border{display:flex;justify-content:space-between;align-items:center;padding:0 0 8px;border-bottom:1px solid #E5BEB2;margin-bottom:8px}
+.section-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:32px;line-height:40px;letter-spacing:-.32px;color:#FF5200}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;width:100%}
+.card{background:#fff;border:1px solid #E5BEB2;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 8px 24px rgba(255,82,0,.12);transform:translateY(-2px)}
+.card-thumb{width:100%;height:200px;object-fit:contain;display:block;background:#f0f7ff;padding:0}
+.card-body{display:flex;flex-direction:column;justify-content:space-between;padding:16px;flex:1}
+.card-title{font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;line-height:28px;color:#1A1C1E;margin-bottom:8px}
+.card-meta{display:flex;align-items:center;gap:8px;margin-bottom:auto;color:#5C4037;font-size:12px;line-height:16px;font-weight:500}
+.clock{width:13px;height:13px;border:1.5px solid #5C4037;border-radius:50%;position:relative;flex:0 0 13px}
+.clock:before,.clock:after{content:"";position:absolute;background:#5C4037;left:50%;top:50%;transform-origin:bottom center}
+.clock:before{width:1.5px;height:4px;transform:translate(-50%,-90%)}
+.clock:after{width:4px;height:1.5px;transform:translate(-5%,-50%) rotate(45deg)}
+.card-btn{display:flex;justify-content:center;align-items:center;padding:8px 16px;width:100%;height:36px;background:#009BE0;border-radius:8px;border:none;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;font-weight:600;font-size:14px;line-height:20px;letter-spacing:.14px;color:#fff;margin-top:12px;transition:background .2s}
+.card-btn:hover{background:#0080C0}
+.footer-wrap{display:flex;flex-direction:column;align-items:flex-start;padding:24px 0 0;max-width:1920px;width:100%;margin:0 auto}
+.footer{display:flex;justify-content:space-between;align-items:center;padding:0 96px;max-width:1920px;width:100%;height:125px;background:#F8FAFC;border-top:1px solid #E2E8F0}
+.footer-brand{font-family:'Montserrat',sans-serif;font-weight:700;font-size:18px;color:#0F172A;margin-bottom:8px}
+.footer-info{font-size:12px;line-height:20px;color:#64748B}
+/* MOBILE */
+.mobile-header{display:none;}.drawer{display:none;}.drawer-overlay{display:none;}.mobile-role-info{display:none;}.mobile-chip-nav{display:none;}
+@media(max-width:960px){
+  html,body{min-width:0!important;width:100%!important;overflow-x:hidden!important;}
+  .navbar{display:none!important;}.sidebar{display:none!important;}
+  .mobile-header{display:flex!important;flex-direction:row;justify-content:space-between;align-items:center;padding:0 16px;width:100%;height:64px;background:#fff;border-bottom:1px solid #E5F1F7;box-shadow:0 4px 20px rgba(0,0,0,.04);position:fixed;top:0;left:0;z-index:100;box-sizing:border-box;}
+  .menu-btn{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:8px;width:34px;height:28px;border-radius:4px;background:none;border:none;cursor:pointer;}
+  .menu-icon{width:18px;height:12px;display:flex;flex-direction:column;justify-content:space-between;}
+  .menu-icon span{width:100%;height:2px;background:#64748B;}
+  .mobile-header .logo{font-family:'Lexend',sans-serif;font-weight:700;font-size:18px;line-height:28px;color:#FF5200;text-decoration:none;}
+  .search-btn{display:flex;align-items:center;justify-content:center;padding:8px;width:40px;height:40px;background:none;border:none;}
+  .drawer-overlay{display:block;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:101;opacity:0;visibility:hidden;transition:opacity .3s;}
+  .drawer-overlay.open{opacity:1;visibility:visible;}
+  .drawer{display:flex!important;box-sizing:border-box;flex-direction:column;position:fixed;width:280px;height:100vh;left:-280px;top:0;background:#fff;border-right:1px solid #E5F1F7;z-index:102;transition:left .3s;overflow-y:auto;padding:16px 0;}
+  .drawer.open{left:0;box-shadow:0 20px 25px -5px rgba(0,0,0,.1);}
+  .nav{width:100%;display:flex;flex-direction:column;}
+  .nav-item{display:flex;flex-direction:row;align-items:center;padding:12px 16px;gap:12px;width:100%;height:44px;text-decoration:none;box-sizing:border-box;}
+  .nav-item.active{background:rgba(255,247,237,.5);border-right:2px solid #FF5200;}
+  .nav-item.active .nav-text{color:#FF5200;}
+  .nav-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
+  .nav-text{font-family:'Lexend',sans-serif;font-weight:500;font-size:14px;line-height:20px;color:#475569;}
+  .sub-nav{display:flex;flex-direction:column;padding:12px 16px 12px 48px;gap:12px;width:100%;box-sizing:border-box;}
+  .sub-nav-item{font-family:'Lexend',sans-serif;font-weight:400;font-size:14px;line-height:20px;color:#475569;text-decoration:none;display:block;}
+  .page{width:100%!important;min-width:0!important;}
+  .main-content{width:100%!important;padding:64px 0 40px!important;gap:0!important;flex-direction:column!important;}
+  .mobile-role-info{display:flex!important;flex-direction:column;align-items:flex-start;padding:24px 16px;width:100%;background:#fff;border-bottom:1px solid #E5E7EB;}
+  .role-container{display:flex;flex-direction:row;align-items:center;}
+  .role-avatar{width:48px;height:48px;background:#004B77;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .role-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:18px;line-height:28px;color:#1E293B;margin-left:16px;}
+  .mobile-chip-nav{display:flex!important;align-items:center;padding:8px 16px;width:100%;background:#fff;border-bottom:1px solid #E5E7EB;overflow-x:auto;white-space:nowrap;scrollbar-width:none;}
+  .mobile-chip-nav::-webkit-scrollbar{display:none;}
+  .chip{display:inline-flex;align-items:center;justify-content:center;padding:8px 16px;height:32px;border-radius:9999px;background:#F1F5F9;font-family:'Be Vietnam Pro',sans-serif;font-weight:500;font-size:12px;color:#475569;text-decoration:none;white-space:nowrap;margin-right:8px;}
+  .chip.active{background:rgba(241,90,36,.1);font-weight:700;color:#F15A24;}
+  .content{width:100%!important;padding:0 16px 24px!important;}
+  .breadcrumb{display:none!important;}
+  .section-border{padding:24px 0 0!important;border-bottom:none!important;}
+  .section-title{font-size:18px!important;line-height:28px!important;color:#F37021!important;letter-spacing:0!important;}
+  .card-grid{grid-template-columns:1fr!important;gap:16px!important;}
+  .card-thumb{height:180px!important;}
+  .footer-wrap{width:100%!important;padding:16px 24px!important;margin-top:40px!important;border-top:1px solid #EBEEF0!important;background:#fff!important;}
+  .footer{width:100%!important;height:auto!important;flex-direction:column!important;align-items:flex-start!important;padding:24px 0!important;gap:16px!important;background:transparent!important;border-top:none!important;}
+  .footer > div:first-child{display:flex;flex-direction:column;gap:8px;border-top:1px solid #F1F5F9;padding-top:24px;width:100%;}
+  .footer-brand{font-size:14px!important;}
+  .footer-info{font-size:11px!important;line-height:16px!important;}
+  .footer h3{font-size:14px!important;margin-bottom:0!important;}
+  .footer p{font-size:11px!important;line-height:16px!important;}
+}
+
+.nav-item{position:relative;display:flex;align-items:center;}.nav-trigger{display:flex;align-items:center;gap:4px;}.nav-caret{width:10px;height:10px;transition:transform .2s;}.nav-item:hover .nav-caret,.nav-item:focus-within .nav-caret{transform:rotate(180deg);}.nav-menu{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #e5f1f7;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.1);padding:8px 0;min-width:200px;z-index:200;}.nav-item:hover .nav-menu,.nav-item:focus-within .nav-menu{display:block;}.nav-menu a{display:block;padding:8px 16px;font-size:14px;color:#475569;white-space:nowrap;text-decoration:none;}.nav-menu a:hover{background:#f0f8ff;color:#ff5200;}
+</style>
+</head>
+<body>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="nav">
+    <a href="homepage.html" class="nav-item"><div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div><div class="nav-text">Trang chủ</div></a>
+    <a href="vanphong.html" class="nav-item"><div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 2.8l7 7v7h-4v-6H9v6H5v-7l7-7z"/></svg></div><div class="nav-text">Khối Văn phòng</div></a>
+    <div class="sub-nav"><a href="newbie.html" class="sub-nav-item">Chương trình Hội nhập</a><a href="cskh.html" class="sub-nav-item">Nhân viên Chăm sóc Khách hàng</a><a href="fieldsale.html" class="sub-nav-item">Nhân viên Field Sale</a></div>
+    <a href="index.html" class="nav-item"><div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div><div class="nav-text">Khối Thị Trường</div></a>
+    <div class="sub-nav"><a href="am-kynang-chuyenmon.html" class="sub-nav-item">Quản lý Khu vực</a><a href="nvxl.html" class="sub-nav-item">Nhân viên Xử lý</a><a href="nvpttt.html" class="sub-nav-item">Nhân viên Phát triển Thị trường</a><a href="nvph.html" class="sub-nav-item">Nhân viên Phân hàng</a></div>
+    <a href="hangnang.html" class="nav-item active"><div class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg></div><div class="nav-text">B2B</div></a>
+    <div class="sub-nav" style="padding-bottom:20px;"><a href="freight.html" class="sub-nav-item" style="font-weight:700;color:#FF5200;">Nhân viên Xử lý</a></div>
+          <a href="http://localhost:3000" target="_blank" rel="noopener noreferrer" class="nav-item" data-done="1">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+            </div>
+            <div class="nav-text">Leaders Talk</div>
+        </a>
+        <a href="trai-nghiem-van-hanh.html" class="nav-item" style="margin-top:4px;">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#FF5200"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+            <div class="nav-text" style="color:#FF5200;font-weight:700;">Trải nghiệm vận hành</div>
+        </a>
+    </div>
+</aside>
+<header class="mobile-header">
+  <button class="menu-btn" id="menuBtn"><div class="menu-icon"><span></span><span></span><span></span></div></button>
+  <a href="homepage.html" class="logo">GHN <span>Learning</span></a>
+  <button class="search-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+</header>
+<nav class="navbar">
+    <a class="logo" href="homepage.html">GHN <span>Learning</span></a>
+    <div class="nav-links">
+      <a class="nav-link" href="homepage.html">Trang ch&#7911;</a>
+      <div class="nav-item">
+        <a class="nav-link nav-trigger" href="vanphong.html">
+          <span>Kh&#7889;i V&#259;n Ph&#242;ng</span>
+          <svg class="nav-caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="nav-menu">
+          <a href="newbie.html">Ch&#432;&#417;ng tr&#236;nh H&#7897;i nh&#7853;p</a>
+          <a href="cskh.html">Nh&#226;n vi&#234;n CSKH</a>
+          <a href="fieldsale.html">Nh&#226;n vi&#234;n Field Sale</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link nav-trigger" href="index.html">
+          <span>Kh&#7889;i Th&#7883; Tr&#432;&#7901;ng</span>
+          <svg class="nav-caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="nav-menu">
+          <a href="am-kynang-chuyenmon.html">Qu&#7843;n l&#253; Khu v&#7921;c</a>
+          <a href="nvxl.html">Nh&#226;n vi&#234;n X&#7917; l&#253;</a>
+          <a href="nvpttt.html">NVPTTT</a>
+          <a href="nvph.html">Nh&#226;n vi&#234;n Ph&#226;n h&#224;ng</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link nav-trigger active" href="hangnang.html">
+          <span>B2B</span>
+          <svg class="nav-caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="nav-menu">
+          <a href="freight.html">Nh&#226;n vi&#234;n X&#7917; l&#253;</a>
+        </div>
+      </div>
+      <a class="nav-link" href="http://localhost:3000" target="_blank" rel="noopener noreferrer">Leaders Talk</a>
+      <a class="nav-link" href="trai-nghiem-van-hanh.html">Trải nghiệm vận hành</a>
+    </div>
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 18 18" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="#5C4037" stroke-width="1.5"/><path d="M12 12L16 16" stroke="#5C4037" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInput" placeholder="T&#236;m ki&#7871;m kh&#243;a h&#7885;c..." onkeydown="if(event.key==='Enter')doSearch()">
+    </div>
+  </nav>
+
+<div class="page">
+  <div class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-avatar" aria-hidden="true">
+          <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.2 6.7C2.2 4.55 3.95 2.8 6.1 2.8H15.9C18.05 2.8 19.8 4.55 19.8 6.7V14.1C19.8 15.62 18.57 16.85 17.05 16.85H4.95C3.43 16.85 2.2 15.62 2.2 14.1V6.7Z" fill="#004B77"/>
+            <path d="M4.65 2.8V1.9C4.65 1.18 5.23 0.6 5.95 0.6H8.15C8.87 0.6 9.45 1.18 9.45 1.9V2.8" stroke="#004B77" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M12.55 2.8V1.9C12.55 1.18 13.13 0.6 13.85 0.6H16.05C16.77 0.6 17.35 1.18 17.35 1.9V2.8" stroke="#004B77" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M7 8.5V11.8" stroke="#70BCFF" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M11 7.6V11.8" stroke="#70BCFF" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M15 8.5V11.8" stroke="#70BCFF" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sidebar-role">Nhân viên<br>Xử lý</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="freight.html">
+          <span class="sidebar-link-icon">🗂️</span>
+          <span class="sidebar-link-text">Quy trình xử lý hàng giao</span>
+        </a>
+        <a class="sidebar-link" href="freight-lay.html">
+          <span class="sidebar-link-icon">🗂️</span>
+          <span class="sidebar-link-text">Quy trình xử lý hàng lấy</span>
+        </a>
+        <a class="sidebar-link" href="freight-tra.html">
+          <span class="sidebar-link-icon">🗂️</span>
+          <span class="sidebar-link-text">Quy trình xử lý hàng trả</span>
+        </a>
+        <a class="sidebar-link" href="freight-lc.html">
+          <span class="sidebar-link-icon">🗂️</span>
+          <span class="sidebar-link-text">Quy trình xử lý luân chuyển</span>
+        </a>
+        <a class="sidebar-link active" href="freight-khac.html">
+          <span class="sidebar-link-icon">🗂️</span>
+          <span class="sidebar-link-text">Quy trình khác</span>
+        </a>
+      </nav>
+    </aside>
+
+    <section class="content">
+      <div class="mobile-role-info"><div class="role-container"><div class="role-avatar"><svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.2 6.7C2.2 4.55 3.95 2.8 6.1 2.8H15.9C18.05 2.8 19.8 4.55 19.8 6.7V14.1C19.8 15.62 18.57 16.85 17.05 16.85H4.95C3.43 16.85 2.2 15.62 2.2 14.1V6.7Z" fill="#70BCFF"/><path d="M4.65 2.8V1.9C4.65 1.18 5.23 0.6 5.95 0.6H8.15C8.87 0.6 9.45 1.18 9.45 1.9V2.8" stroke="#70BCFF" stroke-width="1.2" stroke-linecap="round"/><path d="M12.55 2.8V1.9C12.55 1.18 13.13 0.6 13.85 0.6H16.05C16.77 0.6 17.35 1.18 17.35 1.9V2.8" stroke="#70BCFF" stroke-width="1.2" stroke-linecap="round"/><path d="M7 8.5V11.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M11 7.6V11.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M15 8.5V11.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg></div><div class="role-title">NV Xử lý Hàng nặng</div></div></div>
+      <div class="mobile-chip-nav"><a href="freight.html" class="chip">Hàng giao</a><a href="freight-lay.html" class="chip">Hàng lấy</a><a href="freight-tra.html" class="chip">Hàng trả</a><a href="freight-lc.html" class="chip">Luân chuyển</a><a href="freight-khac.html" class="chip active">Khác</a></div>
+      <div class="breadcrumb">
+        <a href="hangnang.html">B2B</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="freight.html">Nhân viên Xử lý</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-cur">Quy trình khác</span>
+      </div>
+
+      <div class="section-border">
+        <h1 class="section-title">Quy trình khác</h1>
+      </div>
+
+      <div class="card-grid">
+        <article class="card">
+          <img class="card-thumb" src="freight-ticket.png" alt="Xử lý Ticket">
+          <div class="card-body">
+            <div class="card-title">Xử lý Ticket</div>
+            <div class="card-meta"><span class="clock"></span><span>10 phút</span></div>
+            <a class="card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=692ff94c4a325027d16830cd" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-thumb" src="freight-qlrr.png" alt="Tạo phiếu Quản lý Rủi ro">
+          <div class="card-body">
+            <div class="card-title">Tạo phiếu Quản lý Rủi ro</div>
+            <div class="card-meta"><span class="clock"></span><span>10 phút</span></div>
+            <a class="card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=694182c3c459bc2375e0c3a1" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">Phòng Học tập và Phát triển</div>
+      <div class="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng TP. HCM</div>
+      <div class="footer-info">📩 Email: lnd@scommerce.asia</div>
+    </div>
+  </footer>
+</div>
+  <script src="course-search.js" defer></script>
+<script>
+  var menuBtn=document.getElementById('menuBtn'),drawer=document.getElementById('drawer'),drawerOverlay=document.getElementById('drawerOverlay');
+  if(menuBtn&&drawer&&drawerOverlay){function toggleDrawer(){drawer.classList.toggle('open');drawerOverlay.classList.toggle('open');}menuBtn.addEventListener('click',toggleDrawer);drawerOverlay.addEventListener('click',toggleDrawer);}
+</script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHN Learning - Homepage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,600;0,700;1,400&family=Lexend:wght@400;500;700&family=Montserrat:wght@400;600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#FF5200;
+  --orange-soft:#FF8A00;
+  --yellow:#FBB000;
+  --blue:#0099CC;
+  --blue-strong:#00AEEF;
+  --ink:#1E293B;
+  --muted:#64748B;
+  --line:#E2E8F0;
+  --panel:#F6FAFE;
+  --bg:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;max-width:100%;min-height:1080px}
+html{scroll-behavior:smooth}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#F9F9FC;color:var(--ink);overflow-x:auto}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.navbar{position:sticky;top:0;z-index:100;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 32px;width:100%;height:64px;background:#fff;border-bottom:1px solid #E5F1F7;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;line-height:32px;color:#FF5200;letter-spacing:-0.5px;text-decoration:none}
+.logo span{color:#009BE0}
+.nav-links{display:flex;flex-direction:row;align-items:center;gap:24px}
+.nav-item{position:relative;display:flex;align-items:center}
+.nav-link{font-family:'Be Vietnam Pro',sans-serif;font-weight:500;font-size:16px;line-height:24px;color:#475569;text-decoration:none;cursor:pointer}
+.nav-link:hover{color:#FF5200}
+.nav-link.active{font-weight:600;color:#FF5200;border-bottom:2px solid #FF5200;padding-bottom:4px}
+.nav-trigger{display:inline-flex;align-items:center;gap:6px}
+.nav-caret{width:10px;height:10px;flex:0 0 10px;transition:transform .2s ease}
+.nav-item:hover .nav-caret,.nav-item:focus-within .nav-caret{transform:rotate(180deg)}
+.nav-menu{position:absolute;top:calc(100% + 12px);left:0;min-width:292px;padding:10px 0;background:#fff;border:1px solid #E5F1F7;border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.12);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease,visibility .18s ease;z-index:120}
+.nav-item:hover .nav-menu,.nav-item:focus-within .nav-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-menu a{display:block;padding:14px 16px;font-family:'Be Vietnam Pro',sans-serif;font-weight:500;font-size:16px;line-height:24px;color:#475569;text-decoration:none;white-space:nowrap}
+.nav-menu a:hover{background:#F8FAFC;color:#FF5200}
+.search-box{display:flex;align-items:center;position:relative}
+.search-box input{width:221px;height:42px;background:#F3F3F6;border:1px solid #E5BEB2;border-radius:8px;padding:10px 16px 10px 40px;font-family:'Be Vietnam Pro',sans-serif;font-size:16px;color:#6B7280;outline:none}
+.search-box input::placeholder{color:#6B7280}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;opacity:.6}
+.hero{position:relative;overflow:hidden;max-width:1920px;width:100%;min-height:710px;margin:0 auto;background:linear-gradient(135deg,#A5E3FB 0%, #0099CC 100%)}
+.hero-grid{position:absolute;top:16px;left:590px;display:grid;grid-template-columns:repeat(10,104px);grid-auto-rows:104px;gap:54px 18px;opacity:.2;pointer-events:none}
+.hero-grid span{border:1px solid #fff;border-radius:8px}
+.hero-grid span:nth-child(4),.hero-grid span:nth-child(24){background:#fff;opacity:.36}
+.hero-inner{position:relative;z-index:1;max-width:1920px;width:100%;min-height:710px;margin:0 auto;padding:48px 48px;display:flex;align-items:center}
+.hero-copy{max-width:1820px;padding:0 0 0 26px;transform:translateY(-6px)}
+.badge{display:inline-flex;align-items:center;min-height:37px;padding:6px 22px;border-radius:9999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);font-size:14px;line-height:18px;letter-spacing:.3px;font-weight:600;color:#006699;text-transform:uppercase}
+.hero-title{max-width:1780px;margin-top:34px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:118px;line-height:.96;color:#fff;letter-spacing:-3px}
+.hero-title .accent{color:var(--orange)}
+.hero-desc{margin-top:30px;max-width:1560px;font-size:28px;line-height:1.5;font-weight:500;color:#006699}
+.section{max-width:1920px;width:100%;margin:0 auto;padding:96px 0;background:#fff}
+.section.alt{background:var(--panel)}
+.container{max-width:1920px;width:100%;margin:0 auto;padding:0 48px}
+.eyebrow{font-size:14px;line-height:18px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.section-title{font-family:'Montserrat',sans-serif;font-size:54px;line-height:58px;font-weight:800;color:var(--ink)}
+.section-title .highlight{color:var(--orange)}
+.manifesto{width:100%;margin-top:56px;background:var(--panel);border-radius:16px;padding:52px}
+.manifesto-inner{border-left:4px solid var(--blue);padding-left:32px}
+.manifesto p{font-size:30px;line-height:42px;font-style:italic;color:#334155}
+.manifesto em{font-style:italic;color:var(--blue);text-decoration:underline}
+.manifesto strong{color:var(--orange)}
+.feature-grid{width:100%;margin-top:48px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.feature-card{background:#fff;border:1px solid #F1F5F9;border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.feature-media{height:320px;overflow:hidden}
+.feature-media img{width:100%;height:100%;object-fit:cover}
+.feature-media.placeholder{background:var(--orange-soft);display:flex;align-items:center;justify-content:center}
+.feature-media.placeholder span{font-size:22px;line-height:30px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.feature-body{padding:40px;display:flex;flex-direction:column;gap:18px}
+.feature-kicker{font-size:24px;line-height:32px;font-weight:600;text-transform:uppercase;color:var(--blue)}
+.feature-lead{font-size:30px;line-height:42px;font-weight:600;color:var(--ink)}
+.feature-note{font-size:18px;line-height:30px;font-style:italic;color:var(--muted)}
+.program-head{width:100%;margin-bottom:56px}
+.program-rule{width:128px;height:4px;background:var(--blue);margin-top:8px}
+.program-grid{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.program-card{background:#fff;border:1px solid #F1F5F9;border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.program-top{height:108px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.program-top.orange{background:var(--orange-soft)}
+.program-top.yellow{background:var(--yellow)}
+.program-top.blue{background:var(--blue)}
+.program-top.cyan{background:var(--blue-strong)}
+.program-no{font-family:'Montserrat',sans-serif;font-size:42px;line-height:48px;font-weight:900;opacity:.4}
+.program-name{font-family:'Montserrat',sans-serif;font-size:22px;line-height:28px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-align:right}
+.program-body{padding:36px 40px 40px}
+.program-list{list-style:none;display:flex;flex-direction:column;gap:20px}
+.program-list li{position:relative;padding-left:22px;font-size:18px;line-height:30px;color:#475569}
+.program-list li::before{content:"\2022";position:absolute;left:0;top:0;color:var(--orange-soft)}
+.program-list strong{font-weight:600;color:var(--ink)}
+.footer-wrap{display:flex;flex-direction:column;align-items:flex-start;padding:24px 0 0;max-width:1920px;width:100%;margin:0 auto;margin-top:64px}
+.footer{display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 96px;max-width:1920px;width:100%;height:125px;background:#F8FAFC;border-top:1px solid #E2E8F0}
+.footer-brand{font-family:'Montserrat',sans-serif;font-weight:700;font-size:18px;color:#0F172A;margin-bottom:8px}
+.footer-info{font-family:'Be Vietnam Pro',sans-serif;font-size:12px;line-height:20px;color:#64748B}
+.footer-right{font-family:'Be Vietnam Pro',sans-serif;font-size:12px;color:#94A3B8}
+@media (max-width: 960px){
+  .navbar{height:auto;padding:16px 20px;flex-direction:column;align-items:flex-start}
+  .nav-links{align-items:flex-start;flex-wrap:wrap}
+  .nav-item{width:100%}
+  .nav-menu{position:static;min-width:0;width:100%;margin-top:8px;opacity:1;visibility:visible;transform:none;display:none}
+  .nav-item:hover .nav-menu,.nav-item:focus-within .nav-menu{display:block}
+  .search-box{width:100%}
+  .search-box input{width:100%}
+  .hero-grid{display:none}
+  .hero-inner{min-height:auto;padding:40px 20px 48px}
+  .hero-title{font-size:52px;line-height:52px}
+  .container{padding:0 20px}
+  .feature-grid,.program-grid{grid-template-columns:1fr}
+}
+@media (max-width: 640px){
+  .hero-title{font-size:40px;line-height:42px}
+  .hero-desc{font-size:15px;line-height:24px}
+  .section{padding:72px 0}
+  .manifesto{padding:24px}
+  .manifesto p{font-size:18px;line-height:28px}
+  .feature-body,.program-body{padding:24px}
+}
+/* MOBILE STYLES */
+@media (max-width: 960px) {
+
+.mobile-view-body {
+    margin: 0;
+    padding: 0;
+    width: 390px;
+    background: #F7FAFC;
+    font-family: 'Exo 2', sans-serif;
+    overflow-x: hidden;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 16px;
+    width: 390px;
+    height: 64px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E5F1F7;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    width: 34px;
+    height: 28px;
+    border-radius: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-icon {
+    width: 18px;
+    height: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.menu-icon span {
+    width: 100%;
+    height: 2px;
+    background: #64748B;
+}
+
+.logo {
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    color: #FF5200;
+    text-decoration: none;
+}
+
+.search-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+}
+
+/* Sidebar Drawer */
+.drawer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0px;
+    position: fixed;
+    width: 390px;
+    height: 100vh;
+    left: -390px;
+    top: 0px;
+    background: #FFFFFF;
+    border-right: 1px solid #E5F1F7;
+    z-index: 200;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+}
+
+.drawer.open {
+    left: 0;
+}
+
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 199;
+    display: none;
+}
+.drawer-overlay.open {
+    display: block;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0px;
+    width: 100%;
+}
+
+.nav-item {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+    width: 100%;
+    min-height: 44px;
+    text-decoration: none;
+}
+
+.nav-item.active {
+    background: rgba(255, 247, 237, 0.5);
+    border-right: 2px solid #FF5200;
+}
+
+.nav-item.active .nav-text {
+    color: #FF5200;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-text {
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #475569;
+}
+
+.sub-nav {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 12px 16px 12px 48px;
+    gap: 12px;
+    width: 100%;
+}
+
+.sub-nav-item {
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #475569;
+    text-decoration: none;
+}
+
+/* Main Content */
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 64px 0px 0px;
+    width: 390px;
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px 24px;
+    width: 390px;
+    box-sizing: border-box;
+    background: linear-gradient(135.97deg, #00A9E0 0%, #0077C8 100%);
+}
+
+.hero-overlay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.hero-overlay-text {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 15px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.hero-h1 {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.64px;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+    margin-top: 0;
+}
+.hero-h1 span {
+    color: #FF5200;
+}
+
+.hero-desc {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #FFFFFF;
+    opacity: 0.9;
+}
+
+.stats-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px 24px;
+    width: 390px;
+    background: #FFFFFF;
+    box-sizing: border-box;
+}
+
+.eyebrow {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(0, 155, 224, 0.878431);
+    margin-bottom: 4px;
+}
+
+.section-h2 {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 35px;
+    color: #181C1E;
+    margin-bottom: 24px;
+    margin-top: 0;
+}
+.section-h2 span {
+    color: #FF5200;
+}
+
+.mission-block {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    width: 342px;
+    background: #EBF8FF;
+    border-left: 4px solid #006493;
+    border-radius: 0px 8px 8px 0px;
+    margin-bottom: 24px;
+}
+
+.mission-text {
+    font-family: 'Exo 2';
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #181C1E;
+}
+.mission-text strong {
+    color: #FF5200;
+}
+.mission-text span.blue {
+    color: #009BE0;
+    text-decoration: underline;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 342px;
+}
+
+.card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 8px;
+    width: 342px;
+    background: #F1F4F6;
+    border: 1px solid #E5BEB2;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-icon {
+    width: 20px;
+    height: 20px;
+    fill: #009BE0;
+}
+
+.card-title {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    color: #009BE0;
+}
+
+.card-desc {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 24px;
+    color: #5C4037;
+}
+
+.core-values {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px 24px;
+    gap: 24px;
+    width: 390px;
+    background: #F7FAFC;
+    box-sizing: border-box;
+}
+
+.cv-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 0px 16px;
+    gap: 16px;
+    width: 342px;
+    background: #FFFFFF;
+    border: 1px solid #E5BEB2;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cv-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    width: 342px;
+    box-sizing: border-box;
+}
+
+.cv-header.c1 { background: #D24200; }
+.cv-header.c2 { background: #FDB022; }
+.cv-header.c3 { background: #006493; }
+.cv-header.c4 { background: #41B7FE; }
+
+.cv-no {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 32px;
+    color: #FFFFFF;
+    opacity: 0.5;
+}
+
+.cv-title {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.cv-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cv-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.cv-bullet {
+    margin-top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+.cv-bullet.c1 { background: #D24200; }
+.cv-bullet.c2 { background: #FDB022; }
+.cv-bullet.c3 { background: #006493; }
+.cv-bullet.c4 { background: #41B7FE; }
+
+.cv-text {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #181C1E;
+}
+.cv-text strong {
+    font-weight: 700;
+}
+
+.footer {
+    box-sizing: border-box;
+    width: 390px;
+    background: #FFFFFF;
+    border-top: 1px solid #EBEEF0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 24px;
+    gap: 12px;
+}
+
+.footer-title {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    color: #181C1E;
+}
+
+.footer-info {
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-copy {
+    width: 100%;
+    text-align: center;
+    font-family: 'Exo 2';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px;
+    color: #64748B;
+    opacity: 0.6;
+    margin-top: 16px;
+}
+
+  
+  html, body {
+    min-width: 0 !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    background: #F7FAFC;
+  }
+  
+  .desktop-view {
+    display: none !important;
+  }
+}
+
+@media (min-width: 961px) {
+  .mobile-view {
+    display: none !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="desktop-view">
+<header>
+  <nav class="navbar">
+    <a class="logo" href="homepage.html">GHN <span>Learning</span></a>
+    <div class="nav-links">
+      <a class="nav-link active" href="homepage.html">Trang ch&#7911;</a>
+      <div class="nav-item">
+        <a class="nav-link nav-trigger" href="vanphong.html">
+          <span>Kh&#7889;i V&#259;n Ph&#242;ng</span>
+          <svg class="nav-caret" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <div class="nav-menu">
+          <a href="onboarding-vanphong.html">Onboarding Nh&#226;n vi&#234;n m&#7899;i</a>
+          <a href="newbie.html">Ch&#432;&#417;ng tr&#236;nh H&#7897;i nh&#7853;p</a>
+          <a href="cskh.html">Nh&#226;n vi&#234;n Ch&#259;m s&#243;c Kh&#225;ch h&#224;ng</a>
+          <a href="fieldsale.html">Nh&#226;n vi&#234;n Field Sale</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link nav-trigger" href="index.html">
+          <span>Kh&#7889;i Th&#7883; Tr&#432;&#7901;ng</span>
+          <svg class="nav-caret" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <div class="nav-menu">
+          
+                    <a href="am-kynang-chuyenmon.html">Qu&#7843;n l&#253; Khu v&#7921;c</a>
+<a href="nvxl.html">Nh&#226;n vi&#234;n X&#7917; l&#253;</a>
+          <a href="nvpttt.html">NVPTTT</a>
+          <a href="nvph.html">Nh&#226;n vi&#234;n Ph&#226;n h&#224;ng</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link nav-trigger" href="hangnang.html">
+          <span>B2B</span>
+          <svg class="nav-caret" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <div class="nav-menu">
+          <a href="freight.html">Nh&#226;n vi&#234;n X&#7917; l&#253;</a>
+        </div>
+      </div>
+      <a class="nav-link" href="http://localhost:3000" target="_blank" rel="noopener noreferrer">Leaders Talk</a>
+      <a class="nav-link" href="trai-nghiem-van-hanh.html">Trải nghiệm vận hành</a>
+    </div>
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="7.5" cy="7.5" r="5.5" stroke="#5C4037" stroke-width="1.5"></circle>
+        <path d="M12 12L16 16" stroke="#5C4037" stroke-width="1.5" stroke-linecap="round"></path>
+      </svg>
+      <input type="text" placeholder="T&#236;m ki&#7871;m kh&#243;a h&#7885;c...">
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="background: none; min-height: auto; padding: 0;">
+    <img src="header-bg.jpg" alt="GHN Learning Banner" style="width: 100%; display: block; object-fit: cover;">
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Gi&#225; tr&#7883; c&#7889;t l&#245;i</div>
+      <h2 class="section-title">Tuy&#234;n Ng&#244;n &amp; <span class="highlight">S&#7913; M&#7879;nh</span></h2>
+
+      <div class="manifesto">
+        <div class="manifesto-inner">
+          <p>&ldquo;M&#7897;t t&#7893; ch&#7913;c ch&#7881; th&#7921;c s&#7921; <strong>ph&#225;t tri&#7875;n b&#7873;n v&#7919;ng</strong> khi m&#7895;i c&#225; nh&#226;n &#273;&#432;&#7907;c <strong>trao quy&#7873;n</strong>, &#273;&#432;&#7907;c <strong>ghi nh&#7853;n</strong> x&#7913;ng &#273;&#225;ng v&#224; c&#243; c&#417; h&#7897;i <strong>ph&#225;t tri&#7875;n</strong> t&#7889;i &#273;a ti&#7873;m n&#259;ng c&#7911;a m&#236;nh. &#272;&#226;y ch&#237;nh l&#224; n&#7873;n t&#7843;ng c&#7911;a nguy&#234;n t&#7855;c <em>High Performing Organization</em> m&#224; ch&#250;ng ta kh&#244;ng ng&#7915;ng ho&#224;n thi&#7879;n.&rdquo;</p>
+        </div>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-media">
+            <img src="home-sumenh.jpg" alt="Su menh GHN Learning">
+          </div>
+          <div class="feature-body">
+            <div class="feature-kicker">S&#7913; m&#7879;nh</div>
+            <div class="feature-lead">N&#226;ng cao n&#259;ng l&#7921;c &#273;&#7897;i ng&#361; &#273;&#7875; th&#237;ch &#7913;ng v&#7899;i s&#7921; thay &#273;&#7893;i c&#7911;a ng&#224;nh logistics v&#224; h&#7895; tr&#7907; m&#7903; r&#7897;ng th&#7883; tr&#432;&#7901;ng</div>
+            <div class="feature-note">L&amp;D &#273;&#243;ng vai tr&#242; ti&#234;n phong trong vi&#7879;c trang b&#7883; k&#7929; n&#259;ng m&#7899;i, t&#432; duy &#273;&#7893;i m&#7899;i cho nh&#226;n vi&#234;n &#273;&#7875; h&#7885; t&#7921; tin &#273;&#7889;i m&#7863;t v&#7899;i th&#225;ch th&#7913;c trong m&#244;i tr&#432;&#7901;ng logistics &#273;&#7847;y bi&#7871;n &#273;&#7897;ng.</div>
+          </div>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-media">
+            <img src="home-muctieu.jpg" alt="Muc tieu chien luoc GHN Learning">
+          </div>
+          <div class="feature-body">
+            <div class="feature-kicker">M&#7909;c ti&#234;u chi&#7871;n l&#432;&#7907;c</div>
+            <div class="feature-lead">X&#226;y d&#7921;ng v&#259;n h&#243;a h&#7885;c t&#7853;p li&#234;n t&#7909;c v&#224; t&#7889;i &#432;u h&#243;a hi&#7879;u su&#7845;t v&#7853;n h&#224;nh th&#244;ng qua &#273;&#224;o t&#7841;o chu&#7849;n quy tr&#236;nh</div>
+            <div class="feature-note">T&#7841;o ra m&#244;i tr&#432;&#7901;ng n&#417;i m&#7895;i nh&#226;n vi&#234;n &#273;&#7873;u c&#243; c&#417; h&#7897;i h&#7885;c h&#7887;i v&#224; ph&#225;t tri&#7875;n, t&#7915; &#273;&#243; n&#226;ng cao ch&#7845;t l&#432;&#7907;ng d&#7883;ch v&#7909; v&#224; hi&#7879;u qu&#7843; ho&#7841;t &#273;&#7897;ng c&#7911;a to&#224;n h&#7879; th&#7889;ng GHN.</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <div class="program-head">
+        <div class="eyebrow">D&#7921; &#225;n &amp; S&#7843;n ph&#7849;m</div>
+        <h2 class="section-title">4 Y&#7871;u t&#7889; c&#7889;t l&#245;i</h2>
+        <div class="program-rule"></div>
+      </div>
+
+      <div class="program-grid">
+        <article class="program-card">
+          <div class="program-top orange">
+            <div class="program-no">01</div>
+            <div class="program-name">AI Literacy</div>
+          </div>
+          <div class="program-body">
+            <ul class="program-list">
+              <li>T&#7893; ch&#7913;c ch&#432;&#417;ng tr&#236;nh, workshop &#273;&#224;o t&#7841;o lan t&#7887;a, khai m&#7903; - &#7913;ng d&#7909;ng AI tr&#7903; th&#224;nh "tr&#7907; l&#253; &#273;&#7855;c l&#7921;c" trong to&#224;n C&#244;ng ty.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="program-card">
+          <div class="program-top yellow">
+            <div class="program-no">02</div>
+            <div class="program-name">Automating Onboarding</div>
+          </div>
+          <div class="program-body">
+            <ul class="program-list">
+              <li><strong>H&#7879; th&#7889;ng T&#226;n Th&#7911;</strong> - l&#7897; tr&#236;nh b&#224;i h&#7885;c t&#7915;ng ng&#224;y, hi&#7875;n th&#7883; tr&#7921;c ti&#7871;p tr&#234;n App T&#224;i x&#7871; gi&#250;p NV m&#7899;i n&#7855;m v&#7919;ng quy tr&#236;nh.</li>
+              <li><strong>Tr&#7907; l&#253; V&#7853;n h&#224;nh 24/7</strong> (Botchat): cung c&#7845;p gi&#7843;i ph&#225;p t&#7913;c th&#7901;i cho c&#226;u h&#7887;i v&#7873; quy tr&#236;nh l&#224;m vi&#7879;c.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="program-card">
+          <div class="program-top blue">
+            <div class="program-no">03</div>
+            <div class="program-name">Technical Skills</div>
+          </div>
+          <div class="program-body">
+            <ul class="program-list">
+              <li>X&#226;y d&#7921;ng khung ch&#432;&#417;ng tr&#236;nh &#273;&#224;o t&#7841;o cho AM, h&#7879; th&#7889;ng h&#243;a ki&#7871;n th&#7913;c &amp; n&#226;ng cao n&#259;ng l&#7921;c v&#7853;n h&#224;nh.</li>
+              <li>Ch&#432;&#417;ng tr&#236;nh &#273;&#224;o t&#7841;o cho Field Sale, Telesale... g&#243;p ph&#7847;n t&#259;ng tr&#432;&#7903;ng doanh thu GHN.</li>
+              <li>C&#225;c ch&#432;&#417;ng tr&#236;nh on-demands theo y&#234;u c&#7847;u t&#7915; c&#225;c Kh&#7889;i/Ph&#242;ng ban.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="program-card">
+          <div class="program-top cyan">
+            <div class="program-no">04</div>
+            <div class="program-name">Managerial Skills</div>
+          </div>
+          <div class="program-body">
+            <ul class="program-list">
+              <li>L&#224;m m&#7899;i n&#259;ng l&#7921;c - N&#226;ng t&#7847;m k&#7929; n&#259;ng cho 100% Qu&#7843;n l&#253; m&#7895;i n&#259;m, nh&#432; Qu&#7843;n l&#253; Hi&#7879;u qu&#7843; c&#244;ng vi&#7879;c, Tuy&#7875;n d&#7909;ng - Gi&#7919; ch&#226;n Nh&#226;n vi&#234;n...</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="footer-wrap">
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">Phòng Học tập và Phát triển</div>
+      <div class="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM</div>
+      <div class="footer-info">📩 Email: lnd@scommerce.asia</div>
+    </div>
+    <div class="footer-right">© 2026 GHN Learning &amp; Development</div>
+  </footer>
+</div>
+</div>
+
+<!-- MOBILE VIEW -->
+<div class="mobile-view mobile-view-body">
+
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="drawer" id="drawer">
+    <div class="nav">
+        <a href="homepage.html" class="nav-item active">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </div>
+            <div class="nav-text">Trang chủ</div>
+        </a>
+        <a href="vanphong.html" class="nav-item">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 2.8l7 7v7h-4v-6H9v6H5v-7l7-7z"/></svg>
+            </div>
+            <div class="nav-text">Khối Văn phòng</div>
+        </a>
+        <div class="sub-nav">
+            <a href="newbie.html" class="sub-nav-item">Chương trình Hội nhập</a>
+            <a href="cskh.html" class="sub-nav-item">Nhân viên Chăm sóc Khách hàng</a>
+            <a href="fieldsale.html" class="sub-nav-item">Nhân viên Field Sale</a>
+        </div>
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            </div>
+            <div class="nav-text">Khối Thị Trường</div>
+        </a>
+        <div class="sub-nav">
+            
+            <a href="am-kynang-chuyenmon.html" class="sub-nav-item">Quản lý Khu vực</a><a href="nvxl.html" class="sub-nav-item">Nhân viên Xử lý</a>
+            <a href="nvpttt.html" class="sub-nav-item">Nhân viên Phát triển Thị trường</a>
+            <a href="nvph.html" class="sub-nav-item">Nhân viên Phân hàng</a>
+        </div>
+        <a href="hangnang.html" class="nav-item">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg>
+            </div>
+            <div class="nav-text">B2B</div>
+        </a>
+        <div class="sub-nav" style="padding-bottom: 20px;">
+            <a href="hangnang.html" class="sub-nav-item">Nhân viên Xử lý</a>
+        </div>
+            <a href="http://localhost:3000" target="_blank" rel="noopener noreferrer" class="nav-item" data-done="1">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#475569"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+            </div>
+            <div class="nav-text">Leaders Talk</div>
+        </a>
+        <a href="trai-nghiem-van-hanh.html" class="nav-item" style="margin-top:4px;">
+            <div class="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#FF5200"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+            <div class="nav-text" style="color:#FF5200;font-weight:700;">Trải nghiệm vận hành</div>
+        </a>
+    </div>
+</aside>
+
+<header class="header">
+    <button class="menu-btn" id="menuBtn">
+        <div class="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+    <a href="homepage.html" class="logo">GHN <span>Learning</span></a>
+    <button class="search-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+</header>
+
+<main class="main">
+    <section class="hero" style="background: none; min-height: auto; padding: 0;">
+        <img src="header-bg.jpg" alt="GHN Learning Banner" style="width: 100%; display: block; object-fit: cover;">
+    </section>
+
+    <section class="stats-grid">
+        <div class="eyebrow">Giá trị cốt lõi</div>
+        <h2 class="section-h2">Tuyên Ngôn & <span>Sứ Mệnh</span></h2>
+        
+        <div class="mission-block">
+            <div class="mission-text">
+                "Một tổ chức chỉ thực sự <strong>phát triển bền vững</strong> khi mỗi cá nhân được <strong>trao quyền</strong>, được <strong>ghi nhận</strong> xứng đáng và có cơ hội <strong>phát triển</strong> tối đa tiềm năng của mình. Đây chính là nền tảng của nguyên tắc <span class="blue">High Performing Organization</span> mà chúng ta không ngừng hoàn thiện."
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+                    <div class="card-title">Sứ Mệnh</div>
+                </div>
+                <div class="card-desc">Nâng cao năng lực đội ngũ để thích ứng với sự thay đổi của ngành logistics và hỗ trợ mở rộng thị trường L&D đóng vai trò tiên phong trong việc trang bị kỹ năng mới, tư duy đổi mới cho nhân viên để họ tự tin đối mặt với thách thức trong môi trường logistics đầy biến động.</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <svg class="card-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <div class="card-title">Mục Tiêu Chiến Lược</div>
+                </div>
+                <div class="card-desc">Xây dựng văn hóa học tập liên tục và tối ưu hóa hiệu suất vận hành thông qua đào tạo chuẩn quy trình Tạo ra môi trường nơi mỗi nhân viên đều có cơ hội học hỏi và phát triển, từ đó nâng cao chất lượng dịch vụ và hiệu quả hoạt động của toàn hệ thống GHN.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="core-values">
+        <div>
+            <div class="eyebrow">DỰ ÁN & SẢN PHẨM</div>
+            <h2 class="section-h2" style="font-size: 28px; margin-bottom: 0;">4 Yếu tố cốt lõi</h2>
+        </div>
+
+        <div class="cv-card">
+            <div class="cv-header c1">
+                <div class="cv-no">01</div>
+                <div class="cv-title">AI LITERACY</div>
+            </div>
+            <div class="cv-list">
+                <div class="cv-item">
+                    <div class="cv-bullet c1"></div>
+                    <div class="cv-text">Tổ chức chương trình, workshop đào tạo lan tỏa, khai mở ứng dụng AI trở thành <strong>"trợ lý đắc lực"</strong> trong toàn Công ty.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cv-card">
+            <div class="cv-header c2">
+                <div class="cv-no">02</div>
+                <div class="cv-title">AUTOMATING ONBOARDING</div>
+            </div>
+            <div class="cv-list">
+                <div class="cv-item">
+                    <div class="cv-bullet c2"></div>
+                    <div class="cv-text"><strong>Hệ thống Tân Thủ:</strong> Lộ trình bài học từng ngày trên App giúp nhân viên mới nắm vững quy trình.</div>
+                </div>
+                <div class="cv-item">
+                    <div class="cv-bullet c2"></div>
+                    <div class="cv-text"><strong>Trợ lý Vận hành 24/7:</strong> Cung cấp giải pháp tức thời cho mọi câu hỏi về vận hành.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cv-card">
+            <div class="cv-header c3">
+                <div class="cv-no">03</div>
+                <div class="cv-title">TECHNICAL SKILLS</div>
+            </div>
+            <div class="cv-list">
+                <div class="cv-item">
+                    <div class="cv-bullet c3"></div>
+                    <div class="cv-text">Xây dựng Khung chương trình đào tạo cho AM, hệ thống hóa kiến thức & nâng cao năng lực vận hành.</div>
+                </div>
+                <div class="cv-item">
+                    <div class="cv-bullet c3"></div>
+                    <div class="cv-text">Chương trình đào tạo cho Field Sale, Telesale... góp phần tăng trưởng doanh thu GHN.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cv-card">
+            <div class="cv-header c4">
+                <div class="cv-no">04</div>
+                <div class="cv-title">MANAGERIAL SKILLS</div>
+            </div>
+            <div class="cv-list">
+                <div class="cv-item">
+                    <div class="cv-bullet c4"></div>
+                    <div class="cv-text">Làm mới năng lực - Nâng tầm kỹ năng cho <strong>100% Quản lý mỗi năm</strong>, như Quản lý Hiệu quả công việc, Tuyển dụng - Giữ chân Nhân viên...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <div class="footer-title">Phòng Học tập và Phát triển</div>
+    <div class="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM</div>
+    <div class="footer-info">📩 Email: lnd@scommerce.asia</div>
+    <div class="footer-copy">© 2026 GHN Learning & Development</div>
+</footer>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+
+    function toggleDrawer() {
+        drawer.classList.toggle('open');
+        drawerOverlay.classList.toggle('open');
+    }
+
+    menuBtn.addEventListener('click', toggleDrawer);
+    drawerOverlay.addEventListener('click', toggleDrawer);
+</script>
+
+</div>
+  <script src="course-search.js" defer></script>
+</body>
+</html>

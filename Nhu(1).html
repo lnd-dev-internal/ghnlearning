@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHN Learning</title>
+<link rel="icon" type="image/png" href="logo-dark.png">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Be Vietnam Pro', sans-serif; background: #F9F9FC; color: #1E293B; }
+    
+    /* Header */
+    header { position: fixed; top: 0; width: 100%; height: 80px; display: flex; align-items: center; padding: 0 32px; border-bottom: 1px solid #E5F1F7; background: #fff; z-index: 1000; justify-content: space-between; }
+    .brand { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 24px; color: #FF5200; }
+    nav { display: flex; gap: 32px; margin-left: 48px; flex-grow: 1; }
+    .nav-link { font-weight: 500; color: #475569; text-decoration: none; }
+    .nav-link.active { color: #FF5200; border-bottom: 2px solid #FF5200; font-weight: 600; }
+    .search-box { position: relative; width: 221px; }
+    .search-box input { width: 100%; padding: 10px 16px 10px 40px; background: #F3F3F6; border: 1px solid #E5BEB2; border-radius: 8px; color: #6B7280; }
+
+    /* Hero */
+    .hero { width: 100%; height: 720px; background: url('assets/images/header-bg.jpg') center/cover; }
+
+    /* Main Content */
+    .main-wrapper { max-width: 1280px; margin: 0 auto; padding: 64px 24px; }
+    .section-label { font-weight: 600; font-size: 12px; color: #0099CC; letter-spacing: 2.4px; text-transform: uppercase; margin-bottom: 8px; }
+    h2 { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 36px; color: #1E293B; margin-bottom: 48px; }
+    
+    /* Manifesto */
+    .manifesto-card { background: #F6FAFE; padding: 40px; border-radius: 16px; border-left: 4px solid #0099CC; margin-bottom: 48px; }
+    .manifesto-text { font-style: italic; font-size: 20px; color: #334155; line-height: 28px; }
+
+    /* Feature Cards */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 96px; }
+    .card { border: 1px solid #F1F5F9; border-radius: 16px; overflow: hidden; background: #fff; }
+    .card-img { width: 100%; height: 252px; background: #ccc; display: flex; align-items: center; justify-content: center; }
+    .card-content { padding: 32px; }
+    .card-title { font-weight: 600; color: #0099CC; text-transform: uppercase; margin-bottom: 16px; }
+    .card-desc { font-weight: 600; margin-bottom: 16px; font-size: 18px; }
+    .card-sub { font-style: italic; color: #64748B; font-size: 14px; line-height: 23px; }
+
+    /* Programs */
+    .program-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .program-card { border: 1px solid #F1F5F9; border-radius: 16px; overflow: hidden; background: #fff; }
+    .program-header { padding: 24px; color: #fff; font-weight: 700; font-size: 16px; display: flex; gap: 20px; align-items: center; }
+    .program-list { padding: 32px; list-style: none; }
+    .program-list li { margin-bottom: 16px; color: #475569; font-size: 14px; display: flex; gap: 12px; }
+
+    /* Footer */
+    footer { background: #F8FAFC; border-top: 1px solid #E2E8F0; padding: 64px 66px; }
+    .footer-brand { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 18px; color: #0F172A; margin-bottom: 20px; }
+    .footer-info { font-size: 12px; color: #64748B; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">GHN Learning</div>
+      <nav>
+        <a href="./index.html" class="nav-link active">Trang chủ</a>
+        <a href="./index.html#office" class="nav-link">Khối Văn Phòng</a>
+        <a href="./index.html#market" class="nav-link">Khối Thị Trường</a>
+        <a href="./index.html#heavy" class="nav-link">B2B</a>
+        <a href="./leaders-talk.html" class="nav-link">Leaders Talk</a>
+      </nav>
+    <div class="search-box">
+      <input type="text" placeholder="🔍 Tìm kiếm khóa học.">
+    </div>
+  </header>
+
+  <div class="hero"></div>
+
+  <main class="main-wrapper">
+    <div class="section-label">GIÁ TRỊ CỐT LÕI</div>
+    <h2>Tuyên Ngôn & Sứ Mệnh</h2>
+    <div class="manifesto-card">
+      <p class="manifesto-text">"Một tổ chức chỉ thực sự phát triển bền vững khi mỗi cá nhân được trao quyền, được ghi nhận xứng đáng và có cơ hội phát triển tối đa tiềm năng của mình. Đây chính là nền tảng của nguyên tắc High Performing Organization mà chúng ta không ngừng hoàn thiện."</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="card">
+        <div class="card-img" style="background: url('assets/images/header-bg.jpg') center/cover;"></div>
+        <div class="card-content">
+          <div class="card-title">Sứ mệnh</div>
+          <div class="card-desc">Nâng cao năng lực đội ngũ để thích ứng với sự thay đổi của ngành logistics và hỗ trợ mở rộng thị trường</div>
+          <div class="card-sub">L&D đóng vai trò tiên phong trong việc trang bị kỹ năng mới, tư duy đổi mới cho nhân viên để họ tự tin đối mặt với thách thức trong môi trường logistics đầy biến động.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img" style="background: #FF8A00; color: rgba(255,255,255,0.6);">[ ẢNH ĐÀO TẠO ]</div>
+        <div class="card-content">
+          <div class="card-title">Mục tiêu chiến lược</div>
+          <div class="card-desc">Xây dựng văn hóa học tập liên tục và tối ưu hóa hiệu suất vận hành thông qua đào tạo chuẩn quy trình</div>
+          <div class="card-sub">Tạo ra môi trường nơi mỗi nhân viên đều có cơ hội học hỏi và phát triển, từ đó nâng cao chất lượng dịch vụ và hiệu quả hoạt động của toàn hệ thống GHN.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">DỰ ÁN & SẢN PHẨM</div>
+    <h2>4 Yếu tố cốt lõi</h2>
+    <div class="program-grid">
+      <div class="program-card">
+        <div class="program-header" style="background: #FF8A00;"><span>01</span> AI LITERACY</div>
+        <ul class="program-list"><li>• Tổ chức chương trình, workshop đào tạo lan tỏa, khai mở — ứng dụng AI trở thành "trợ lý đắc lực" trong toàn Công ty</li></ul>
+      </div>
+      <div class="program-card">
+        <div class="program-header" style="background: #FBB000;"><span>02</span> AUTOMATING ONBOARDING</div>
+        <ul class="program-list"><li>• Hệ thống Tân Thủ — lộ trình bài học từng ngày, hiển thị trực tiếp trên App Tài xế giúp NV mới nắm vững quy trình.</li><li>• Trợ lý Vận hành 24/7 (Botchat): cung cấp giải pháp tức thời cho câu hỏi về quy trình làm việc.</li></ul>
+      </div>
+      <div class="program-card">
+        <div class="program-header" style="background: #0099CC;"><span>03</span> TECHNICAL SKILLS</div>
+        <ul class="program-list"><li>• Xây dựng Khung chương trình đào tạo cho AM, hệ thống hóa kiến thức & nâng cao năng lực vận hành</li><li>• Chương trình đào tạo cho Field Sale, Telesale... góp phần tăng trưởng doanh thu GHN</li><li>• Các chương trình on-demands theo yêu cầu từ các Khối/ Phòng ban</li></ul>
+      </div>
+      <div class="program-card">
+        <div class="program-header" style="background: #00AEEF;"><span>04</span> MANAGERIAL SKILLS</div>
+        <ul class="program-list"><li>• Làm mới năng lực — Nâng tầm kỹ năng cho 100% Quản lý mỗi năm, như Quản lý Hiệu quả công việc, Tuyển dụng - Giữ chân Nhân viên...</li></ul>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-brand">Phòng Học tập và Phát triển</div>
+    <div class="footer-info">
+      <p>📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường, Diên Hồng TP. HCM</p>
+      <p>📩 Email: lnd@scommerce.asia</p>
+    </div>
+  </footer>
+</body>
+</html>

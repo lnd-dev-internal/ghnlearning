@@ -1,0 +1,911 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHN Learning</title>
+<link rel="icon" type="image/png" href="logo-dark.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff5200;
+      --blue: #009be0;
+      --blue-2: #006fad;
+      --yellow: #f8b200;
+      --ink: #281812;
+      --brown: #5c4037;
+      --cream: #fff8f6;
+      --soft-blue: #f0f8ff;
+      --soft-yellow: #fffbe6;
+      --line: #e5f1f7;
+      --slate: #475569;
+      --page: clamp(24px, 4vw, 64px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #f9f9fc;
+      color: var(--ink);
+      font-family: "Be Vietnam Pro", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* NAV */
+    .navbar{position:sticky;top:0;z-index:100;display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 32px;width:100%;height:64px;background:#fff;border-bottom:1px solid #E5F1F7;box-shadow:0 1px 2px rgba(0,0,0,.05);}
+    .logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;line-height:32px;color:#FF5200;letter-spacing:-0.5px;text-decoration:none;}
+    .logo span{color:#009BE0;}
+    .nav-links{display:flex;flex-direction:row;align-items:center;gap:24px;}
+    .nav-link{font-family:'Be Vietnam Pro',sans-serif;font-weight:500;font-size:16px;line-height:24px;color:#475569;text-decoration:none;cursor:pointer;}
+    .nav-link.active{font-weight:600;color:#FF5200;border-bottom:2px solid #FF5200;padding-bottom:4px;}
+    .search-box{display:flex;align-items:center;position:relative;}
+    .search-box input{width:221px;height:42px;background:#F3F3F6;border:1px solid #E5BEB2;border-radius:8px;padding:10px 16px 10px 40px;font-family:'Be Vietnam Pro',sans-serif;font-size:16px;color:#6B7280;outline:none;}
+    .search-box input::placeholder{color:#6B7280;}
+    .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;opacity:.6;}
+
+    .section {
+      padding: 72px var(--page);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+      gap: 54px;
+      min-height: 678px;
+      padding-top: 44px;
+      padding-bottom: 54px;
+      background: var(--cream);
+    }
+
+    .hero-copy {
+      align-self: center;
+      max-width: 570px;
+    }
+
+    .hot-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 8px 18px;
+      margin-bottom: 22px;
+      color: var(--orange);
+      background: rgba(255, 82, 0, 0.1);
+      border-radius: 9999px;
+      font-family: Montserrat, sans-serif;
+      font-size: 15px;
+      transform: rotate(-2deg);
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: Montserrat, sans-serif;
+    }
+
+    h1 {
+      max-width: 590px;
+      color: var(--ink);
+      font-size: clamp(40px, 4.4vw, 72px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -1.28px;
+      text-transform: uppercase;
+    }
+
+    h1 .accent {
+      color: var(--orange);
+    }
+
+    .hero-copy p {
+      max-width: 520px;
+      margin: 26px 0 32px;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 174px;
+      min-height: 60px;
+      padding: 16px 32px;
+      border-radius: 9999px;
+      font: 400 16px/24px Montserrat, sans-serif;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--orange);
+      box-shadow: 0 10px 15px -3px rgba(255, 82, 0, 0.2), 0 4px 6px -4px rgba(255, 82, 0, 0.2);
+    }
+
+    .hero-visual {
+      position: relative;
+      align-self: center;
+      min-height: 600px;
+    }
+
+    .speaker-hero {
+      height: 600px;
+      overflow: hidden;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.18), transparent 26%),
+        linear-gradient(135deg, #171717, #0e0e0e 54%, #1f1f1f);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+    }
+
+    .speaker-figure {
+      width: min(82%, 430px);
+      aspect-ratio: 0.72;
+      border-radius: 42% 42% 12px 12px;
+      background:
+        radial-gradient(circle at 50% 19%, #ffd7bf 0 11%, transparent 11.5%),
+        linear-gradient(90deg, transparent 0 30%, #214f86 30% 70%, transparent 70%),
+        linear-gradient(#111, #111);
+      position: relative;
+    }
+
+    .floating {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    .floating.top {
+      right: -14px;
+      top: -11px;
+      transform: rotate(3deg);
+    }
+
+    .floating.bottom {
+      left: -24px;
+      bottom: -46px;
+      transform: rotate(-2deg);
+    }
+
+    .floating-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      font-weight: 700;
+    }
+
+    .floating.top .floating-icon {
+      color: var(--orange);
+      background: rgba(255, 82, 0, 0.1);
+    }
+
+    .floating.bottom .floating-icon {
+      color: var(--blue);
+      background: rgba(0, 155, 224, 0.1);
+    }
+
+    .floating strong {
+      display: block;
+      color: #ff5201;
+      font-family: Montserrat, sans-serif;
+      font-size: 40px;
+      font-weight: 400;
+      line-height: 28px;
+      text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .floating span {
+      display: block;
+      margin-top: 6px;
+      color: var(--brown);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 16px;
+    }
+
+    .benefits {
+      background: var(--cream);
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin: 0 auto 64px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      color: var(--ink);
+      font-size: clamp(36px, 3.75vw, 48px);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .section-heading p {
+      margin: 16px auto 0;
+      color: var(--brown);
+      font-size: 20px;
+      line-height: 24px;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 32px;
+    }
+
+    .benefit-card {
+      min-height: 288px;
+      padding: 32px;
+      background: #fff;
+      border-top: 4px solid var(--card-color);
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-box {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 24px;
+      color: var(--card-color);
+      background: color-mix(in srgb, var(--card-color) 10%, white);
+      border-radius: 12px;
+      font-size: 24px;
+    }
+
+    .benefit-card h3 {
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+      margin-bottom: 12px;
+    }
+
+    .benefit-card p {
+      margin: 0;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .strip {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      min-height: 63px;
+      padding: 16px var(--page);
+      background: #00a0fa;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .strip a {
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      transition: color 160ms ease, border-color 160ms ease;
+    }
+
+    .strip a:hover {
+      color: #fff;
+    }
+
+    .strip a.active {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      border-bottom: 2px solid #fff;
+    }
+
+    .upcoming {
+      background: var(--soft-blue);
+    }
+
+    .section-title {
+      margin-bottom: 56px;
+    }
+
+    .section-title h2 {
+      color: var(--ink);
+      font-size: clamp(36px, 3.2vw, 48px);
+      font-weight: 700;
+      line-height: 58px;
+    }
+
+    .title-rule {
+      width: 227px;
+      height: 6px;
+      margin-top: 10px;
+      background: var(--blue);
+      border-radius: 9999px;
+    }
+
+    .event-card {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.54fr) minmax(0, 1fr);
+      min-height: 395px;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-image {
+      position: relative;
+      min-height: 280px;
+      background:
+        radial-gradient(circle, rgba(248, 178, 0, 0.28), transparent 30%),
+        linear-gradient(135deg, #171717, #2b2a1e);
+    }
+
+    .event-image::after {
+      content: "Workshop Event";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.5);
+      font: 700 18px/1.4 Montserrat, sans-serif;
+      letter-spacing: 1px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .event-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 40px;
+    }
+
+    .event-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .status {
+      color: var(--yellow);
+      background: rgba(248, 178, 0, 0.2);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .event-body h3 {
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 32px;
+    }
+
+    .event-body p {
+      max-width: 686px;
+      margin: 0;
+      color: var(--brown);
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .event-speaker {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 16px;
+    }
+
+    .avatar {
+      position: relative;
+      overflow: hidden;
+      width: 72px;
+      height: 72px;
+      border: 2px solid var(--blue);
+      border-radius: 9999px;
+      background:
+        radial-gradient(circle at 50% 50%, #1d1d1d 0 28%, #050505 29% 44%, #444 45% 46%, #111 47%);
+    }
+
+    .event-speaker strong {
+      display: block;
+      color: var(--ink);
+      font-size: 20px;
+      line-height: 24px;
+    }
+
+    .event-speaker span {
+      color: var(--brown);
+      font-size: 13px;
+      line-height: 16px;
+    }
+
+    .event-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 8px;
+    }
+
+    .btn-yellow {
+      min-height: 48px;
+      min-width: 174px;
+      color: #fff;
+      background: var(--yellow);
+      box-shadow: 0 10px 15px -3px rgba(248, 178, 0, 0.3), 0 4px 6px -4px rgba(248, 178, 0, 0.3);
+    }
+
+    footer {
+      min-height: 164px;
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      padding: 28px var(--page);
+    }
+
+    .footer-title {
+      margin: 0 0 14px;
+      color: #0f172a;
+      font-family: Montserrat, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 28px;
+    }
+
+    .footer-info {
+      margin: 0;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero { grid-template-columns: 1fr; }
+      .benefit-grid { grid-template-columns: repeat(2, 1fr); }
+      .event-card { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .benefit-grid { grid-template-columns: 1fr; }
+      .floating { position: static; margin-top: 16px; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar">
+    <a class="logo" href="homepage.html">GHN <span>Learning</span></a>
+    <div class="nav-links">
+      <a class="nav-link" href="homepage.html">Trang chÃ¡Â»Â§</a>
+      <a class="nav-link" href="vanphong.html">KhÃ¡Â»â€˜i VÃ„Æ’n PhÃƒÂ²ng</a>
+      <a class="nav-link" href="index.html">KhÃ¡Â»â€˜i ThÃ¡Â»â€¹ TrÃ†Â°Ã¡Â»Âng</a>
+      <a class="nav-link" href="hangnang.html">KhÃ¡Â»â€˜i HÃƒÂ ng NÃ¡ÂºÂ·ng</a>
+      <a class="nav-link active" href="http://localhost:3000" target="_blank" rel="noopener noreferrer">Leaders Talk</a>
+    </div>
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7.5" cy="7.5" r="5.5" stroke="#5C4037" stroke-width="1.5"/>
+        <path d="M12 12L16 16" stroke="#5C4037" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input type="text" placeholder="TÃƒÂ¬m kiÃ¡ÂºÂ¿m khÃƒÂ³a hÃ¡Â»Âc...">
+    </div>
+  </nav>
+
+  <main>
+    <!-- Ã¢â€â‚¬Ã¢â€â‚¬ Hero Section Ã¢â€â‚¬Ã¢â€â‚¬ -->
+    <section class="hero section" id="overview">
+        <div class="hero-copy">
+          <div class="hot-badge">SÃ¡Â»Â° KIÃ¡Â»â€ N HOT NHÃ¡ÂºÂ¤T 2026</div>
+          <h1>HÃ¡Â»Âc Ã„â€˜Ã¡Â»Æ’ hÃƒÂ nh<br><span class="accent">KhÃƒÂ´ng phÃ¡ÂºÂ£i Ã„â€˜Ã¡Â»Æ’ dÃƒÂ nh</span></h1>
+          <p>Leaders Talk khÃƒÂ´ng dÃƒÂ nh cho ngÃ†Â°Ã¡Â»Âi chÃ¡Â»â€° muÃ¡Â»â€˜n ngÃ¡Â»â€œi nghe cho hÃ¡ÂºÂ¿t giÃ¡Â»Â. Ã„ÂÃƒÂ¢y lÃƒÂ  nÃ†Â¡i nhÃ¡Â»Â¯ng Business Leader thÃ¡ÂºÂ­t bÃ†Â°Ã¡Â»â€ºc lÃƒÂªn sÃƒÂ¢n khÃ¡ÂºÂ¥u Ã„â€˜Ã¡Â»Æ’ bÃƒÂ³c tÃƒÂ¡ch cÃƒÂ¡c vÃ¡ÂºÂ¥n Ã„â€˜Ã¡Â»Â Ã„â€˜au Ã„â€˜Ã¡ÂºÂ§u nhÃ¡ÂºÂ¥t trong cÃƒÂ´ng viÃ¡Â»â€¡c: Ã„â€˜Ã¡Â»â„¢i ngÃ…Â© khÃƒÂ´ng chÃ¡ÂºÂ¡y, KPI khÃƒÂ´ng Ã„â€˜Ã¡ÂºÂ¡t, vÃ¡ÂºÂ­n hÃƒÂ nh rÃ¡Â»â€˜i, quyÃ¡ÂºÂ¿t Ã„â€˜Ã¡Â»â€¹nh sai vÃƒÂ  ÃƒÂ¡p lÃ¡Â»Â±c chÃ¡Â»â€œng ÃƒÂ¡p lÃ¡Â»Â±c. KhÃƒÂ´ng slide mÃƒÂ u mÃƒÂ¨, khÃƒÂ´ng lÃƒÂ½ thuyÃ¡ÂºÂ¿t sÃƒÂ¡ch vÃ¡Â»Å¸, chÃ¡Â»â€° cÃƒÂ³ cÃƒÂ¢u chuyÃ¡Â»â€¡n thÃ¡ÂºÂ­t, gÃƒÂ³c nhÃƒÂ¬n thÃ¡ÂºÂ­t vÃƒÂ  nhÃ¡Â»Â¯ng cuÃ¡Â»â„¢c tranh luÃ¡ÂºÂ­n thÃ¡ÂºÂ³ng Ã„â€˜Ã¡ÂºÂ¿n tÃ¡ÂºÂ­n gÃ¡Â»â€˜c vÃ¡ÂºÂ¥n Ã„â€˜Ã¡Â»Â. BÃ¡ÂºÂ¡n Ã„â€˜Ã¡ÂºÂ¿n khÃƒÂ´ng phÃ¡ÂºÂ£i Ã„â€˜Ã¡Â»Æ’ "hÃ¡Â»Âc thÃƒÂªm mÃ¡Â»â„¢t kiÃ¡ÂºÂ¿n thÃ¡Â»Â©c", mÃƒÂ  Ã„â€˜Ã¡Â»Æ’ mang vÃ¡Â»Â tÃ†Â° duy, giÃ¡ÂºÂ£i phÃƒÂ¡p vÃƒÂ  cÃƒÂ¢u trÃ¡ÂºÂ£ lÃ¡Â»Âi thÃ¡Â»Â±c chiÃ¡ÂºÂ¿n cho chÃƒÂ­nh bÃƒÂ i toÃƒÂ¡n mÃƒÂ¬nh Ã„â€˜ang mÃ¡ÂºÂ¯c kÃ¡ÂºÂ¹t.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#">Ã„ÂÃ„Æ’ng kÃƒÂ½ ngay</a>
+          </div>
+        </div>
+      <div class="hero-visual">
+        <div class="speaker-hero">
+          <div class="speaker-figure" aria-hidden="true"></div>
+        </div>
+        <div class="floating top">
+          <div class="floating-icon">Ã¢â„¢Å¸</div>
+          <div><strong>20+</strong><span>DiÃ¡Â»â€¦n giÃ¡ÂºÂ£</span></div>
+        </div>
+        <div class="floating bottom">
+          <div class="floating-icon">Ã¢Å“Âº</div>
+          <div><strong>500+</strong><span>HÃ¡Â»Âc viÃƒÂªn/Workshop</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ã¢â€â‚¬Ã¢â€â‚¬ Benefits Section Ã¢â€â‚¬Ã¢â€â‚¬ -->
+    <section class="section benefits" id="benefits">
+      <div class="section-heading">
+        <h2>BÃ¡ÂºÂ¡n sÃ¡ÂºÂ½ nhÃ¡ÂºÂ­n Ã„â€˜Ã†Â°Ã¡Â»Â£c gÃƒÂ¬?</h2>
+        <p>MÃ¡Â»â€”i workshop Ã„â€˜Ã¡Â»Âu Ã„â€˜Ã†Â°Ã¡Â»Â£c thiÃ¡ÂºÂ¿t kÃ¡ÂºÂ¿ Ã„â€˜Ã¡Â»Æ’ mang lÃ¡ÂºÂ¡i giÃƒÂ¡ trÃ¡Â»â€¹ thÃ¡Â»Â±c tÃ¡ÂºÂ¿ nhÃ¡ÂºÂ¥t cho cÃƒÂ´ng viÃ¡Â»â€¡c hÃƒÂ ng ngÃƒÂ y cÃ¡Â»Â§a bÃ¡ÂºÂ¡n.</p>
+      </div>
+      <div class="benefit-grid">
+        <article class="benefit-card" style="--card-color: #ff5200">
+          <div class="icon-box">Ã¢â„¢â„¢</div>
+          <h3>GÃƒÂ³c nhÃƒÂ¬n thÃ¡Â»Â±c chiÃ¡ÂºÂ¿n</h3>
+          <p>KhÃƒÂ´ng phÃ¡ÂºÂ£i lÃƒÂ½ thuyÃ¡ÂºÂ¿t. BÃ¡ÂºÂ¡n Ã„â€˜Ã†Â°Ã¡Â»Â£c nghe cÃƒÂ¡ch ngÃ†Â°Ã¡Â»Âi thÃ¡ÂºÂ­t Ã„â€˜ang xÃ¡Â»Â­ lÃƒÂ½ vÃ¡ÂºÂ¥n Ã„â€˜Ã¡Â»Â thÃ¡ÂºÂ­t Ã¢â‚¬â€œ thÃ¡Â»Â© bÃ¡ÂºÂ¡n cÃƒÂ³ thÃ¡Â»Æ’ Ã„â€˜em vÃ¡Â»Â ÃƒÂ¡p dÃ¡Â»Â¥ng ngay ngÃƒÂ y mai.</p>
+        </article>
+        <article class="benefit-card" style="--card-color: #009be0">
+          <div class="icon-box">Ã¢Å“Â£</div>
+          <h3>Ã„ÂÃƒÂ o sÃƒÂ¢u pain point</h3>
+          <p>NhÃ¡Â»Â¯ng vÃ¡ÂºÂ¥n Ã„â€˜Ã¡Â»Â "Ã„â€˜au nhÃ†Â°ng ÃƒÂ­t ai nÃƒÂ³i" sÃ¡ÂºÂ½ Ã„â€˜Ã†Â°Ã¡Â»Â£c mang lÃƒÂªn bÃƒÂ n: Ã„â€˜Ã¡Â»â„¢i ngÃ…Â©, KPI, vÃ¡ÂºÂ­n hÃƒÂ nh, ÃƒÂ¡p lÃ¡Â»Â±cÃ¢â‚¬Â¦ vÃƒÂ  mÃ¡Â»â€¢ xÃ¡ÂºÂ» Ã„â€˜Ã¡ÂºÂ¿n tÃ¡ÂºÂ­n gÃ¡Â»â€˜c.</p>
+        </article>
+        <article class="benefit-card" style="--card-color: #f8b200">
+          <div class="icon-box">Ã¢â„¢Â¢</div>
+          <h3>Tranh luÃ¡ÂºÂ­n trÃ¡Â»Â±c diÃ¡Â»â€¡n</h3>
+          <p>KhÃƒÂ´ng chÃ¡Â»â€° nghe Ã¢â‚¬â€œ bÃ¡ÂºÂ¡n Ã„â€˜Ã†Â°Ã¡Â»Â£c hÃ¡Â»Âi thÃ¡ÂºÂ³ng, phÃ¡ÂºÂ£n biÃ¡Â»â€¡n, challenge diÃ¡Â»â€¦n giÃ¡ÂºÂ£ Ã„â€˜Ã¡Â»Æ’ tÃƒÂ¬m ra gÃƒÂ³c nhÃƒÂ¬n phÃƒÂ¹ hÃ¡Â»Â£p nhÃ¡ÂºÂ¥t vÃ¡Â»â€ºi mÃƒÂ¬nh.</p>
+        </article>
+        <article class="benefit-card" style="--card-color: #006fad">
+          <div class="icon-box">Ã¢â€“Â£</div>
+          <h3>GiÃ¡ÂºÂ£i phÃƒÂ¡p thÃ¡Â»Â±c tÃ¡ÂºÂ¿</h3>
+          <p>RÃ¡Â»Âi buÃ¡Â»â€¢i khÃƒÂ´ng chÃ¡Â»â€° cÃƒÂ³ insight, mÃƒÂ  cÃƒÂ³ luÃƒÂ´n cÃƒÂ¡ch lÃƒÂ m cÃ¡Â»Â¥ thÃ¡Â»Æ’ Ã„â€˜Ã¡Â»Æ’ xÃ¡Â»Â­ lÃƒÂ½ bÃƒÂ i toÃƒÂ¡n bÃ¡ÂºÂ¡n Ã„â€˜ang mÃ¡ÂºÂ¯c kÃ¡ÂºÂ¹t.</p>
+        </article>
+      </div>
+    </section>
+
+        <!-- Ã¢â€â‚¬Ã¢â€â‚¬ Sub-tab Strip Ã¢â€â‚¬Ã¢â€â‚¬ -->
+    <nav class="strip" aria-label="Leaders Talk sections">
+      <a class="tab-link active" href="http://localhost:3000" target="_blank" rel="noopener noreferrer" data-target="tab-overview">TÃ¡Â»â€¢ng quan</a>
+      <a class="tab-link" href="workshop.html" data-target="tab-workshop">Workshop</a>
+      <a class="tab-link" href="dien-gia.html" data-target="tab-speakers">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£</a>
+    </nav>
+
+    <div id="tab-overview" class="tab-content" style="display: block;">
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ Upcoming Section Ã¢â€â‚¬Ã¢â€â‚¬ -->
+    <section class="section upcoming" id="upcoming">
+      <div class="section-title">
+        <h2>SÃ¡ÂºÂ¯p DiÃ¡Â»â€¦n Ra</h2>
+        <div class="title-rule"></div>
+      </div>
+      <article class="event-card">
+        <div class="event-image"></div>
+        <div class="event-body">
+          <div>
+            <div class="event-meta">
+              <span class="status">CÃƒÂ²n ÃƒÂ­t chÃ¡Â»â€”</span>
+              <span>Ã¢â€”Â· 14:00 - 16:00</span>
+            </div>
+            <h3>Leaders Talk #5: VIÃ¡ÂºÂ¾T PROMPT Ã„ÂÃƒÅ¡NG CÃƒÂCH VÃ¡Â»Å¡I CÃƒâ€NG THÃ¡Â»Â¨C CAO</h3>
+            <div class="event-speaker">
+              <div class="avatar"></div>
+              <div>
+                <strong>Ã„Âinh HÃ¡Â»â€œ Nho ThÃƒÂ´ng</strong>
+                <span>Senior AI Product Manager</span>
+              </div>
+            </div>
+          </div>
+          <div class="event-footer">
+            <a class="btn btn-yellow" href="#">Ã„ÂÃ„Æ’ng kÃƒÂ½ ngay</a>
+          </div>
+        </div>
+      </article>
+    </section>
+    </div>
+
+    <div id="tab-workshop" class="tab-content" style="display: none;">
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ Workshop List Ã¢â€â‚¬Ã¢â€â‚¬ -->
+    <section class="workshop-section">
+      <div class="workshop-container">
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">TASK MANAGEMENT x ANTIGRAVITY: CÃƒâ€NG NGHÃ¡Â»â€  DÃ¡ÂºÂªN DÃ¡ÂºÂ®T - HIÃ¡Â»â€ U SUÃ¡ÂºÂ¤T "BAY" CAO</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: LÃ†Â°Ã†Â¡ng DÃ…Â©ng NhÃƒÂ¢n</div>
+            <div class="card-date">16/04/2026</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">MÃƒÂY VÃ¡ÂºÂ¬N HÃƒâ‚¬NH, NGÃ†Â¯Ã¡Â»Å“I KIÃ¡ÂºÂ¾N TÃ¡ÂºÂ O: NÃƒâ€šNG TÃ¡ÂºÂ¦M CÃƒâ€NG NGHÃ¡Â»â€ , LÃƒâ‚¬M CHÃ¡Â»Â¦ AI</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: HoÃƒÂ ng Giang, Ã„ÂÃ¡Â»â€” Ã„ÂÃƒÂ¬nh ThÃ†Â°Ã†Â¡ng, PhÃ¡ÂºÂ¡m TÃ¡Â»Â« ThÃ¡Â»Â©</div>
+            <div class="card-date">20/03/2026</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">AI IN SHOW - PRODUCT IN FLOW</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: NguyÃ¡Â»â€¦n LÃƒÂ¢m HoÃƒÂ ng YÃƒÂªn</div>
+            <div class="card-date">31/01/2026</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">LEADERSHIP IN FLUX - LÃƒÆ’NH Ã„ÂÃ¡ÂºÂ O TRONG DÃƒâ€™NG CHÃ¡ÂºÂ¢Y BIÃ¡ÂºÂ¾N Ã„ÂÃ¡Â»ËœNG</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: ThÃ†Â¡m TrÃ¡ÂºÂ§n, PhÃ¡ÂºÂ¡m HoÃƒÂ ng Long, TrÃ¡ÂºÂ§n ThÃ¡ÂºÂ¿ Trung</div>
+            <div class="card-date">16/04/2026</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">HIÃ¡Â»â€ U QUÃ¡ÂºÂ¢ BÃ¡ÂºÂ¤T NGÃ¡Â»Å“ CÃƒâ„¢NG N8N</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: GiÃƒÂ¡p Ã„ÂÃ¡Â»Â©c ThÃ¡ÂºÂ¯ng</div>
+            <div class="card-date">19/11/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">Ã„ÂI GIÃ¡Â»Â®A RANH GIÃ¡Â»Å¡I - GIÃ¡Â»Â® VÃ¡ÂºÂ¸N NGHÃ„Â¨A TÃƒÅ’NH</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: NguyÃ¡Â»â€¦n Minh Trung</div>
+            <div class="card-date">01/10/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">GIÃ¡Â»Â® Ã„ÂÃ†Â¯Ã¡Â»Â¢C TÃƒâ€šM - MÃ¡Â»Å¡I VÃ†Â¯Ã†Â N Ã„ÂÃ†Â¯Ã¡Â»Â¢C TÃ¡ÂºÂ¦M</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: Nhi NguyÃ¡Â»â€¦n</div>
+            <div class="card-date">22/08/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">VIBE CODING CÃƒâ„¢NG GEMINI</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: LÃƒÂª Thanh BÃƒÂ­nh</div>
+            <div class="card-date">11/07/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">GÃ¡ÂºÂ¶P SÃ¡ÂºÂ¾P HUY: HÃ¡Â»Å½I Ã„ÂI - Ã„ÂÃ¡Â»ÂªNG CÃƒâ€œ SUY</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: Kim LÃƒÂª Huy</div>
+            <div class="card-date">26/06/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">LEVEL UP! - BÃ¡Â»Â¨T PHÃƒÂ HIÃ¡Â»â€ U SUÃ¡ÂºÂ¤T CÃƒÂ NHÃƒâ€šN & Ã„ÂÃ¡Â»ËœI NGÃ…Â¨ CÃƒâ„¢NG PHÃ†Â¯Ã†Â NG PHÃƒÂP 3UP</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: NguyÃ¡Â»â€¦n HoÃƒÂ ng Nam</div>
+            <div class="card-date">23/05/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">THÃƒâ€NG MINH CÃ¡ÂºÂ¢M XÃƒÅ¡C TRONG GIAO TIÃ¡ÂºÂ¾P - BIÃ¡ÂºÂ¾N TIÃƒÅ U CÃ¡Â»Â°C THÃƒâ‚¬NH TÃƒÂCH CÃ¡Â»Â°C</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: NgÃƒÂ¢n TrÃ¡ÂºÂ§n</div>
+            <div class="card-date">25/04/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">TOÃƒâ‚¬N DÃƒâ€šN AI: KHÃƒâ€NG XÃƒâ‚¬I AI - AI XÃƒâ‚¬I MÃƒÅ’NH</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: HoÃƒÂ ng Giang</div>
+            <div class="card-date">28/03/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">CHO VÃƒâ‚¬ NHÃ¡ÂºÂ¬N PHÃ¡ÂºÂ¢N HÃ¡Â»â€™I HIÃ¡Â»â€ U QUÃ¡ÂºÂ¢</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: Cao TuÃ¡ÂºÂ¥n Minh</div>
+            <div class="card-date">27/02/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+        <div class="workshop-card">
+          <div class="card-visual">Ã¢â€“Â¶</div>
+          <div class="card-content">
+            <div class="card-title">AI EMPOWERMENT: DÃ¡ÂºÂªN LÃ¡Â»ÂI TÃ†Â¯Ã†Â NG LAI - BÃ¡Â»Â¨T PHÃƒÂ THÃƒâ‚¬NH CÃƒâ€NG</div>
+            <div class="card-speaker">DiÃ¡Â»â€¦n giÃ¡ÂºÂ£: NguyÃ¡Â»â€¦n LÃƒÂ¢m HoÃƒÂ ng YÃƒÂªn</div>
+            <div class="card-date">17/01/2025</div>
+          </div>
+          <a href="#" class="btn-view"><span>Ã¢â€“Â¶</span> Xem lÃ¡ÂºÂ¡i</a>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <div id="tab-speakers" class="tab-content" style="display: none;">
+
+<!-- Ã¢â€â‚¬Ã¢â€â‚¬ Profile Modal Ã¢â€â‚¬Ã¢â€â‚¬ -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose" aria-label="Ã„ÂÃƒÂ³ng">Ã¢Å“â€¢</button>
+      <div class="modal-header">
+        <div class="modal-avatar-wrap">
+          <div class="modal-avatar" id="modalAvatar">LN</div>
+          <div class="modal-avatar-badge"></div>
+        </div>
+        <div class="modal-identity">
+          <h2 id="modalName">LÃ†Â°Ã†Â¡ng DÃ…Â©ng NhÃƒÂ¢n</h2>
+          <p id="modalRole">GiÃƒÂ¡m Ã„â€˜Ã¡Â»â€˜c Ã„ÂÃƒÂ o tÃ¡ÂºÂ¡o cÃ¡Â»Â§a HÃ¡Â»â€¡ thÃ¡Â»â€˜ng GiÃƒÂ¡o dÃ¡Â»Â¥c ATY</p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h3 class="modal-section-title">GiÃ¡Â»â€ºi thiÃ¡Â»â€¡u</h3>
+        <div class="modal-bio" id="modalBio"></div>
+      </div>
+    </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const links = document.querySelectorAll('.strip .tab-link');
+        const contents = document.querySelectorAll('.tab-content');
+
+        function activateTab(targetId) {
+          links.forEach(l => l.classList.remove('active'));
+          contents.forEach(c => c.style.display = 'none');
+          
+          const activeLink = document.querySelector(.strip .tab-link[data-target=" + targetId + "]);
+          if (activeLink) activeLink.classList.add('active');
+          
+          const targetContent = document.getElementById(targetId);
+          if (targetContent) targetContent.style.display = 'block';
+        }
+
+        // Determine active tab by current filename
+        const path = window.location.pathname;
+        if (path.includes('workshop.html')) {
+          activateTab('tab-workshop');
+        } else if (path.includes('dien-gia.html')) {
+          activateTab('tab-speakers');
+        } else {
+          activateTab('tab-overview');
+        }
+
+        // Add click listeners to switch tabs without reloading
+        links.forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('data-target');
+            activateTab(targetId);
+            history.pushState(null, '', link.getAttribute('href'));
+          });
+        });
+      });
+    </script>
+
+<script>
+    const speakerData = {
+      "luong-dung-nhan": {
+        name: "LÃ†Â°Ã†Â¡ng DÃ…Â©ng NhÃƒÂ¢n",
+        role: "GiÃƒÂ¡m Ã„â€˜Ã¡Â»â€˜c Ã„ÂÃƒÂ o tÃ¡ÂºÂ¡o cÃ¡Â»Â§a HÃ¡Â»â€¡ thÃ¡Â»â€˜ng GiÃƒÂ¡o dÃ¡Â»Â¥c ATY",
+        initials: "LN",
+        bio: `<ul>
+          <li>NghiÃƒÂªn cÃ¡Â»Â©u sinh TiÃ¡ÂºÂ¿n sÃ„Â© Generative AI tÃ¡ÂºÂ¡i Edgewood University (Hoa KÃ¡Â»Â³).</li>
+          <li>ThÃ¡ÂºÂ¡c sÃ„Â© LÃƒÂ£nh Ã„â€˜Ã¡ÂºÂ¡o GiÃƒÂ¡o dÃ¡Â»Â¥c Ã¢â‚¬â€œ University of Queensland (ÃƒÅ¡c).</li>
+          <li>SÃ¡Â»Å¸ hÃ¡Â»Â¯u chÃ¡Â»Â©ng chÃ¡Â»â€° PCC tÃ¡Â»Â« LiÃƒÂªn Ã„â€˜oÃƒÂ n Khai vÃ¡ÂºÂ¥n QuÃ¡Â»â€˜c tÃ¡ÂºÂ¿ ICF.</li>
+          <li>Ã„ÂÃ¡Â»â€œng sÃƒÂ¡ng lÃ¡ÂºÂ­p HÃ¡Â»â€¡ thÃ¡Â»â€˜ng GiÃƒÂ¡o dÃ¡Â»Â¥c ATY, CEO WISEDUCATION vÃƒÂ  nhÃƒÂ  sÃƒÂ¡ng lÃ¡ÂºÂ­p AIMastermind Ã¢â‚¬â€œ Ã„â€˜Ã†Â¡n vÃ¡Â»â€¹ tiÃƒÂªn phong Ã„â€˜ÃƒÂ o tÃ¡ÂºÂ¡o AI lÃ¡ÂºÂ¥y con ngÃ†Â°Ã¡Â»Âi lÃƒÂ m trung tÃƒÂ¢m tÃ¡ÂºÂ¡i ViÃ¡Â»â€¡t Nam.</li>
+          <li>CÃƒÂ³ kinh nghiÃ¡Â»â€¡m Ã„â€˜Ã¡Â»â€œng hÃƒÂ nh vÃƒÂ  hÃ¡Â»Â£p tÃƒÂ¡c cÃƒÂ¹ng AIA, VietinBank, Dai-ichi Life, VTV News, VUS, Home Credit...</li>
+          <li>Ã„ÂÃ¡Â»â€œng thÃ¡Â»Âi Ã„â€˜iÃ¡Â»Âu phÃ¡Â»â€˜i vÃƒÂ  phÃƒÂ¡t triÃ¡Â»Æ’n chuyÃƒÂªn mÃƒÂ´n cho hÃƒÂ ng trÃ„Æ’m chuyÃƒÂªn gia Ã„â€˜Ã¡Â»â„¢c lÃ¡ÂºÂ­p.</li>
+        </ul>`
+      },
+      "hoang-giang": {
+        name: "HoÃƒÂ ng Giang",
+        role: "Head of C2C",
+        initials: "HG",
+        bio: `<p style="color:#5C4037;font-size:14px;line-height:24px;">SÃ¡ÂºÂ½ Ã„â€˜Ã†Â°Ã¡Â»Â£c cÃ¡ÂºÂ­p nhÃ¡ÂºÂ­t sau...</p>`
+      },
+      "nguyen-lam-hoang-yen": {
+        name: "NguyÃ¡Â»â€¦n LÃƒÂ¢m HoÃƒÂ ng YÃƒÂªn",
+        role: "Acting Core AI & Data Platform Director",
+        initials: "NY",
+        bio: `<p style="color:#5C4037;font-size:14px;line-height:24px;">SÃ¡ÂºÂ½ Ã„â€˜Ã†Â°Ã¡Â»Â£c cÃ¡ÂºÂ­p nhÃ¡ÂºÂ­t sau...</p>`
+      },
+      "nguyen-minh-trung": {
+        name: "NguyÃ¡Â»â€¦n Minh Trung",
+        role: "CÃ¡Â»Â±u PhÃƒÂ³ TÃ¡Â»â€¢ng GiÃƒÂ¡m Ã„ÂÃ¡Â»â€˜c KhÃ¡Â»â€˜i NhÃƒÂ¢n lÃ¡Â»Â±c tÃ¡ÂºÂ¡i TÃ¡ÂºÂ­p Ã„â€˜oÃƒÂ n XÃƒÂ¢y dÃ¡Â»Â±ng HoÃƒÂ  BÃƒÂ¬nh",
+        initials: "MT",
+        bio: `<ul>
+          <li>CÃ¡Â»Â±u PhÃƒÂ³ TÃ¡Â»â€¢ng GiÃƒÂ¡m Ã„ÂÃ¡Â»â€˜c KhÃ¡Â»â€˜i NhÃƒÂ¢n lÃ¡Â»Â±c tÃ¡ÂºÂ¡i TÃ¡ÂºÂ­p Ã„â€˜oÃƒÂ n XÃƒÂ¢y dÃ¡Â»Â±ng HoÃƒÂ  BÃƒÂ¬nh Ã¢â‚¬â€œ mÃ¡Â»â„¢t trong nhÃ¡Â»Â¯ng tÃ¡ÂºÂ­p Ã„â€˜oÃƒÂ n xÃƒÂ¢y dÃ¡Â»Â±ng hÃƒÂ ng Ã„â€˜Ã¡ÂºÂ§u ViÃ¡Â»â€¡t Nam.</li>
+          <li>HÃ†Â¡n 20 nÃ„Æ’m kinh nghiÃ¡Â»â€¡m trong lÃ„Â©nh vÃ¡Â»Â±c quÃ¡ÂºÂ£n trÃ¡Â»â€¹ nhÃƒÂ¢n sÃ¡Â»Â±, phÃƒÂ¡t triÃ¡Â»Æ’n tÃ¡Â»â€¢ chÃ¡Â»Â©c vÃƒÂ  xÃƒÂ¢y dÃ¡Â»Â±ng vÃ„Æ’n hÃƒÂ³a doanh nghiÃ¡Â»â€¡p.</li>
+          <li>ChuyÃƒÂªn gia tÃ†Â° vÃ¡ÂºÂ¥n chiÃ¡ÂºÂ¿n lÃ†Â°Ã¡Â»Â£c nhÃƒÂ¢n sÃ¡Â»Â± cho nhiÃ¡Â»Âu doanh nghiÃ¡Â»â€¡p lÃ¡Â»â€ºn trong vÃƒÂ  ngoÃƒÂ i nÃ†Â°Ã¡Â»â€ºc.</li>
+        </ul>`
+      }
+    };
+
+    const overlay = document.getElementById("profileModal");
+    const modalAvatar = document.getElementById("modalAvatar");
+    const modalName = document.getElementById("modalName");
+    const modalRole = document.getElementById("modalRole");
+    const modalBio = document.getElementById("modalBio");
+    const modalClose = document.getElementById("modalClose");
+
+    function openModal(speakerId) {
+      const data = speakerData[speakerId];
+      if (!data) return;
+
+      modalAvatar.textContent = data.initials;
+      modalName.textContent = data.name;
+      modalRole.textContent = data.role;
+      modalBio.innerHTML = data.bio;
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      overlay.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".spk-card[data-speaker]").forEach((card) => {
+      card.addEventListener("click", () => {
+        openModal(card.dataset.speaker);
+      });
+    });
+
+    modalClose.addEventListener("click", closeModal);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+  </script></main>
+
+  <footer>
+    <div>
+      <p class="footer-title">PhÃƒÂ²ng HÃ¡Â»Âc tÃ¡ÂºÂ­p vÃƒÂ  PhÃƒÂ¡t triÃ¡Â»Æ’n</p>
+      <p class="footer-info">Ã°Å¸â€œÂ TrÃ¡Â»Â¥ sÃ¡Â»Å¸: Rivera Park, 7/28 ThÃƒÂ nh ThÃƒÂ¡i, PhÃ†Â°Ã¡Â»Âng DiÃƒÂªn HÃ¡Â»â€œng, TP. HCM<br>Ã°Å¸â€œÂ© Email: lnd@scommerce.asia</p>
+    </div>
+  </footer>
+</body>
+</html>
