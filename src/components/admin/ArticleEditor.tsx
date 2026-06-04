@@ -75,7 +75,13 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
       }
       onSave(saved);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
+      // Supabase trả về object { message, details, hint, code }
+      // không phải Error instance nên phải đọc .message trực tiếp
+      const msg =
+        err instanceof Error
+          ? err.message
+          : (err as { message?: string })?.message
+          ?? JSON.stringify(err);
       setSaveError(`Lưu thất bại: ${msg}`);
     } finally {
       setSaving(false);
