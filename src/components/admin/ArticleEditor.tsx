@@ -56,7 +56,7 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
       content,
       status,
       pinned: article?.pinned ?? false,
-      order: article?.order ?? Date.now(),
+      order: article?.order ?? Math.floor(Date.now() / 1000),
     };
   };
 
