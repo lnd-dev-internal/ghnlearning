@@ -150,6 +150,7 @@ export default function AdminDashboard() {
       {editTarget !== undefined && (
         <ArticleEditor
           article={editTarget}
+          defaultOrder={articles.length > 0 ? Math.max(...articles.map(a => a.order)) + 1 : 1}
           onClose={() => setEditTarget(undefined)}
           onSave={handleSave}
         />

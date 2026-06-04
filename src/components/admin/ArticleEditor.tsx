@@ -8,6 +8,7 @@ import styles from './ArticleEditor.module.css';
 
 interface ArticleEditorProps {
   article: Article | null;
+  defaultOrder?: number;
   onClose: () => void;
   onSave: (article: Article) => void;
 }
@@ -22,7 +23,7 @@ function getTodayDate(): string {
   return `${dd}/${mm}/${yyyy}`;
 }
 
-export default function ArticleEditor({ article, onClose, onSave }: ArticleEditorProps) {
+export default function ArticleEditor({ article, defaultOrder = 1, onClose, onSave }: ArticleEditorProps) {
   const isNew = !article;
   const [title, setTitle] = useState(article?.title ?? '');
   const [category, setCategory] = useState(article?.category ?? 'Leaders Talk');
@@ -31,6 +32,7 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
   const [excerpt, setExcerpt] = useState(article?.excerpt ?? '');
   const [coverImage, setCoverImage] = useState(article?.coverImage ?? '');
   const [content, setContent] = useState(article?.content ?? '');
+  const [order, setOrder] = useState<number>(article?.order ?? defaultOrder);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [previewError, setPreviewError] = useState(false);
@@ -56,7 +58,7 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
       content,
       status,
       pinned: article?.pinned ?? false,
-      order: article?.order ?? Math.floor(Date.now() / 1000),
+      order,
     };
   };
 
@@ -205,6 +207,17 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
                 value={date}
                 onChange={e => setDate(e.target.value)}
                 placeholder="dd/mm/yyyy"
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>THỨ TỰ</label>
+              <input
+                className={styles.input}
+                type="number"
+                min={1}
+                value={order}
+                onChange={e => setOrder(Number(e.target.value) || 1)}
+                placeholder="1"
               />
             </div>
             <div className={styles.field}>
