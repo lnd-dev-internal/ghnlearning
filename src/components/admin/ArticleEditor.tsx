@@ -32,6 +32,7 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
   const [coverImage, setCoverImage] = useState(article?.coverImage ?? '');
   const [content, setContent] = useState(article?.content ?? '');
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
   const [previewError, setPreviewError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
@@ -62,6 +63,7 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
   const handleSave = async (status: 'published' | 'draft') => {
     if (!title.trim()) return;
     setSaving(true);
+    setSaveError('');
     try {
       const data = buildData(status);
       let saved: Article;
@@ -72,6 +74,9 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
         saved = { ...article!, ...data };
       }
       onSave(saved);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setSaveError(`Lưu thất bại: ${msg}`);
     } finally {
       setSaving(false);
     }
@@ -334,6 +339,11 @@ export default function ArticleEditor({ article, onClose, onSave }: ArticleEdito
             {saving ? 'Đang lưu...' : 'Lưu bản nháp'}
           </button>
           <div className={styles.footerRight}>
+            {saveError && (
+              <p style={{ fontSize: 13, color: '#e53e3e', margin: 0, maxWidth: 320, textAlign: 'right' }}>
+                ⚠ {saveError}
+              </p>
+            )}
             <button className={styles.cancelBtn} onClick={onClose}>Hủy</button>
             <button
               className={styles.publishBtn}
