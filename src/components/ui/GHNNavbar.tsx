@@ -83,7 +83,7 @@ export default function GHNNavbar() {
           background: #ffffff !important;
           border-bottom: 1px solid rgba(0,0,0,0.08) !important;
           box-shadow: none !important;
-          box-sizing: border-box !important;
+          overflow: visible !important;
         }
         .ghn-logo {
           font-family: 'Inter', sans-serif !important;
@@ -99,7 +99,7 @@ export default function GHNNavbar() {
           gap: 8px !important;
         }
         .ghn-logo img {
-          height: 36px !important;
+          height: 180px !important;
           width: auto !important;
           display: block !important;
           object-fit: contain !important;
@@ -530,7 +530,7 @@ export default function GHNNavbar() {
           </svg>
         </button>
         <Link href="/homepage" className="ghn-logo">
-          <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 30 }} />
+          <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
         </Link>
         <div style={{ width: 40 }} />
       </div>
@@ -542,7 +542,7 @@ export default function GHNNavbar() {
       <div className={`ghn-drawer${drawerOpen ? ' open' : ''}`}>
         <div className="ghn-drawer-header">
           <Link href="/homepage" className="ghn-logo" onClick={() => setDrawerOpen(false)}>
-            <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 30 }} />
+            <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
           </Link>
           <button className="ghn-drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Đóng menu">✕</button>
         </div>
