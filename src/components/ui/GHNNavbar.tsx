@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 // --- Main nav items (default view) ---
@@ -38,6 +38,7 @@ const technicalHrefs = technicalNavItems.flatMap((g) => g.children.map((c) => c.
 
 export default function GHNNavbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMobileMenu, setOpenMobileMenu] = useState<string | null>(null);
 
@@ -54,6 +55,16 @@ export default function GHNNavbar() {
     if (isTechnicalPage) setNavMode('technical');
     else setNavMode('main');
   }, [pathname, isTechnicalPage]);
+
+  // Toggle mode + navigate to default page of that side
+  const handleModeSwitch = (mode: 'main' | 'technical') => {
+    setNavMode(mode);
+    if (mode === 'technical') {
+      router.push('/newbie');
+    } else {
+      router.push('/homepage');
+    }
+  };
 
   const isActive = (href?: string) => {
     if (!href) return false;
@@ -509,7 +520,7 @@ export default function GHNNavbar() {
 
           <button
             className={`ghn-tech-btn${navMode === 'technical' ? ' active' : ''}`}
-            onClick={() => setNavMode(navMode === 'main' ? 'technical' : 'main')}
+            onClick={() => handleModeSwitch(navMode === 'main' ? 'technical' : 'main')}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="16 18 22 12 16 6"/>
@@ -548,10 +559,16 @@ export default function GHNNavbar() {
         </div>
 
         <div className="ghn-drawer-mode-toggle">
-          <button className={`ghn-drawer-mode-btn${navMode === 'main' ? ' active' : ''}`} onClick={() => setNavMode('main')}>
+          <button
+            className={`ghn-drawer-mode-btn${navMode === 'main' ? ' active' : ''}`}
+            onClick={() => { handleModeSwitch('main'); setDrawerOpen(false); }}
+          >
             Tổng quát
           </button>
-          <button className={`ghn-drawer-mode-btn${navMode === 'technical' ? ' active' : ''}`} onClick={() => setNavMode('technical')}>
+          <button
+            className={`ghn-drawer-mode-btn${navMode === 'technical' ? ' active' : ''}`}
+            onClick={() => { handleModeSwitch('technical'); setDrawerOpen(false); }}
+          >
             Technical Skills
           </button>
         </div>
