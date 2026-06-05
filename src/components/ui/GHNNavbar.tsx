@@ -98,17 +98,11 @@ export default function GHNNavbar() {
           align-items: center !important;
           gap: 8px !important;
         }
-        .ghn-logo::before {
-          content: '';
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: #FF5200;
-          flex-shrink: 0;
-        }
-        .ghn-logo span {
-          color: #1A1A1A !important;
+        .ghn-logo img {
+          height: 36px !important;
+          width: auto !important;
+          display: block !important;
+          object-fit: contain !important;
         }
 
         /* Center nav */
@@ -459,7 +453,7 @@ export default function GHNNavbar() {
       {/* ── Desktop Navbar ── */}
       <nav className="ghn-navbar">
         <Link href="/homepage" className="ghn-logo">
-          GHN <span>Learning</span>
+          <img src="/ghn-learning-logo.png" alt="GHN Learning" />
         </Link>
 
         {/* Center — animated swap */}
@@ -535,8 +529,8 @@ export default function GHNNavbar() {
             <line x1="3" y1="18" x2="21" y2="18"/>
           </svg>
         </button>
-        <Link href="/homepage" className="ghn-logo" style={{ fontSize: 13 }}>
-          GHN <span>Learning</span>
+        <Link href="/homepage" className="ghn-logo">
+          <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 30 }} />
         </Link>
         <div style={{ width: 40 }} />
       </div>
@@ -547,8 +541,8 @@ export default function GHNNavbar() {
       {/* ── Mobile Drawer ── */}
       <div className={`ghn-drawer${drawerOpen ? ' open' : ''}`}>
         <div className="ghn-drawer-header">
-          <Link href="/homepage" className="ghn-logo" style={{ fontSize: 13 }} onClick={() => setDrawerOpen(false)}>
-            GHN <span>Learning</span>
+          <Link href="/homepage" className="ghn-logo" onClick={() => setDrawerOpen(false)}>
+            <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 30 }} />
           </Link>
           <button className="ghn-drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Đóng menu">✕</button>
         </div>
