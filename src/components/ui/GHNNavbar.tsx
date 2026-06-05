@@ -60,7 +60,7 @@ export default function GHNNavbar() {
   const handleModeSwitch = (mode: 'main' | 'technical') => {
     setNavMode(mode);
     if (mode === 'technical') {
-      router.push('/newbie');
+      router.push('/nvxl');
     } else {
       router.push('/homepage');
     }
