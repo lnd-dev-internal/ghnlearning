@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
       { source: "/vanphong.html", destination: "/vanphong", permanent: true },
       { source: "/nvxl.html", destination: "/nvxl", permanent: true },
       { source: "/nvpttt.html", destination: "/nvpttt", permanent: true },
+      { source: "/nvpttt-kinhdoanh.html", destination: "/nvpttt-kinhdoanh", permanent: true },
+      { source: "/nvpttt-botchat.html", destination: "/nvpttt-botchat", permanent: true },
       { source: "/nvph.html", destination: "/nvph", permanent: true },
       { source: "/cskh.html", destination: "/cskh", permanent: true },
       { source: "/fieldsale.html", destination: "/fieldsale", permanent: true },
@@ -34,14 +36,6 @@ const nextConfig: NextConfig = {
     return [
       { source: "/fieldsale-banhang", destination: "/fieldsale-banhang.html" },
       { source: "/cskh-khieunai",     destination: "/cskh-khieunai.html"     },
-      { source: "/nvxl-lay",          destination: "/nvxl-lay.html"          },
-      { source: "/nvxl-tra",          destination: "/nvxl-tra.html"          },
-      { source: "/nvxl-luanchuyen",   destination: "/nvxl-luanchuyen.html"   },
-      { source: "/nvxl-khac",         destination: "/nvxl-khac.html"         },
-      { source: "/nvxl-kinhdoanh",    destination: "/nvxl-kinhdoanh.html"    },
-      { source: "/nvxl-botchat",      destination: "/nvxl-botchat.html"      },
-      { source: "/nvpttt-kinhdoanh",  destination: "/nvpttt-kinhdoanh.html"  },
-      { source: "/nvpttt-botchat",    destination: "/nvpttt-botchat.html"    },
     ];
   },
 };

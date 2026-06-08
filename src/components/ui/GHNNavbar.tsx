@@ -24,7 +24,7 @@ const technicalNavItems = [
   },
   {
     label: 'Khối Thị Trường',
-    defaultHref: '/nvxl',
+    defaultHref: '/khoi-thi-truong',
     children: [
       { label: 'Nhân viên xử lý', href: '/nvxl' },
       { label: 'Nhân viên Phát triển thị trường', href: '/nvpttt' },
@@ -34,7 +34,11 @@ const technicalNavItems = [
 ];
 
 // All technical hrefs for auto-detection
-const technicalHrefs = technicalNavItems.flatMap((g) => g.children.map((c) => c.href));
+const technicalHrefs = [
+  ...technicalNavItems.flatMap((g) => g.children.map((c) => c.href)),
+  '/newbie',
+  '/khoi-thi-truong'
+];
 
 export default function GHNNavbar() {
   const pathname = usePathname();
@@ -44,7 +48,7 @@ export default function GHNNavbar() {
 
   // Auto-switch mode based on current page
   const isTechnicalPage = technicalHrefs.some(
-    (href) => pathname === href || pathname.startsWith(href + '/')
+    (href) => pathname === href || pathname.startsWith(href + '/') || pathname.startsWith(href + '-')
   );
   const [navMode, setNavMode] = useState<'main' | 'technical'>(
     isTechnicalPage ? 'technical' : 'main'
@@ -60,7 +64,7 @@ export default function GHNNavbar() {
   const handleModeSwitch = (mode: 'main' | 'technical') => {
     setNavMode(mode);
     if (mode === 'technical') {
-      router.push('/nvxl');
+      router.push('/khoi-thi-truong');
     } else {
       router.push('/homepage');
     }
@@ -69,12 +73,12 @@ export default function GHNNavbar() {
   const isActive = (href?: string) => {
     if (!href) return false;
     if (href === '/homepage') return pathname === '/homepage' || pathname === '/';
-    return pathname === href || pathname.startsWith(href + '/');
+    return pathname === href || pathname.startsWith(href + '/') || pathname.startsWith(href + '-');
   };
 
   const isDropdownActive = (children?: { href: string }[]) => {
     if (!children) return false;
-    return children.some((c) => pathname === c.href || pathname.startsWith(c.href + '/'));
+    return children.some((c) => pathname === c.href || pathname.startsWith(c.href + '/') || pathname.startsWith(c.href + '-'));
   };
 
   return (
@@ -114,6 +118,7 @@ export default function GHNNavbar() {
           width: auto !important;
           display: block !important;
           object-fit: contain !important;
+          transform: translateY(8px) !important;
         }
 
         /* Center nav */
@@ -464,7 +469,7 @@ export default function GHNNavbar() {
       {/* ── Desktop Navbar ── */}
       <nav className="ghn-navbar">
         <Link href="/homepage" className="ghn-logo">
-          <img src="/ghn-learning-logo.png" alt="GHN Learning" />
+          <img src="/Learning GHN dam.png" alt="GHN Learning" />
         </Link>
 
         {/* Center — animated swap */}
@@ -481,7 +486,7 @@ export default function GHNNavbar() {
               ))
             : technicalNavItems.map((item) => (
                 <div key={item.label} className="ghn-nav-item">
-                  <span className={`ghn-nav-link${isDropdownActive(item.children) ? ' active' : ''}`}>
+                  <Link href={item.defaultHref} className={`ghn-nav-link${isActive(item.defaultHref) || isDropdownActive(item.children) ? ' active' : ''}`}>
                     {item.label}
                     <svg
                       className="ghn-nav-caret"
@@ -491,7 +496,7 @@ export default function GHNNavbar() {
                     >
                       <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                  </span>
+                  </Link>
                   <div className="ghn-nav-menu">
                     <div className="ghn-nav-menu-inner">
                       {item.children.map((child) => (
@@ -541,7 +546,7 @@ export default function GHNNavbar() {
           </svg>
         </button>
         <Link href="/homepage" className="ghn-logo">
-          <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
+          <img src="/Learning GHN dam.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
         </Link>
         <div style={{ width: 40 }} />
       </div>
@@ -553,7 +558,7 @@ export default function GHNNavbar() {
       <div className={`ghn-drawer${drawerOpen ? ' open' : ''}`}>
         <div className="ghn-drawer-header">
           <Link href="/homepage" className="ghn-logo" onClick={() => setDrawerOpen(false)}>
-            <img src="/ghn-learning-logo.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
+            <img src="/Learning GHN dam.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
           </Link>
           <button className="ghn-drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Đóng menu">✕</button>
         </div>
@@ -586,14 +591,35 @@ export default function GHNNavbar() {
             : technicalNavItems.map((item) => (
                 <div key={item.label}>
                   <div
-                    className={`ghn-drawer-group-toggle${isDropdownActive(item.children) ? ' active' : ''}`}
-                    onClick={() => setOpenMobileMenu(openMobileMenu === item.label ? null : item.label)}
+                    className={`ghn-drawer-group-toggle${isActive(item.defaultHref) || isDropdownActive(item.children) ? ' active' : ''}`}
+                    style={{ padding: '0 20px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                   >
-                    <span>{item.label}</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                      style={{ transform: openMobileMenu === item.label ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}>
-                      <path d="m6 9 6 6 6-6"/>
-                    </svg>
+                    <Link
+                      href={item.defaultHref}
+                      style={{ 
+                        flexGrow: 1, 
+                        borderLeft: 'none', 
+                        padding: '13px 20px', 
+                        margin: 0,
+                        fontWeight: 600,
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: '15px',
+                        color: 'inherit',
+                        textDecoration: 'none'
+                      }}
+                      onClick={() => setDrawerOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                    <div
+                      onClick={() => setOpenMobileMenu(openMobileMenu === item.label ? null : item.label)}
+                      style={{ padding: '13px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                        style={{ transform: openMobileMenu === item.label ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}>
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </div>
                   </div>
                   {openMobileMenu === item.label && (
                     <div className="ghn-drawer-submenu">

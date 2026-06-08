@@ -1,257 +1,1584 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+
+// Helper hook for counting up animation when scrolled into view
+function useCountUp(target: number, duration: number = 1500) {
+  const [count, setCount] = useState(0);
+  const [shouldStart, setShouldStart] = useState(false);
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldStart(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!shouldStart) return;
+
+    let start = 0;
+    const end = target;
+    const totalMiliseconds = duration;
+    const stepTime = 20;
+    const totalSteps = totalMiliseconds / stepTime;
+    const increment = end / totalSteps;
+
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  }, [shouldStart, target, duration]);
+
+  return { count, elementRef };
+}
+
+// Stats component to wrap count up behavior
+function StatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const { count, elementRef } = useCountUp(value);
+  return (
+    <div className="vh-stat-card" ref={elementRef}>
+      <div className="vh-stat-num">
+        {count.toLocaleString()}{suffix}
+      </div>
+      <div className="vh-stat-label">{label}</div>
+    </div>
+  );
+}
+
 export default function KhoiThiTruongPage() {
+  const [mounted, setMounted] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const [tooltip, setTooltip] = useState<{
+    visible: boolean;
+    role: 'nvxl' | 'nvpttt' | 'nvph' | null;
+    x: number;
+    y: number;
+  }>({
+    visible: false,
+    role: null,
+    x: 0,
+    y: 0
+  });
+
+  const roleData = {
+    nvxl: {
+      name: 'Nhân viên Xử lý',
+      image: '/NVXL 1.JPG',
+      function: 'Tiếp nhận hàng hóa, rã tải hàng nhập bưu cục, phân loại tuyến giao, bàn giao cho NVPTTT và xử lý các sự cố đơn hàng.'
+    },
+    nvpttt: {
+      name: 'Nhân viên Phát triển Thị trường',
+      image: '/Ship 1.JPG',
+      function: 'Tiếp nhận yêu cầu lấy hàng, giao đơn hàng nhanh chóng đến tay khách hàng và cập nhật trạng thái đơn hàng (POD) lên hệ thống.'
+    },
+    nvph: {
+      name: 'Nhân viên Phân hàng',
+      image: '/NVPH 1.jpeg',
+      function: 'Vận hành hệ thống băng tải tự động tại các Kho Trung chuyển (TTTC), thực hiện rã tải Feeder, chia chọn đơn và đóng kiện xuất hàng đi.'
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltip(prev => ({
+      ...prev,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    }));
+  };
+
+  const slides = [
+    {
+      image: '/KTC 1.jpeg',
+      title: 'Hệ thống Xe tải Trung\u00A0chuyển',
+      desc: 'Vận hành hàng ngàn xe tải liên tỉnh kết nối các Trung tâm phân loại lớn trên toàn quốc liên tục 24/7.',
+      position: 'center'
+    },
+    {
+      image: '/xetai1.jpeg',
+      title: 'Kết nối mọi nẻo đường',
+      desc: 'Mạng lưới giao vận rộng khắp 34 tỉnh thành, kết nối thông suốt mọi khoảng cách.',
+      position: 'center'
+    },
+    {
+      image: '/HYSC.jpeg',
+      title: 'Trung tâm phân loại tự\u00A0động',
+      desc: 'Hệ thống băng tải thông minh chia chọn hàng trăm ngàn đơn hàng mỗi giờ với độ chính xác tuyệt đối.',
+      position: 'center'
+    },
+    {
+      image: '/NVXL 1.JPG',
+      title: 'Đội ngũ xử lý hàng hoá chuyên nghiệp',
+      desc: 'Quy trình tiếp nhận, rã tải, đóng kiện chuẩn hóa kỹ lưỡng, đảm bảo an\u00A0toàn cho hàng hoá.',
+      position: 'center'
+    },
+    {
+      image: '/NVXL 2.JPG',
+      title: 'Quy trình Xử lý Đạt\u00A0chuẩn',
+      desc: 'Đảm bảo hàng hóa được tiếp nhận, phân loại và đóng kiện chuẩn nghiệp vụ.',
+      position: 'center'
+    },
+    {
+      image: '/Ship 1.JPG',
+      title: 'Chiến binh Giao nhận NVPTTT',
+      desc: 'Lực lượng NVPTTT thân thiện, tận tâm, nỗ lực giao gửi hàng hóa tới tay khách hàng.',
+      position: 'center'
+    },
+    {
+      image: '/ship 2.jpg',
+      title: 'Giao hàng Tận nơi Nhanh\u00A0chóng',
+      desc: 'Đáp ứng nhu cầu giao nhận hàng hóa của đối tác và khách hàng với độ bao phủ rộng khắp.',
+      position: 'center 80%'
+    },
+    {
+      image: '/KTC 2.jpeg',
+      title: 'Trung tâm phân loại tự\u00A0động',
+      desc: 'Đồng bộ hóa vận chuyển với tốc độ tối ưu và độ chính xác cao trên các chặng đường.',
+      position: 'center'
+    }
+  ];
+
+  useEffect(() => {
+    setMounted(true);
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
   return (
     <>
       <style>{`
-        .ktt-page{display:flex;flex-direction:column;align-items:flex-start;max-width:1920px;width:100%;min-height:1080px;margin:0 auto;background:#F9F9FC;}
-        .ktt-main-content{display:flex;flex-direction:column;align-items:flex-start;padding:32px 64px 0;gap:64px;max-width:1920px;width:100%;}
-        .ktt-header-section{display:flex;flex-direction:column;gap:8px;width:100%;}
-        .ktt-page-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:40px;line-height:48px;letter-spacing:-0.8px;color:#1A1C1E;}
-        .ktt-page-desc{font-family:'Be Vietnam Pro',sans-serif;font-weight:400;font-size:18px;line-height:28px;color:#5C4037;max-width:1216px;}
-        .ktt-section{display:flex;flex-direction:column;gap:16px;width:100%;}
-        .ktt-section-border{display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 0 8px;border-bottom:1px solid #E5BEB2;width:100%;}
-        .ktt-section-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:32px;line-height:40px;letter-spacing:-0.32px;color:#FF5200;}
-        .ktt-section-link{font-family:'Be Vietnam Pro',sans-serif;font-weight:600;font-size:14px;line-height:20px;letter-spacing:0.14px;color:#FF5200;cursor:pointer;text-decoration:none;white-space:nowrap;}
-        .ktt-section-link:hover{text-decoration:underline;}
-        .ktt-card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;}
-        .ktt-card{background:#fff;border:1px solid #E5BEB2;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;}
-        .ktt-card:hover{box-shadow:0 8px 24px rgba(255,82,0,.12);transform:translateY(-2px);}
-        .ktt-card-thumb{width:100%;height:170px;object-fit:contain;display:block;background:#f5f8ff;}
-        .ktt-card-thumb-placeholder{width:100%;height:170px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-        .ktt-card-body{display:flex;flex-direction:column;justify-content:space-between;padding:16px;flex:1;}
-        .ktt-card-title{font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;line-height:28px;color:#1A1C1E;margin-bottom:8px;}
-        .ktt-card-meta{display:flex;flex-direction:row;align-items:center;gap:8px;color:#5c4037;font-size:12px;line-height:16px;font-weight:500;margin-bottom:auto}
-        .ktt-clock{width:13px;height:13px;border:1.5px solid #5c4037;border-radius:50%;position:relative;flex:0 0 13px}
-        .ktt-clock:before,.ktt-clock:after{content:'';position:absolute;background:#5c4037;left:50%;top:50%;transform-origin:bottom center}
-        .ktt-clock:before{width:1.5px;height:4px;transform:translate(-50%,-90%)}
-        .ktt-clock:after{width:4px;height:1.5px;transform:translate(-5%,-50%) rotate(45deg)}
-        .ktt-card-btn{display:flex;justify-content:center;align-items:center;padding:8px 16px;width:100%;height:36px;background:#009BE0;border-radius:8px;border:none;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;font-weight:600;font-size:14px;line-height:20px;letter-spacing:0.14px;color:#fff;margin-top:12px;transition:background .2s;text-decoration:none;}
-        .ktt-card-btn:hover{background:#0080c0;}
-        .ktt-thumb-1{background:linear-gradient(135deg,#003087 0%,#FF5200 100%);}
-        .ktt-thumb-2{background:linear-gradient(135deg,#1565C0 0%,#F57C00 100%);}
-        .ktt-thumb-3{background:linear-gradient(135deg,#0D47A1 0%,#FF6F00 100%);}
-        .ktt-thumb-4{background:linear-gradient(135deg,#01579B 0%,#E65100 100%);}
-        .ktt-thumb-5{background:linear-gradient(135deg,#004D40 0%,#FF5200 100%);}
-        .ktt-thumb-6{background:linear-gradient(135deg,#1A237E 0%,#BF360C 100%);}
-        .ktt-thumb-7{background:linear-gradient(135deg,#311B92 0%,#FF5200 100%);}
-        .ktt-thumb-8{background:linear-gradient(135deg,#006064 0%,#FF6D00 100%);}
-        .ktt-thumb-badge{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.55);color:#fff;font-family:'Be Vietnam Pro',sans-serif;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase;}
-        .ktt-thumb-person{font-size:48px;margin-top:8px;}
-        .ktt-footer-wrap{display:flex;flex-direction:column;align-items:flex-start;padding:24px 0 0;max-width:1920px;width:100%;margin:0 auto;}
-        .ktt-footer{display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:0 96px;max-width:1920px;width:100%;height:125px;background:#F8FAFC;border-top:1px solid #E2E8F0;}
-        .ktt-footer-brand{font-family:'Montserrat',sans-serif;font-weight:700;font-size:18px;color:#0F172A;margin-bottom:8px;}
-        .ktt-footer-info{font-family:'Be Vietnam Pro',sans-serif;font-size:12px;line-height:20px;color:#64748B;}
-        .ktt-footer-right{font-family:'Be Vietnam Pro',sans-serif;font-size:12px;color:#94A3B8;}
-        @media (max-width: 960px) {
-          .ktt-main-content{width:100% !important;padding:0 0 40px 0 !important;gap:0 !important;}
-          .ktt-header-section{padding:30px 16px !important;background:#FF5200;position:relative;overflow:hidden;min-height:180px;justify-content:center;}
-          .ktt-page-title{font-size:24px !important;line-height:30px !important;color:#fff !important;}
-          .ktt-page-desc{font-size:12px !important;line-height:17px !important;color:#fff !important;font-style:italic;max-width:100%;}
-          .ktt-section{padding:30px 16px 0 !important;gap:16px !important;}
-          .ktt-section-title{font-size:16px !important;line-height:24px !important;border-left:4px solid #FF5200;padding-left:12px !important;color:#181C1E !important;}
-          .ktt-card-grid{display:grid !important;grid-template-columns:repeat(2,1fr) !important;gap:12px !important;}
-          .ktt-card-thumb,.ktt-card-thumb-placeholder{height:100px !important;}
-          .ktt-card-body{padding:12px !important;}
-          .ktt-card-title{font-size:14px !important;line-height:20px !important;}
-          .ktt-card-btn{height:30px !important;font-size:12px !important;padding:4px 12px !important;}
+        @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+
+        /* Minimalist & High-End GHN Operations Hub Style Guide - Exo Font & Màu Cam #FF5200, Xanh #006FAD, Xám #3D3D3D Theme */
+        .vh-page {
+          background-color: #f7f7f7 !important;
+          background-image: linear-gradient(rgba(247, 247, 247, 0.92), rgba(247, 247, 247, 0.92)), url('/paper-texture.png') !important;
+          background-repeat: repeat !important;
+          background-size: auto !important;
+          color: #3D3D3D !important;
+          font-family: 'Exo', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif !important;
+          min-height: calc(100vh - 68px);
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 0 0 120px;
+          gap: 120px;
+          overflow-x: hidden;
+          position: relative;
+        }
+
+        /* Ambient drifting background grid */
+        .vh-bg-grid {
+          position: absolute;
+          inset: 0;
+          background-image: 
+            linear-gradient(rgba(255, 82, 0, 0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 82, 0, 0.02) 1px, transparent 1px);
+          background-size: 60px 60px;
+          background-position: center;
+          opacity: 0.8;
+          pointer-events: none;
+          z-index: 0;
+          animation: gridDrift 40s linear infinite;
+        }
+
+        @keyframes gridDrift {
+          from { background-position: 0 0; }
+          to { background-position: 120px 240px; }
+        }
+
+        .vh-container {
+          max-width: 1280px;
+          width: 100%;
+          padding: 0 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 120px;
+          z-index: 1;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .vh-page.vh-mounted .vh-container {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Full-width Hero Banner - Immersive Premium Slider */
+        .vh-hero-section {
+          width: 100%;
+          height: 80vh;
+          min-height: 640px;
+          position: relative;
+          overflow: hidden;
+          background-color: #111115 !important;
+          border-bottom: 4px solid #FF5200;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .vh-page.vh-mounted .vh-hero-section {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Floating HUD Page Title Overlay - Stacked vertically */
+        .vh-hero-hud-title {
+          position: absolute;
+          top: 108px;
+          left: 6%;
+          z-index: 10;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+          pointer-events: none;
+        }
+        .vh-hud-badge {
+          background: #FFFFFF !important;
+          border: 1px solid rgba(255, 82, 0, 0.45) !important;
+          color: #FF5200 !important;
+          padding: 6px 14px;
+          border-radius: 30px;
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800;
+          font-size: 11px;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+        }
+        .vh-hud-line {
+          width: 60px;
+          height: 1px;
+          background: rgba(255, 255, 255, 0.25);
+        }
+        .vh-hud-main-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 900 !important;
+          font-size: clamp(2.2rem, 5vw, 3.8rem) !important;
+          color: #FFFFFF !important;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 82, 0, 0.3) !important;
+          margin: 0;
+        }
+
+        /* High-tech Slider / Carousel Styles */
+        .vh-slider-container {
+          position: absolute;
+          inset: 0;
+          background: #111115 !important;
+          border: none !important;
+          border-radius: 0 !important;
+          overflow: hidden;
+        }
+
+        /* Slide item with left aligned glass content */
+        .vh-slide-item {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: flex-end;
+          justify-content: flex-start;
+          padding: 80px 6% 100px;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), visibility 1.2s;
+          z-index: 1;
+          overflow: hidden;
+        }
+        .vh-slide-active {
+          opacity: 1;
+          visibility: visible;
+          z-index: 2;
+        }
+
+        /* Hardware accelerated Ken Burns background zoom */
+        .vh-slide-bg {
+          position: absolute;
+          inset: 0;
+          background-size: cover !important;
+          background-repeat: no-repeat !important;
+          z-index: 0;
+          transition: transform 12s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        @keyframes kenBurns {
+          from {
+            transform: scale(1.02);
+          }
+          to {
+            transform: scale(1.10);
+          }
+        }
+        .vh-slide-active .vh-slide-bg {
+          animation: kenBurns 12s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .vh-slide-overlay {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.35) 100%) !important; /* Subtle dark vignette overlay */
+          z-index: 1;
+          pointer-events: none;
+        }
+
+        /* Glassmorphism content card sliding up */
+        .vh-slide-content {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          max-width: 680px; /* Increased from 580px to prevent awkward wraps */
+          background: rgba(17, 17, 21, 0.45) !important;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.08) !important;
+          border-radius: 20px;
+          padding: 40px;
+          text-align: left;
+          transform: translateY(30px);
+          transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+        }
+        .vh-slide-active .vh-slide-content {
+          transform: translateY(0);
+        }
+
+        .vh-slider-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 900 !important;
+          font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+          color: #FFFFFF !important;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+          letter-spacing: 0.03em;
+          line-height: 1.2;
+        }
+        .vh-slider-desc {
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.85) !important;
+          text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5) !important;
+          margin: 0;
+        }
+
+        /* Slide Index/Counter */
+        .vh-slider-counter {
+          position: absolute;
+          bottom: 40px;
+          right: 6%;
+          z-index: 10;
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800;
+          font-size: 18px;
+          color: rgba(255, 255, 255, 0.35);
+          display: flex;
+          align-items: baseline;
+          gap: 6px;
+          pointer-events: none;
+        }
+        .vh-slider-counter-current {
+          color: #FF5200;
+          font-size: 30px;
+          line-height: 1;
+        }
+
+        .vh-slider-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.12);
+          border: 1px solid rgba(255, 255, 255, 0.15) !important;
+          color: #FFFFFF !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          font-size: 22px;
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+        }
+        .vh-slider-btn:hover {
+          background: #FF5200;
+          color: #FFFFFF !important;
+          border-color: #FF5200 !important;
+          transform: translateY(-50%) scale(1.08);
+          box-shadow: 0 0 20px rgba(255, 82, 0, 0.5);
+        }
+        .vh-slider-btn-prev {
+          left: 40px;
+        }
+        .vh-slider-btn-next {
+          right: 40px;
+        }
+        @media (max-width: 768px) {
+          .vh-slider-btn-prev {
+            left: 16px;
+          }
+          .vh-slider-btn-next {
+            right: 16px;
+          }
+        }
+        .vh-slider-dots {
+          position: absolute;
+          bottom: 40px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 8px;
+          z-index: 10;
+        }
+        .vh-slider-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+        }
+        .vh-slider-dot-active {
+          width: 24px;
+          border-radius: 4px;
+          background: #FF5200;
+          box-shadow: 0 0 8px rgba(255, 82, 0, 0.6);
+        }
+
+        .vh-hero-content {
+          max-width: 840px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .vh-header-tag {
+          font-family: 'Exo', sans-serif !important;
+          font-size: 13px;
+          font-weight: 600;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: #FF5200;
+        }
+
+        .vh-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 900 !important;
+          font-size: clamp(2.5rem, 6vw, 4.8rem);
+          line-height: 1;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          color: #3D3D3D !important;
+          margin: 0;
+        }
+
+        .vh-desc {
+          font-size: 17px;
+          line-height: 1.65;
+          font-weight: 500;
+          color: #3D3D3D !important;
+          margin: 0;
+        }
+
+        .vh-divider {
+          width: 80px;
+          height: 3px;
+          background-color: #FF5200;
+          margin-top: 8px;
+        }
+
+        /* Section Layouts */
+        .vh-sec {
+          display: flex;
+          flex-direction: column;
+          gap: 48px;
+          width: 100%;
+        }
+
+        .vh-sec-title-area {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: 12px;
+        }
+
+        .vh-sec-tag {
+          font-family: 'Exo', sans-serif !important;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #FF5200;
+        }
+
+        .vh-sec-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800 !important;
+          font-size: clamp(2rem, 4.5vw, 3.2rem);
+          color: #3D3D3D !important;
+          text-transform: uppercase;
+          margin: 0;
+          letter-spacing: 0.02em;
+        }
+
+        /* Technology Integration Network Overview (Orange-White High-End Style) */
+        .vh-network-visual {
+          width: 100%;
+          background-color: #F6F6F6 !important;
+          border: none !important;
+          border-radius: 24px !important;
+          padding: 32px 16px;
+          box-shadow: 0 20px 40px rgba(255, 82, 0, 0.05) !important;
+          overflow: visible;
+          position: relative;
+        }
+
+        .vh-text-p {
+          font-size: 16px;
+          line-height: 1.7;
+          color: #3D3D3D !important;
+          margin: 0;
+        }
+
+        /* Stats Grid */
+        .vh-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+          width: 100%;
+        }
+
+        .vh-stat-card {
+          background-color: #FFFFFF;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          border-radius: 16px;
+          padding: 32px 24px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          transition: border-color 0.3s ease, transform 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+        }
+
+        .vh-stat-card:hover {
+          border-color: #FF5200;
+          transform: translateY(-4px);
+        }
+
+        .vh-stat-num {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800 !important;
+          font-size: clamp(2rem, 4.5vw, 3rem);
+          background: linear-gradient(135deg, #FF5200, #F67700, #F8B200) !important;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          line-height: 1;
+        }
+
+        .vh-stat-label {
+          font-size: 13px;
+          font-weight: 600;
+          color: #3D3D3D !important;
+          text-transform: uppercase;
+          letter-spacing: 0.02em;
+        }
+
+        /* Question Section */
+        .vh-question-sec {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 48px;
+          width: 100%;
+        }
+
+        .vh-question-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800 !important;
+          font-size: clamp(2.2rem, 4vw, 3.2rem);
+          line-height: 1.2;
+          text-transform: uppercase;
+          color: #3D3D3D !important;
+          text-align: center;
+          letter-spacing: 0.02em;
+          position: relative;
+        }
+
+        .vh-question-title::after {
+          content: '';
+          position: absolute;
+          bottom: -12px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 48px;
+          height: 2px;
+          background-color: #FF5200;
+        }
+
+        /* Premium Interactive Accordion Grid for Role Selection */
+        .vh-accordion {
+          display: flex;
+          gap: 24px;
+          width: 100%;
+          height: 540px;
+          margin-top: 16px;
+        }
+
+        .vh-accordion-item {
+          flex: 1;
+          position: relative;
+          overflow: hidden;
+          border-radius: 24px;
+          height: 100%;
+          cursor: pointer;
+          transition: flex 0.7s cubic-bezier(0.25, 1, 0.2, 1);
+          background: #111115;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .vh-accordion-item:hover {
+          flex: 3;
+          box-shadow: 0 24px 50px rgba(255, 82, 0, 0.12);
+          border-color: rgba(255, 82, 0, 0.3);
+        }
+
+        .vh-accordion-img {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          transition: transform 0.8s cubic-bezier(0.25, 1, 0.2, 1);
+          z-index: 0;
+          opacity: 1 !important;
+        }
+
+        .vh-accordion-item:hover .vh-accordion-img {
+          transform: scale(1.06);
+          opacity: 1 !important;
+        }
+
+        .vh-accordion-img-zoomed {
+          transform: scale(1.45) !important;
+          transform-origin: center 40% !important;
+          transition: transform 0.8s cubic-bezier(0.25, 1, 0.2, 1) !important;
+        }
+
+        .vh-accordion-item:hover .vh-accordion-img-zoomed {
+          transform: scale(1.55) !important;
+          transform-origin: center 40% !important;
+        }
+
+        .vh-accordion-overlay {
+          display: none !important;
+        }
+
+        /* Shared Header (Number + Title Capsule) */
+        .vh-accordion-header {
+          position: absolute;
+          z-index: 3;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 20px;
+          background: rgba(17, 17, 21, 0.75) !important;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.15) !important;
+          border-radius: 30px;
+          transition: all 0.7s cubic-bezier(0.25, 1, 0.2, 1);
+          pointer-events: none;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          white-space: nowrap;
+        }
+
+        /* Collapsed Header State (Positioned at top-left, rotated vertically) */
+        .vh-accordion-item .vh-accordion-header {
+          top: 32px;
+          left: 32px;
+          transform: rotate(90deg);
+          transform-origin: left bottom;
+        }
+
+        /* Expanded Header State (Slipped down, horizontal) */
+        .vh-accordion-item:hover .vh-accordion-header {
+          top: 288px;
+          left: 32px;
+          transform: rotate(0deg);
+          transform-origin: left bottom;
+        }
+
+        .vh-accordion-num {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800;
+          font-size: 13px;
+          color: #FF5200;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+        }
+
+        .vh-accordion-divider {
+          width: 1px;
+          height: 14px;
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        .vh-accordion-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 900 !important;
+          font-size: 15px;
+          color: #FFFFFF !important;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+          margin: 0;
+          transition: font-size 0.7s cubic-bezier(0.25, 1, 0.2, 1);
+        }
+
+        .vh-accordion-item:hover .vh-accordion-title {
+          font-size: 20px;
+        }
+
+        /* Shared Body Content Card */
+        .vh-accordion-body {
+          position: absolute;
+          bottom: 32px;
+          left: 32px;
+          right: 32px;
+          z-index: 3;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+          pointer-events: none;
+          
+          /* Glassmorphic card styling */
+          background: rgba(17, 17, 21, 0.75) !important;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          border-radius: 16px;
+          padding: 24px;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .vh-accordion-item:hover .vh-accordion-body {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+          transition-delay: 0.15s;
+        }
+
+        .vh-accordion-desc {
+          font-size: 14.5px;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.9) !important;
+          max-width: 540px;
+          margin: 0;
+          text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .vh-expanded-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          height: 48px;
+          padding: 0 28px;
+          border-radius: 24px;
+          background: #FF5200;
+          color: #FFFFFF !important;
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 700;
+          font-size: 13px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          text-decoration: none !important;
+          align-self: flex-start;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 6px 20px rgba(255, 82, 0, 0.3);
+          border: none;
+          cursor: pointer;
+        }
+
+        .vh-expanded-btn:hover {
+          background: #FFFFFF;
+          color: #FF5200 !important;
+          box-shadow: 0 10px 24px rgba(255, 255, 255, 0.4);
+          transform: translateY(-2px);
+        }
+
+
+        /* Responsive overrides */
+        @media (max-width: 968px) {
+          .vh-hero-section {
+            height: 70vh;
+            min-height: 520px;
+          }
+          .vh-hero-hud-title {
+            top: 88px;
+            left: 20px;
+          }
+          .vh-hud-line {
+            display: none;
+          }
+          .vh-hud-main-title {
+            font-size: 24px !important;
+          }
+          .vh-slide-item {
+            padding: 40px 20px 80px;
+          }
+          .vh-slide-content {
+            padding: 24px;
+            max-width: 100%;
+          }
+          .vh-slider-title {
+            font-size: 1.5rem;
+          }
+          .vh-slider-desc {
+            font-size: 13.5px;
+          }
+          .vh-slider-counter {
+            display: none;
+          }
+          .vh-slider-dots {
+            bottom: 24px;
+          }
+          .vh-slider-btn {
+            display: none;
+          }
+          .vh-accordion {
+            flex-direction: column;
+            height: auto;
+            gap: 16px;
+            margin-top: 8px;
+          }
+          .vh-accordion-item {
+            flex: none;
+            width: 100%;
+            height: 120px;
+            transition: height 0.5s cubic-bezier(0.25, 1, 0.2, 1);
+          }
+          .vh-accordion-item:hover {
+            flex: none;
+            height: 340px;
+          }
+          .vh-accordion-img {
+            opacity: 1 !important;
+          }
+          .vh-accordion-header {
+            padding: 8px 16px;
+            gap: 8px;
+          }
+          .vh-accordion-item .vh-accordion-header {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+          }
+          .vh-accordion-item:hover .vh-accordion-header {
+            top: 20px;
+            bottom: auto;
+            left: 20px;
+            transform: translate(0, 0) rotate(0deg);
+          }
+          .vh-accordion-divider {
+            height: 12px;
+          }
+          .vh-accordion-title {
+            font-size: 14px;
+          }
+          .vh-accordion-item:hover .vh-accordion-title {
+            font-size: 16px;
+          }
+          .vh-accordion-body {
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            padding: 16px;
+            gap: 12px;
+          }
+          .vh-accordion-desc {
+            font-size: 13px;
+          }
+          .vh-expanded-btn {
+            height: 40px;
+            padding: 0 20px;
+            font-size: 12px;
+          }
+          .vh-page {
+            padding: 0 0 80px;
+          }
+        }
+
+        /* Tooltip styles */
+        .vh-diagram-tooltip {
+          pointer-events: none;
+          z-index: 1000;
+          background: rgba(20, 20, 25, 0.94) !important;
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1.5px solid rgba(255, 82, 0, 0.5) !important;
+          border-radius: 16px;
+          padding: 0;
+          width: 360px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 82, 0, 0.25);
+          animation: tooltipFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          color: #FFFFFF !important;
+          overflow: hidden;
+        }
+
+        @keyframes tooltipFadeIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        .vh-tooltip-content {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          text-align: left;
+        }
+
+        .vh-tooltip-img {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+          border-bottom: 1.5px solid rgba(255, 82, 0, 0.3);
+          flex-shrink: 0;
+        }
+
+        .vh-tooltip-text {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: 20px;
+        }
+
+        .vh-tooltip-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 900 !important;
+          font-size: 16px;
+          color: #FF5200 !important;
+          margin: 0;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+        }
+
+        .vh-tooltip-desc {
+          font-family: 'Exo', sans-serif !important;
+          font-size: 13.5px;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.9) !important;
+          margin: 0;
         }
       `}</style>
 
-      <div className="ktt-page">
-        <div className="ktt-main-content">
-
-          {/* HEADER */}
-          <div className="ktt-header-section">
-            <h1 className="ktt-page-title">Khối Thị trường</h1>
-            <p className="ktt-page-desc">Nền tảng kiến thức dành riêng cho những người vận hành tuyến đầu – những chiến binh thị trường không ngừng đổi mới, học hỏi và chinh phục thử thách mỗi ngày.</p>
+      <div className={`vh-page${mounted ? ' vh-mounted' : ''}`}>
+        <div className="vh-bg-grid" />
+        
+        {/* Section 1: Full-width Immersive Hero Slider */}
+        <section className="vh-hero-section">
+          {/* Floating HUD Badge / Page Title */}
+          <div className="vh-hero-hud-title">
+            <h1 className="vh-hud-main-title">Khối thị trường</h1>
+            <span className="vh-hud-badge">Vận hành</span>
           </div>
 
-          {/* SECTION 1: Quản lý Khu vực */}
-          <div className="ktt-section">
-            <div className="ktt-section-border">
-              <h2 className="ktt-section-title">Quản lý Khu vực</h2>
+          {/* Active High-tech Hero Slider */}
+          <div className="vh-slider-container">
+            {/* Prev Button */}
+            <button 
+              className="vh-slider-btn vh-slider-btn-prev" 
+              onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
+              aria-label="Previous slide"
+            >
+              ‹
+            </button>
+
+            {/* Slides */}
+            {slides.map((slide, idx) => (
+              <div 
+                key={idx} 
+                className={`vh-slide-item ${idx === currentSlide ? 'vh-slide-active' : ''}`}
+              >
+                <div 
+                  className="vh-slide-bg"
+                  style={{ 
+                    backgroundImage: `url('${slide.image}')`,
+                    backgroundPosition: slide.position || 'center'
+                  }}
+                />
+                <div className="vh-slide-overlay" />
+                <div className="vh-slide-content">
+                  <h3 className="vh-slider-title">{slide.title}</h3>
+                  <p className="vh-slider-desc">{slide.desc}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* Next Button */}
+            <button 
+              className="vh-slider-btn vh-slider-btn-next" 
+              onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+              aria-label="Next slide"
+            >
+              ›
+            </button>
+
+            {/* Slide Index / Counter */}
+            <div className="vh-slider-counter">
+              <span className="vh-slider-counter-current">{(currentSlide + 1).toString().padStart(2, '0')}</span>
+              <span>/</span>
+              <span>{slides.length.toString().padStart(2, '0')}</span>
             </div>
-            <div className="ktt-card-grid">
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/am-quytrinhnvxl.png" alt="Quy trình làm việc NVXL" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-1" style={{display:'none'}}><span className="ktt-thumb-badge">NVXL</span><span className="ktt-thumb-person">👨‍💼</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình làm việc NVXL</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>30 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=693641e1a0840ad458c460e0" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/am-quytrinhnvpttt.png" alt="Quy trình làm việc NVPTTT" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-2" style={{display:'none'}}><span className="ktt-thumb-badge">NVPTTT</span><span className="ktt-thumb-person">🏍️</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình làm việc NVPTTT</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>30 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=6939537e287afe5ae547e753" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/am-nghiphep.png" alt="Quản lý nghỉ phép" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-3" style={{display:'none'}}><span className="ktt-thumb-badge">NGHỈ PHÉP</span><span className="ktt-thumb-person">📋</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quản lý Nghỉ phép</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>30 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=692d85a7be01e485ec6b82d4" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/am-camera.png" alt="Quy định về Camera" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-4" style={{display:'none'}}><span className="ktt-thumb-badge">CAMERA</span><span className="ktt-thumb-person">📷</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy định về Camera</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>30 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=692826a37ee3a500ac6cb00a" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
+
+            {/* Navigation Dots */}
+            <div className="vh-slider-dots">
+              {slides.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`vh-slider-dot ${idx === currentSlide ? 'vh-slider-dot-active' : ''}`}
+                  onClick={() => setCurrentSlide(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
             </div>
           </div>
+        </section>
 
-          {/* SECTION 2: Nhân viên Xử lý */}
-          <div className="ktt-section">
-            <div className="ktt-section-border">
-              <h2 className="ktt-section-title">Nhân viên Xử lý</h2>
-              <a className="ktt-section-link" href="/nvxl">Xem thêm</a>
+        <div className="vh-container">
+            {/* Section 2: Quy trình vận hành & Sơ đồ */}
+          <section className="vh-sec">
+            <div className="vh-sec-title-area">
+              <h2 className="vh-sec-title">Quy trình vận hành</h2>
+              <div className="vh-divider" />
             </div>
-            <div className="ktt-card-grid">
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvxl-nhantai.png" alt="Quy trình nhận tải" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-5" style={{display:'none'}}><span className="ktt-thumb-badge">XỬ LÝ HÀNG HÓA</span><span className="ktt-thumb-person">👩‍🔧</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình nhận tải</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=68e900a07efad2772ebb92fa" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
+            <div 
+              className="vh-network-visual" 
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', position: 'relative' }}
+              onMouseMove={handleMouseMove}
+            >
+              <div style={{ textAlign: 'center' }}>
+                <h3 style={{ fontFamily: 'Exo', fontWeight: 800, fontSize: '20px', color: '#FF5200', textTransform: 'uppercase', margin: 0 }}>Tích hợp công nghệ mạnh mẽ</h3>
+                <p style={{ fontFamily: 'Exo', fontWeight: 600, fontSize: '13px', color: '#3D3D3D', opacity: 0.85, margin: '4px 0 0' }}>Tối ưu hóa quá trình giao nhận, nâng cao hiệu quả kinh doanh</p>
               </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvxl-rakien.png" alt="Quy trình rã kiện" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-6" style={{display:'none'}}><span className="ktt-thumb-badge">XỬ LÝ HÀNG HÓA</span><span className="ktt-thumb-person">🧑‍🔧</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình rã kiện</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=68e902307efad2772ebb9309" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvxl-gandon.jpg" alt="Quy trình gán đơn" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-7" style={{display:'none'}}><span className="ktt-thumb-badge">GÁN ĐƠN</span><span className="ktt-thumb-person">👨‍💻</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình gán đơn</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=68ee1e7dd7c4dcd12328f7e4" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvxl-bankiem.png" alt="Quy trình bắn kiểm" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-8" style={{display:'none'}}><span className="ktt-thumb-badge">BẮN KIỂM</span><span className="ktt-thumb-person">🔍</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình bắn kiểm</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=68e90593b8b314db43127e0e" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-            </div>
-          </div>
+              <svg viewBox="0 100 1000 260" style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
+                <defs>
+                  {/* Glowing Core Filter */}
+                  <filter id="core-glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="6" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
 
-          {/* SECTION 3: Nhân viên Phát triển Thị trường */}
-          <div className="ktt-section">
-            <div className="ktt-section-border">
-              <h2 className="ktt-section-title">Nhân viên Phát triển Thị trường</h2>
-              <a className="ktt-section-link" href="/nvpttt">Xem thêm</a>
-            </div>
-            <div className="ktt-card-grid">
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvpttt-giaohang.png" alt="Quy trình giao hàng" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-1" style={{display:'none'}}><span className="ktt-thumb-badge">GIAO HÀNG</span><span className="ktt-thumb-person">🏍️</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình giao hàng</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=691fd68fbda38916fea7eecf" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvpttt-layhang.png" alt="Quy trình lấy hàng" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-2" style={{display:'none'}}><span className="ktt-thumb-badge">LẤY HÀNG</span><span className="ktt-thumb-person">📦</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình lấy hàng</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=693952417c5bb2a0f156c9cf" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvpttt-pod.png" alt="Quy định về POD" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-3" style={{display:'none'}}><span className="ktt-thumb-badge">POD</span><span className="ktt-thumb-person">📋</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy định về POD</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>10 phút</span></div>
-                  <button className="ktt-card-btn">Bắt đầu học</button>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvpttt-checkin.png" alt="Quy trình Check-in" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-4" style={{display:'none'}}><span className="ktt-thumb-badge">CHECK-IN</span><span className="ktt-thumb-person">✅</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình Check-in</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>10 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=691fdcc7bda38916fea7ef15" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-            </div>
-          </div>
+                  {/* Core Orange-Yellow Gradient for TTTC and Headers */}
+                  <linearGradient id="warm-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FF5200" />
+                    <stop offset="50%" stopColor="#F67700" />
+                    <stop offset="100%" stopColor="#F8B200" />
+                  </linearGradient>
 
-          {/* SECTION 4: Nhân viên Phân hàng */}
-          <div className="ktt-section">
-            <div className="ktt-section-border">
-              <h2 className="ktt-section-title">Nhân viên Phân hàng Trung tâm Trung chuyển</h2>
-              <a className="ktt-section-link" href="/nvph">Xem thêm</a>
-            </div>
-            <div className="ktt-card-grid">
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvph-noiquy.png" alt="Nội quy làm việc & Kiểm soát an ninh" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-5" style={{display:'none'}}><span className="ktt-thumb-badge">NỘI QUY</span><span className="ktt-thumb-person">🏭</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Nội quy làm việc &amp; Kiểm soát an ninh</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <button className="ktt-card-btn">Bắt đầu học</button>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvph-nhanhang.png" alt="Quy trình nhận hàng" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-6" style={{display:'none'}}><span className="ktt-thumb-badge">NHẬN HÀNG</span><span className="ktt-thumb-person">📬</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Quy trình nhận hàng</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>15 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=68e6a0020175b1e9c535e377" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvph-feeder.png" alt="Rã hàng/Cấp hàng tại Feeder" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-7" style={{display:'none'}}><span className="ktt-thumb-badge">FEEDER</span><span className="ktt-thumb-person">🔄</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">Rã hàng/Cấp hàng tại Feeder</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>10 phút</span></div>
-                  <a className="ktt-card-btn" href="https://app-driver-web.ghn.vn/survey-detail?surveyId=68d8fd20e3e2281132a415f8" target="_blank" rel="noopener noreferrer">Bắt đầu học</a>
-                </div>
-              </div>
-              <div className="ktt-card">
-                <img className="ktt-card-thumb" src="/nvph-atld.png" alt="An toàn lao động" onError={(e) => { (e.target as HTMLImageElement).style.display='none'; ((e.target as HTMLImageElement).nextElementSibling as HTMLElement).style.display='flex'; }} />
-                <div className="ktt-card-thumb-placeholder ktt-thumb-8" style={{display:'none'}}><span className="ktt-thumb-badge">AN TOÀN</span><span className="ktt-thumb-person">⛑️</span></div>
-                <div className="ktt-card-body">
-                  <div className="ktt-card-title">An toàn lao động</div>
-                  <div className="ktt-card-meta"><span className="ktt-clock"></span><span>10 phút</span></div>
-                  <button className="ktt-card-btn">Bắt đầu học</button>
-                </div>
-              </div>
-            </div>
-          </div>
+                  {/* Card Gradient Fill */}
+                  <linearGradient id="glass-card-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(255, 255, 255, 0.95)" />
+                    <stop offset="100%" stopColor="rgba(255, 255, 255, 0.85)" />
+                  </linearGradient>
+                </defs>
 
-        </div>{/* /main-content */}
-      </div>{/* /page */}
+                {/* --- Circuit Board Background Tracers (Orange Tracers adjusted to viewBox) --- */}
+                <g stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" fill="none">
+                  <path d="M 50,120 L 150,120 L 170,135" />
+                  <path d="M 120,350 L 220,350 L 240,335" />
+                  <path d="M 850,110 L 930,110 L 950,125" />
+                  <path d="M 400,120 L 500,105 L 600,120" />
+                  <circle cx="50" cy="120" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                  <circle cx="170" cy="135" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                  <circle cx="950" cy="125" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                </g>
+
+                {/* Flowing background tracer pulses */}
+                <path d="M 50,120 L 150,120 L 170,135" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
+                  <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
+                </path>
+                <path d="M 850,110 L 930,110 L 950,125" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
+                  <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
+                </path>
+
+                {/* --- Node Connections & Flowing Pulses (Premium dual trace) --- */}
+                <path d="M 15,235 L 985,235" stroke="rgba(255, 82, 0, 0.12)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M 15,235 L 985,235" stroke="url(#warm-gradient)" strokeWidth="1.2" strokeDasharray="8 12" opacity="0.6" fill="none" strokeLinecap="round" />
+
+                {/* Fast-flowing speed line streams */}
+                <path d="M 15,235 L 985,235" stroke="#FF5200" strokeWidth="1.8" strokeDasharray="40 180" fill="none" opacity="0.8">
+                  <animate attributeName="stroke-dashoffset" values="440;0" dur="1.5s" repeatCount="indefinite" />
+                </path>
+                <path d="M 15,235 L 985,235" stroke="#F8B200" strokeWidth="1.2" strokeDasharray="30 150" fill="none" opacity="0.6">
+                  <animate attributeName="stroke-dashoffset" values="0;360" dur="1.2s" repeatCount="indefinite" />
+                </path>
+
+                {/* Moving Data Particles on LTL Paths (Orange to Yellow transition) */}
+                <circle r="4" fill="#F67700">
+                  <animateMotion dur="2.2s" repeatCount="indefinite" path="M 15,235 L 985,235" />
+                </circle>
+                <circle r="3" fill="#F8B200" opacity="0.8">
+                  <animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M 15,235 L 985,235" />
+                </circle>
+
+                {/* --- Tech Sockets / Docking Pulse Nodes --- */}
+                {/* Bưu cục Lấy Entry */}
+                <circle cx="220" cy="235" r="4" fill="#FF5200" />
+                <circle cx="220" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Bưu cục Lấy Exit */}
+                <circle cx="360" cy="235" r="4" fill="#FF5200" />
+                <circle cx="360" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Bưu cục Giao Entry */}
+                <circle cx="640" cy="235" r="4" fill="#FF5200" />
+                <circle cx="640" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                </circle>
+
+                {/* Bưu cục Giao Exit */}
+                <circle cx="780" cy="235" r="4" fill="#FF5200" />
+                <circle cx="780" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                </circle>
+
+                {/* --- 1. Left Card: Đối tác / Người gửi (Orange and White) --- */}
+                <g transform="translate(0, 0)">
+                  {/* Glass Card Frame */}
+                  <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                  
+                  {/* Single large partner circle icon */}
+                  <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
+                  
+                  {/* Handshake/Partner Solid Orange Vector Icon */}
+                  <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="0" cy="-5" r="5" />
+                    <path d="M -12,11 C -12,5 -7,3 0,3 C 7,3 12,5 12,11" />
+                  </g>
+
+                  {/* Labels */}
+                  <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">ĐỐI TÁC</text>
+                  <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">/ NGƯỜI GỬI</text>
+                </g>
+
+                {/* --- 2. Bưu cục Lấy Card (Orange and White, width=140 - Gap Shrunken) --- */}
+                <g transform="translate(220, 140)">
+                  {/* Card Frame */}
+                  <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                  
+                  {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
+                  <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
+                  <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Lấy</text>
+
+                  {/* Tiếp nhận capsule */}
+                  <g transform="translate(10, 50)">
+                     <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                     <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Tiếp nhận</text>
+                  </g>
+
+                  {/* Quản lý Khu vực (AM) capsule */}
+                  <g transform="translate(10, 98)">
+                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
+                  </g>
+
+                  {/* Nhân viên xử lý capsule */}
+                  <g 
+                    transform="translate(10, 140)"
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
+                    onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                  >
+                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
+                  </g>
+                </g>
+
+                {/* --- 3. Trung tâm phân loại Core (Sunset Gradient Theme) --- */}
+                <g transform="translate(500, 235)">
+                  {/* Glowing background */}
+                  <circle cx="0" cy="0" r="80" fill="rgba(255, 82, 0, 0.04)" filter="url(#core-glow)" />
+                  
+                  {/* Concentric rotating dash ring 1 */}
+                  <circle cx="0" cy="0" r="100" fill="none" stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" strokeDasharray="3 6" />
+                  
+                  {/* Concentric rotating dash ring 2 (faster rotation) */}
+                  <circle cx="0" cy="0" r="88" fill="none" stroke="#FF5200" strokeWidth="2.2" strokeDasharray="20 40 10 20 40 10" opacity="0.8">
+                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite" />
+                  </circle>
+                  
+                  {/* Concentric rotating dash ring 3 (opposite direction - faster rotation) */}
+                  <circle cx="0" cy="0" r="76" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeDasharray="8 8">
+                    <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="5s" repeatCount="indefinite" />
+                  </circle>
+
+                  {/* High-tech pulsing waves radiating from the core */}
+                  <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="1.5">
+                    <animate attributeName="r" values="66;95" dur="1.8s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.8;0" dur="1.8s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="0" cy="0" r="66" fill="none" stroke="#F8B200" strokeWidth="1">
+                    <animate attributeName="r" values="66;120" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.5;0" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
+                  </circle>
+
+                  {/* Solid inner core using Orange-Yellow Gradient */}
+                  <circle cx="0" cy="0" r="66" fill="url(#warm-gradient)" stroke="#FFFFFF" strokeWidth="1.5" />
+                  <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="2.5" className="vh-node-pulse" />
+
+                  {/* Core Text Label (TRUNG TÂM TRUNG CHUYỂN at the top) */}
+                  <text x="0" y="-22" fontSize="12" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.1em" opacity="0.9">TRUNG TÂM</text>
+                  <text x="0" y="-5" fontSize="14" fontWeight="900" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" fontStyle="italic" letterSpacing="0.05em">TRUNG CHUYỂN</text>
+
+                  {/* Nhân viên Phân hàng section */}
+                  <g
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvph' }))}
+                    onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                  >
+                    {/* Nhân viên Phân hàng Icon (shifted to center/bottom) */}
+                    <g transform="translate(0, 14)" stroke="#FFFFFF" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.95">
+                      {/* Head / Helmet */}
+                      <circle cx="0" cy="-5" r="4.5" />
+                      <path d="M -4.5,-5 C -4.5,-8 4.5,-8 4.5,-5" fill="#F8B200" stroke="none" />
+                      <path d="M -6,-5 L 6,-5" strokeWidth="1" />
+                      {/* Shoulders */}
+                      <path d="M -9,6 C -9,2 -6,0.5 0,0.5 C 6,0.5 9,2 9,6" />
+                      {/* Package being sorted */}
+                      <rect x="-5" y="6" width="10" height="8" rx="1" stroke="#FFFFFF" strokeWidth="1" fill="#FF5200" />
+                      <path d="M -2.5,10 L 2.5,10" stroke="#FFFFFF" strokeWidth="0.8" />
+                    </g>
+
+                    {/* Caption Label for the worker */}
+                    <text x="0" y="42" fontSize="10" fontWeight="700" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Nhân viên Phân hàng</text>
+                  </g>
+                </g>
+
+                {/* --- 4. Phát hàng Card (Bưu cục Giao - Orange and White, width=140 - Gap Shrunken) --- */}
+                <g transform="translate(640, 140)">
+                  {/* Card Frame */}
+                  <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                  
+                  {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
+                  <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
+                  <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Giao</text>
+
+                  {/* Giao hàng capsule */}
+                  <g transform="translate(10, 50)">
+                    <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                    <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Giao hàng</text>
+                  </g>
+
+                  {/* Quản lý Khu vực capsule */}
+                  <g transform="translate(10, 98)">
+                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
+                  </g>
+
+                  {/* Nhân viên xử lý capsule */}
+                  <g 
+                    transform="translate(10, 140)"
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
+                    onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                  >
+                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
+                  </g>
+                </g>
+
+                {/* --- 5. Right Card: Điểm nhận hàng (Orange and White) --- */}
+                <g transform="translate(875, 0)">
+                  {/* Card Frame */}
+                  <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+
+                  {/* Single circle icon for Destination */}
+                  <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
+                  
+                  {/* Building Solid Orange Vector Icon */}
+                  <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M -12,1 L 0,-9 L 12,1" />
+                    <path d="M -9,1 L -9,10 L 9,10 L 9,1" />
+                    <rect x="-3" y="5" width="6" height="5" fill="#FF5200" stroke="none" />
+                  </g>
+
+                  {/* Labels */}
+                  <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">KHÁCH HÀNG</text>
+                  <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">/ NGƯỜI NHẬN</text>
+                </g>
+
+                {/* --- 6. Floating Motorbike Widget 1 (between Partner and Bưu cục Lấy - Orange) --- */}
+                <g 
+                  transform="translate(160, 210)"
+                  style={{ cursor: 'pointer' }}
+                  onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
+                  onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                >
+                  {/* Speed trails behind the widget circle */}
+                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                  {/* Motorbike vector icon */}
+                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    {/* Rear cargo/delivery box */}
+                    <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
+                    <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
+                    {/* Main Chassis / Body (Futuristic scooter design) */}
+                    <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    {/* Windshield / Front fairing */}
+                    <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    {/* Seat line */}
+                    <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
+                    {/* Front Wheel */}
+                    <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                    <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                    {/* Rear Wheel */}
+                    <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                    <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                  </g>
+                  
+                  {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
+                  <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
+                  <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
+                </g>
+
+                {/* --- 7. Floating Truck Widget 2 (between Bưu cục Lấy and TTTC - Orange Accent) --- */}
+                <g transform="translate(382, 210)">
+                  {/* Speed trails behind the widget circle */}
+                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                  {/* Truck vector icon in orange */}
+                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
+                    <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
+                    <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                    <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                  </g>
+                </g>
+
+                {/* --- 8. Floating Truck Widget 3 (between TTTC and Bưu cục Giao - Orange Accent) --- */}
+                <g transform="translate(594, 210)">
+                  {/* Speed trails behind the widget circle */}
+                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                  {/* Truck vector icon in orange */}
+                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
+                    <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
+                    <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                    <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                  </g>
+                </g>
+
+                {/* --- 9. Floating Motorbike Widget 4 (between Bưu cục Giao and Recipient - Orange) --- */}
+                <g 
+                  transform="translate(823, 210)"
+                  style={{ cursor: 'pointer' }}
+                  onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
+                  onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                >
+                  {/* Speed trails behind the widget circle */}
+                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                  {/* Motorbike vector icon */}
+                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    {/* Rear cargo/delivery box */}
+                    <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
+                    <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
+                    {/* Main Chassis / Body (Futuristic scooter design) */}
+                    <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    {/* Windshield / Front fairing */}
+                    <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    {/* Seat line */}
+                    <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
+                    {/* Front Wheel */}
+                    <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                    <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                    {/* Rear Wheel */}
+                    <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                    <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                  </g>
+                  
+                  {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
+                  <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
+                  <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
+                </g>
+              </svg>
+
+              {/* High-end floating details tooltip */}
+              {tooltip.visible && tooltip.role && (
+                <div 
+                  className="vh-diagram-tooltip"
+                  style={{
+                    position: 'absolute',
+                    left: `${tooltip.x > 620 ? tooltip.x - 380 : tooltip.x + 20}px`,
+                    top: `${tooltip.y + 20}px`,
+                    pointerEvents: 'none',
+                    zIndex: 100,
+                  }}
+                >
+                  <div className="vh-tooltip-content">
+                    <img 
+                      src={roleData[tooltip.role].image} 
+                      alt={roleData[tooltip.role].name} 
+                      className="vh-tooltip-img" 
+                    />
+                    <div className="vh-tooltip-text">
+                      <h4 className="vh-tooltip-title">{roleData[tooltip.role].name}</h4>
+                      <p className="vh-tooltip-desc">{roleData[tooltip.role].function}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Section 3: Operations Scale & Numbers */}
+          <section className="vh-sec">
+            <div className="vh-sec-title-area">
+              <h2 className="vh-sec-title">Quy mô & Những con số</h2>
+            </div>
+            
+            <div className="vh-stats-grid">
+              <StatItem value={5000000} suffix="+" label="Đơn hàng xử lý mỗi ngày" />
+              <StatItem value={20000} suffix="+" label="Nhân viên" />
+              <StatItem value={1100} suffix="+" label="Xe tải vận hành liên tục" />
+              <StatItem value={34} suffix="/34" label="Phủ sóng tỉnh thành" />
+            </div>
+          </section>
+
+          {/* Section 4: Interactive Role Selection */}
+          <section className="vh-question-sec">
+            <h2 className="vh-question-title">Bạn là ai trong Khối Thị trường GHN?</h2>
+            
+            <div className="vh-accordion">
+              {/* Card 1: Nhân viên Xử lý */}
+              <div className="vh-accordion-item">
+                <div 
+                  className="vh-accordion-img"
+                  style={{ backgroundImage: "url('/NVXL 1.JPG')" }}
+                />
+                <div className="vh-accordion-overlay" />
+                
+                <div className="vh-accordion-header">
+                  <span className="vh-accordion-num">R—01</span>
+                  <div className="vh-accordion-divider" />
+                  <h3 className="vh-accordion-title">Nhân viên Xử lý</h3>
+                </div>
+                
+                <div className="vh-accordion-body">
+                  <p className="vh-accordion-desc">
+                    Chuyên gia quy trình phân loại và xử lý tại bưu cục. Đảm nhận nghiệp vụ tiếp nhận hàng, rã kiện, gán đơn giao, bắn kiểm và bàn giao hàng hóa chính xác.
+                  </p>
+                  <Link href="/nvxl" className="vh-expanded-btn">
+                    <span>Xem quy trình</span>
+                    <span>→</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Card 2: Nhân viên Phát triển Thị trường */}
+              <div className="vh-accordion-item">
+                <div 
+                  className="vh-accordion-img"
+                  style={{ backgroundImage: "url('/Ship 1.JPG')", backgroundPosition: '80% center' }}
+                />
+                <div className="vh-accordion-overlay" />
+                
+                <div className="vh-accordion-header">
+                  <span className="vh-accordion-num">R—02</span>
+                  <div className="vh-accordion-divider" />
+                  <h3 className="vh-accordion-title">Nhân viên Phát triển Thị trường</h3>
+                </div>
+                
+                <div className="vh-accordion-body">
+                  <p className="vh-accordion-desc">
+                    Lực lượng giao nhận tuyến đầu trực tiếp tương tác khách hàng. Đảm nhận quy trình giao hàng, lấy hàng, nộp COD và lưu trữ chứng từ số POD chuẩn chỉnh.
+                  </p>
+                  <Link href="/nvpttt" className="vh-expanded-btn">
+                    <span>Xem quy trình</span>
+                    <span>→</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Card 3: Nhân viên Phân hàng */}
+              <div className="vh-accordion-item">
+                <div 
+                  className="vh-accordion-img vh-accordion-img-zoomed"
+                  style={{ backgroundImage: "url('/NVPH.jpg')" }}
+                />
+                <div className="vh-accordion-overlay" />
+                
+                <div className="vh-accordion-header">
+                  <span className="vh-accordion-num">R—03</span>
+                  <div className="vh-accordion-divider" />
+                  <h3 className="vh-accordion-title">Nhân viên Phân hàng</h3>
+                </div>
+                
+                <div className="vh-accordion-body">
+                  <p className="vh-accordion-desc">
+                    Chuyên gia chia chọn tại các Trung tâm trung chuyển lớn. Vận hành hệ thống băng tải tự động hóa, thực hiện rã tải, cấp hàng Feeder và đóng kiện xuất hàng liên tỉnh.
+                  </p>
+                  <Link href="/nvph" className="vh-expanded-btn">
+                    <span>Xem quy trình</span>
+                    <span>→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
     </>
   );
 }
