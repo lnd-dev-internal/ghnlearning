@@ -180,19 +180,6 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#F9F9FC;overflow-x:auto;
           </div>
 
         </div>
-      </div>
-
-      {/* FOOTER */}
-      <div className="footer-wrap">
-        <footer className="footer">
-          <div>
-            <div className="footer-brand">Phòng Học tập và Phát triển</div>
-            <div className="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM</div>
-            <div className="footer-info">📩 Email: lnd@scommerce.asia</div>
-          </div>
-          <div className="footer-right">© 2026 GHN Learning &amp; Development</div>
-        </footer>
-      </div>
-    </>
+      </div>    </>
   );
 }

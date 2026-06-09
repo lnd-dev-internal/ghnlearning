@@ -821,13 +821,6 @@ export default function HomepagePage() {
             </div>
           </section>
         </main>
-
-        <footer className="footer">
-          <div className="footer-title">Phòng Học tập và Phát triển</div>
-          <div className="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM</div>
-          <div className="footer-info">📩 Email: lnd@scommerce.asia</div>
-          <div className="footer-copy">&copy; 2026 GHN Learning &amp; Development</div>
-        </footer>
       </div>
     </>
   );

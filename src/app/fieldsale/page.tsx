@@ -187,17 +187,6 @@ a{text-decoration:none;color:inherit}
             </div>
           </section>
         </div>
-      </div>
-
-      <div className="footer-wrap">
-        <footer className="footer">
-          <div>
-            <div className="footer-brand">Phòng Học tập và Phát triển</div>
-            <div className="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng TP. HCM</div>
-            <div className="footer-info">📩 Email: lnd@scommerce.asia</div>
-          </div>
-        </footer>
-      </div>
-    </>
+      </div>    </>
   );
 }

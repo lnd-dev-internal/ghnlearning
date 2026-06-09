@@ -204,15 +204,6 @@ a{text-decoration:none;color:inherit}
             </div>
           </section>
         </main>
-        <div className="footer-wrap">
-          <footer className="footer">
-            <div>
-              <h3>Phòng Học tập và Phát triển</h3>
-              <p>📍📍📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng TP. HCM</p>
-              <p>📩📩 Email: lnd@scommerce.asia</p>
-            </div>
-          </footer>
-        </div>
       </div>
     </>
   );

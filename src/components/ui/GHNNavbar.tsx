@@ -72,12 +72,22 @@ export default function GHNNavbar() {
 
   const isActive = (href?: string) => {
     if (!href) return false;
+    
+    // Only show active highlights on Leaders Talk pages
+    const isLeadersTalk = pathname?.startsWith('/leaders-talk') || pathname?.startsWith('/workshop') || pathname?.startsWith('/dien-gia');
+    if (!isLeadersTalk) return false;
+
     if (href === '/homepage') return pathname === '/homepage' || pathname === '/';
     return pathname === href || pathname.startsWith(href + '/') || pathname.startsWith(href + '-');
   };
 
   const isDropdownActive = (children?: { href: string }[]) => {
     if (!children) return false;
+    
+    // Only show active highlights on Leaders Talk pages
+    const isLeadersTalk = pathname?.startsWith('/leaders-talk') || pathname?.startsWith('/workshop') || pathname?.startsWith('/dien-gia');
+    if (!isLeadersTalk) return false;
+
     return children.some((c) => pathname === c.href || pathname.startsWith(c.href + '/') || pathname.startsWith(c.href + '-'));
   };
 

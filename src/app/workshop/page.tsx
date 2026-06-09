@@ -254,15 +254,6 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
           </div>
         </section>
       </main>
-
-      <footer>
-        <div>
-          <p className="footer-title">Phòng Học tập và Phát triển</p>
-          <p className="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM</p>
-          <p className="footer-info">📩 Email: lnd@scommerce.asia</p>
-        </div>
-        <div className="footer-right">© 2026 GHN Learning &amp; Development</div>
-      </footer>
     </>
   );
 }

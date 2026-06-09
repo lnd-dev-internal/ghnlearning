@@ -101,11 +101,6 @@ export default function KyTruocPage() {
         )}
       </main>
 
-      {/* ── Footer ── */}
-      <footer className={styles.footer}>
-        <span>© 2026 Leaders Talk. All rights reserved.</span>
-      </footer>
-
       {/* ── Article detail modal ── */}
       <ArticleDetailModal
         article={selected}

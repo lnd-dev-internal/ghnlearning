@@ -182,8 +182,9 @@ const bottomPart = `
   <footer>
     <div class="footer-inner" style="padding: 0 var(--page); width: 100%">
       <div>
-        <p class="footer-title">Phòng Học tập và Phát triển</p>
-        <p class="footer-info">📍 Trụ sở: Rivera Park, 7/28 Thành Thái, Phường Diên Hồng, TP. HCM<br>☎️ Nguyễn Ngọc Mai Trâm (Training Manager) - 090 272 1104<br>📩 Email: tramnnm@ghn.vn</p>
+        <p class="footer-title">Giao Hàng Nhanh</p>
+        <p class="footer-info">Bộ phận Học tập và Phát triển</p>
+      <p class="footer-info">📩 Liên hệ: lnd@scommerce.asia</p>
       </div>
     </div>
   </footer>
