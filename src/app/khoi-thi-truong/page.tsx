@@ -809,6 +809,15 @@ export default function KhoiThiTruongPage() {
           position: relative;
         }
 
+        .vh-network-svg {
+          width: 100%;
+          height: auto;
+          display: block;
+          max-width: 100%;
+          min-width: 0;
+          align-self: stretch;
+        }
+
         .vh-text-p {
           font-size: 16px;
           line-height: 1.7;
@@ -1180,6 +1189,14 @@ export default function KhoiThiTruongPage() {
             width: 100% !important;
             padding: 16px 8px !important;
             border-radius: 16px !important;
+            min-width: 0 !important;
+          }
+          .vh-network-svg {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-width: 0 !important;
+            align-self: stretch !important;
           }
 
           .vh-page {
@@ -1705,7 +1722,7 @@ export default function KhoiThiTruongPage() {
                     <h3 style={{ fontFamily: 'Exo', fontWeight: 800, fontSize: '20px', color: '#FF5200', textTransform: 'uppercase', margin: 0 }}>Tích hợp công nghệ mạnh mẽ</h3>
                     <p style={{ fontFamily: 'Exo', fontWeight: 600, fontSize: '13px', color: '#3D3D3D', opacity: 0.85, margin: '4px 0 0' }}>Tối ưu hóa quá trình giao nhận, nâng cao hiệu quả kinh doanh</p>
                   </div>
-                  <svg viewBox="0 100 1000 260" style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
+                  <svg className="vh-network-svg" viewBox="0 100 1000 260" style={{ overflow: 'visible' }}>
                     <defs>
                       {/* Glowing Core Filter */}
                       <filter id="core-glow" x="-20%" y="-20%" width="140%" height="140%">
