@@ -641,84 +641,106 @@ export default function GHNNavbar() {
                   {item.label}
                 </Link>
               ))
-            : technicalNavItems.map((item) => (
-                <div key={item.label} className="ghn-mobile-nav-item-wrapper" style={{ position: 'relative' }}>
-                  <button
-                    className={`ghn-mobile-nav-link${isActive(item.defaultHref) || isDropdownActive(item.children) ? ' active' : ''}`}
-                    onClick={() => setActiveMobileDropdown(activeMobileDropdown === item.label ? null : item.label)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: '13px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      padding: '8px 12px',
-                      color: isActive(item.defaultHref) || isDropdownActive(item.children) ? '#FF5200' : '#3D3D3D'
-                    }}
-                  >
-                    {item.label}
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 10 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+            : technicalNavItems.map((item) => {
+                const isCurrentActive = isActive(item.defaultHref) || isDropdownActive(item.children);
+                return (
+                  <div key={item.label} className="ghn-mobile-nav-item-wrapper" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    {/* Main Label Link (navigates to homepage) */}
+                    <Link
+                      href={item.defaultHref}
+                      className={`ghn-mobile-nav-link-text${isCurrentActive ? ' active' : ''}`}
                       style={{
-                        transform: activeMobileDropdown === item.label ? 'rotate(180deg)' : 'none',
-                        transition: 'transform 0.2s',
-                        color: 'inherit'
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                        padding: '8px 4px 8px 12px',
+                        color: isCurrentActive ? '#FF5200' : '#3D3D3D',
+                        display: 'block'
                       }}
                     >
-                      <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
+                      {item.label}
+                    </Link>
 
-                  {activeMobileDropdown === item.label && (
-                    <div 
-                      className="ghn-mobile-dropdown-menu"
+                    {/* Arrow Toggle Button (opens dropdown) */}
+                    <button
+                      onClick={() => setActiveMobileDropdown(activeMobileDropdown === item.label ? null : item.label)}
                       style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: '#ffffff',
-                        border: '1px solid rgba(0,0,0,0.08)',
-                        borderRadius: '8px',
-                        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-                        zIndex: 150,
-                        minWidth: '200px',
-                        padding: '6px 0',
-                        marginTop: '4px'
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '8px 12px 8px 4px',
+                        color: isCurrentActive ? '#FF5200' : '#3D3D3D',
+                        outline: 'none'
                       }}
+                      aria-label={`Toggle dropdown for ${item.label}`}
                     >
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className={`ghn-mobile-dropdown-item${isActive(child.href) ? ' active' : ''}`}
-                          style={{
-                            display: 'block',
-                            padding: '10px 16px',
-                            fontFamily: "'Inter', sans-serif",
-                            fontSize: '13px',
-                            fontWeight: 500,
-                            color: isActive(child.href) ? '#FF5200' : '#3D3D3D',
-                            textDecoration: 'none',
-                            background: isActive(child.href) ? 'rgba(255,82,0,0.05)' : 'none'
-                          }}
-                          onClick={() => setActiveMobileDropdown(null)}
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{
+                          transform: activeMobileDropdown === item.label ? 'rotate(180deg)' : 'none',
+                          transition: 'transform 0.2s',
+                          color: 'inherit'
+                        }}
+                      >
+                        <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+
+                    {activeMobileDropdown === item.label && (
+                      <div 
+                        className="ghn-mobile-dropdown-menu"
+                        style={{
+                          position: 'absolute',
+                          top: '100%',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          background: '#ffffff',
+                          border: '1px solid rgba(0,0,0,0.08)',
+                          borderRadius: '8px',
+                          boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                          zIndex: 150,
+                          minWidth: '200px',
+                          padding: '6px 0',
+                          marginTop: '4px'
+                        }}
+                      >
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className={`ghn-mobile-dropdown-item${isActive(child.href) ? ' active' : ''}`}
+                            style={{
+                              display: 'block',
+                              padding: '10px 16px',
+                              fontFamily: "'Inter', sans-serif",
+                              fontSize: '13px',
+                              fontWeight: 500,
+                              color: isActive(child.href) ? '#FF5200' : '#3D3D3D',
+                              textDecoration: 'none',
+                              background: isActive(child.href) ? 'rgba(255,82,0,0.05)' : 'none'
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setActiveMobileDropdown(null);
+                              router.push(child.href);
+                            }}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
         </div>
       </div>
 
