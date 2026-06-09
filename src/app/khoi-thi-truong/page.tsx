@@ -340,6 +340,13 @@ export default function KhoiThiTruongPage() {
     }));
   };
 
+  const handleRoleClick = (e: React.MouseEvent, roleKey: 'nvxl' | 'nvpttt' | 'nvph') => {
+    if (window.innerWidth <= 968) {
+      e.preventDefault();
+      setActiveMobileRole(roleKey);
+    }
+  };
+
   const slides = [
     {
       image: '/KTC 1.jpeg',
@@ -1080,161 +1087,11 @@ export default function KhoiThiTruongPage() {
           transform: translateY(-2px);
         }
 
-        /* Desktop horizontal process flow pipeline */
-        .vh-desktop-pipeline {
-          display: flex;
-          justify-content: space-between;
-          align-items: stretch;
+
+        /* Scrollable container for mobile to keep SVG readable */
+        .vh-network-scroll-wrapper {
           width: 100%;
-          gap: 16px;
-          margin-top: 24px;
-        }
-
-        .vh-pipeline-item {
-          display: flex;
-          align-items: center;
-          flex: 1;
-          gap: 16px;
-        }
-
-        @media (max-width: 1200px) {
-          .vh-desktop-pipeline {
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 24px;
-          }
-          .vh-pipeline-item {
-            flex: none;
-            width: 280px;
-          }
-          .vh-pipeline-connector {
-            display: none !important;
-          }
-        }
-
-        .vh-pipeline-card {
-          background: #FFFFFF;
-          border-radius: 20px;
-          border: 1px solid rgba(0, 0, 0, 0.05);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.01);
-          padding: 24px 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          flex: 1;
-          height: 100%;
-          transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-          text-align: left;
-        }
-
-        .vh-pipeline-card:hover {
-          transform: translateY(-6px);
-          border-color: #FF5200;
-          box-shadow: 0 16px 40px rgba(255, 82, 0, 0.06);
-        }
-
-        .vh-pipeline-card-header {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-
-        .vh-pipeline-tag {
-          font-size: 10px;
-          font-weight: 800;
-          color: #FF5200;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-        }
-
-        .vh-pipeline-title {
-          font-family: 'Exo', sans-serif !important;
-          font-weight: 900 !important;
-          font-size: 18px;
-          color: #3D3D3D !important;
-          margin: 0;
-        }
-
-        .vh-pipeline-illustration {
-          background: #FFF7F5;
-          border-radius: 12px;
-          padding: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid rgba(255, 82, 0, 0.05);
-          overflow: hidden;
-        }
-
-        .vh-pipeline-steps {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          flex-grow: 1;
-        }
-
-        .vh-pipeline-step-item {
-          display: flex;
-          gap: 8px;
-          align-items: flex-start;
-        }
-
-        .vh-pipeline-step-num {
-          background: rgba(255, 82, 0, 0.1);
-          color: #FF5200;
-          font-size: 9px;
-          font-weight: 800;
-          padding: 2px 6px;
-          border-radius: 6px;
-          text-transform: uppercase;
-          margin-top: 2px;
-        }
-
-        .vh-pipeline-step-desc {
-          font-size: 13px;
-          line-height: 1.45;
-          color: #666666 !important;
-          margin: 0;
-        }
-
-        .vh-pipeline-roles {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px;
-          margin-top: auto;
-          padding-top: 12px;
-          border-top: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .vh-pipeline-role-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          background: #FFFFFF;
-          border: 1px solid #FF5200;
-          color: #FF5200 !important;
-          font-size: 11px;
-          font-weight: 800;
-          padding: 5px 12px;
-          border-radius: 20px;
-          cursor: pointer;
-          text-decoration: none !important;
-          transition: all 0.2s ease;
-        }
-
-        .vh-pipeline-role-badge:hover {
-          background: #FF5200;
-          color: #FFFFFF !important;
-        }
-
-        .vh-pipeline-connector {
-          width: 24px;
-          height: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0.6;
-          flex-shrink: 0;
+          overflow: visible;
         }
 
         /* Visibility helpers */
@@ -1314,7 +1171,19 @@ export default function KhoiThiTruongPage() {
             font-size: 11px !important;
           }
 
+          /* Mobile responsive horizontal scroll visual */
+          .vh-network-scroll-wrapper {
+            overflow-x: auto;
+            padding-bottom: 16px;
+            -webkit-overflow-scrolling: touch;
+            width: calc(100% + 48px);
+            margin-left: -24px;
+            padding-left: 24px;
+            padding-right: 24px;
+          }
           .vh-network-visual {
+            width: 1024px !important;
+            flex-shrink: 0;
             padding: 24px 16px !important;
             border-radius: 16px !important;
           }
@@ -1322,247 +1191,6 @@ export default function KhoiThiTruongPage() {
           .vh-page {
             padding: 0 0 80px;
             gap: 80px;
-          }
-
-          /* Mobile interactive workflow stepper map */
-          .vh-mobile-step-map {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            width: 100%;
-            margin: 10px 0 24px;
-            padding: 0 4px;
-          }
-
-          .vh-step-line-bg {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            height: 3px;
-            background: rgba(255, 82, 0, 0.1);
-            z-index: 1;
-          }
-
-          .vh-step-line-fill {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            height: 3px;
-            background: #FF5200;
-            z-index: 2;
-            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-          }
-
-          .vh-step-node {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 3;
-            flex: 1;
-            cursor: pointer;
-            border: none;
-            background: none;
-            padding: 0;
-            font-family: inherit;
-          }
-
-          .vh-step-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #FFFFFF;
-            border: 2px solid rgba(255, 82, 0, 0.3);
-            color: #3D3D3D;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-          }
-
-          .vh-step-node:active .vh-step-circle {
-            transform: scale(0.9);
-          }
-
-          .vh-step-node-active .vh-step-circle {
-            background: #FF5200;
-            border-color: #FF5200;
-            color: #FFFFFF;
-            box-shadow: 0 0 15px rgba(255, 82, 0, 0.4);
-          }
-
-          .vh-step-node-label {
-            font-family: 'Exo', sans-serif !important;
-            font-size: 10px;
-            font-weight: 800;
-            color: #666666;
-            margin-top: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            text-align: center;
-            transition: color 0.3s ease;
-          }
-
-          .vh-step-node-active .vh-step-node-label {
-            color: #FF5200;
-            font-weight: 900;
-          }
-
-          /* Mobile stage card visualizer */
-          .vh-mobile-stage-card {
-            background: #FFFFFF;
-            border-radius: 24px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 12px 30px rgba(255, 82, 0, 0.04);
-            padding: 24px 20px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            text-align: left;
-          }
-
-          @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-
-          .vh-stage-card-header {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-          }
-
-          .vh-stage-card-tag {
-            font-size: 10px;
-            font-weight: 800;
-            color: #FF5200;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-          }
-
-          .vh-stage-card-title {
-            font-family: 'Exo', sans-serif !important;
-            font-weight: 900 !important;
-            font-size: 20px;
-            color: #3D3D3D !important;
-            margin: 0;
-          }
-
-          .vh-stage-illustration-box {
-            width: 100%;
-            background: #FFF7F5;
-            border-radius: 16px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 82, 0, 0.08);
-            overflow: hidden;
-          }
-
-          .vh-stage-svg {
-            width: 100%;
-            max-height: 160px;
-          }
-
-          .vh-stage-steps-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-          }
-
-          .vh-stage-step-item {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-          }
-
-          .vh-stage-step-num-badge {
-            background: rgba(255, 82, 0, 0.1);
-            color: #FF5200;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 8px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            margin-top: 2px;
-            letter-spacing: 0.03em;
-          }
-
-          .vh-stage-step-content {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-          }
-
-          .vh-stage-step-title {
-            font-family: 'Exo', sans-serif !important;
-            font-weight: 800 !important;
-            font-size: 15px;
-            color: #3D3D3D !important;
-            margin: 0;
-          }
-
-          .vh-stage-step-desc {
-            font-size: 13px;
-            line-height: 1.5;
-            color: #666666 !important;
-            margin: 0;
-          }
-
-          .vh-stage-roles-flex {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 4px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-          }
-
-          .vh-stage-roles-title {
-            font-family: 'Exo', sans-serif !important;
-            font-weight: 800 !important;
-            font-size: 12px;
-            color: #3D3D3D !important;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-            margin: 0;
-          }
-
-          .vh-stage-roles-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-          }
-
-          .vh-stage-role-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #FFFFFF;
-            border: 1.5px solid #FF5200;
-            color: #FF5200 !important;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(255, 82, 0, 0.05);
-          }
-
-          .vh-stage-role-badge:active {
-            background: #FF5200;
-            color: #FFFFFF !important;
-            transform: scale(0.96);
           }
         }
 
@@ -2072,118 +1700,400 @@ export default function KhoiThiTruongPage() {
               <h2 className="vh-sec-title">Quy trình vận hành</h2>
               <div className="vh-divider" />
             </div>
-            <div className="desktop-only" style={{ width: '100%' }}>
-              <div className="vh-desktop-pipeline">
-                {stages.map((stage, idx) => (
-                  <div key={idx} className="vh-pipeline-item">
-                    <div className="vh-pipeline-card">
-                      <div className="vh-pipeline-card-header">
-                        <span className="vh-pipeline-tag">{stage.subtitle}</span>
-                        <h3 className="vh-pipeline-title">{stage.title}</h3>
-                      </div>
-                      <div className="vh-pipeline-illustration">
-                        {stage.svg}
-                      </div>
-                      <div className="vh-pipeline-steps">
-                        {stage.steps.map((step, sIdx) => (
-                          <div key={sIdx} className="vh-pipeline-step-item">
-                            <span className="vh-pipeline-step-num">{step.num}</span>
-                            <div className="vh-pipeline-step-desc">
-                              <strong>{step.title}</strong>
-                              <p style={{ margin: '2px 0 0', color: '#666' }}>{step.desc}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="vh-pipeline-roles">
-                        {stage.roles.map((roleKey) => (
-                          <Link 
-                            key={roleKey}
-                            href={`/${roleKey}`}
-                            className="vh-pipeline-role-badge"
-                          >
-                            {roleData[roleKey as keyof typeof roleData].name} <span>→</span>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                    {idx < stages.length - 1 && (
-                      <div className="vh-pipeline-connector">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#FF5200" strokeWidth="2.5" style={{ width: '16px', height: '16px' }}>
-                          <path d="M 5,12 L 19,12 M 13,6 L 19,12 L 13,18" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mobile-only" style={{ width: '100%' }}>
-              {/* Stepper progress mini-map */}
-              <div className="vh-mobile-step-map">
-                <div className="vh-step-line-bg" />
+            <div style={{ width: '100%' }}>
+              <div className="vh-network-scroll-wrapper">
                 <div 
-                  className="vh-step-line-fill" 
-                  style={{ width: `${(activeStageIndex / (stages.length - 1)) * 100}%` }}
-                />
-                {stages.map((stage, idx) => (
-                  <button
-                    key={idx}
-                    className={`vh-step-node ${idx === activeStageIndex ? 'vh-step-node-active' : ''}`}
-                    onClick={() => setActiveStageIndex(idx)}
-                    aria-label={`Go to stage ${stage.title}`}
-                  >
-                    <div className="vh-step-circle">
-                      {idx + 1}
-                    </div>
-                    <div className="vh-step-node-label">{stage.shortLabel}</div>
-                  </button>
-                ))}
-              </div>
+                  className="vh-network-visual" 
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', position: 'relative' }}
+                  onMouseMove={handleMouseMove}
+                >
+                  <div style={{ textAlign: 'center' }}>
+                    <h3 style={{ fontFamily: 'Exo', fontWeight: 800, fontSize: '20px', color: '#FF5200', textTransform: 'uppercase', margin: 0 }}>Tích hợp công nghệ mạnh mẽ</h3>
+                    <p style={{ fontFamily: 'Exo', fontWeight: 600, fontSize: '13px', color: '#3D3D3D', opacity: 0.85, margin: '4px 0 0' }}>Tối ưu hóa quá trình giao nhận, nâng cao hiệu quả kinh doanh</p>
+                  </div>
+                  <svg viewBox="0 100 1000 260" style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
+                    <defs>
+                      {/* Glowing Core Filter */}
+                      <filter id="core-glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="6" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                      </filter>
 
-              {/* Active Stage Details Card */}
-              <div className="vh-mobile-stage-card" key={activeStageIndex}>
-                <div className="vh-stage-card-header">
-                  <div className="vh-stage-card-tag">{stages[activeStageIndex].subtitle}</div>
-                  <h3 className="vh-stage-card-title">{stages[activeStageIndex].title}</h3>
-                </div>
+                      {/* Core Orange-Yellow Gradient for TTTC and Headers */}
+                      <linearGradient id="warm-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#FF5200" />
+                        <stop offset="50%" stopColor="#F67700" />
+                        <stop offset="100%" stopColor="#F8B200" />
+                      </linearGradient>
 
-                {/* Inline SVG Illustration */}
-                <div className="vh-stage-illustration-box">
-                  {stages[activeStageIndex].svg}
-                </div>
+                      {/* Card Gradient Fill */}
+                      <linearGradient id="glass-card-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="rgba(255, 255, 255, 0.95)" />
+                        <stop offset="100%" stopColor="rgba(255, 255, 255, 0.85)" />
+                      </linearGradient>
+                    </defs>
 
-                {/* Sub-steps of this stage */}
-                <div className="vh-stage-steps-list">
-                  {stages[activeStageIndex].steps.map((step, idx) => (
-                    <div key={idx} className="vh-stage-step-item">
-                      <div className="vh-stage-step-num-badge">{step.num}</div>
-                      <div className="vh-stage-step-content">
-                        <h4 className="vh-stage-step-title">{step.title}</h4>
-                        <p className="vh-stage-step-desc">{step.desc}</p>
+                    {/* --- Circuit Board Background Tracers (Orange Tracers adjusted to viewBox) --- */}
+                    <g stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" fill="none">
+                      <path d="M 50,120 L 150,120 L 170,135" />
+                      <path d="M 120,350 L 220,350 L 240,335" />
+                      <path d="M 850,110 L 930,110 L 950,125" />
+                      <path d="M 400,120 L 500,105 L 600,120" />
+                      <circle cx="50" cy="120" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                      <circle cx="170" cy="135" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                      <circle cx="950" cy="125" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                    </g>
+
+                    {/* Flowing background tracer pulses */}
+                    <path d="M 50,120 L 150,120 L 170,135" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
+                      <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
+                    </path>
+                    <path d="M 850,110 L 930,110 L 950,125" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
+                      <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
+                    </path>
+
+                    {/* --- Node Connections & Flowing Pulses (Premium dual trace) --- */}
+                    <path d="M 15,235 L 985,235" stroke="rgba(255, 82, 0, 0.12)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                    <path d="M 15,235 L 985,235" stroke="url(#warm-gradient)" strokeWidth="1.2" strokeDasharray="8 12" opacity="0.6" fill="none" strokeLinecap="round" />
+
+                    {/* Fast-flowing speed line streams */}
+                    <path d="M 15,235 L 985,235" stroke="#FF5200" strokeWidth="1.8" strokeDasharray="40 180" fill="none" opacity="0.8">
+                      <animate attributeName="stroke-dashoffset" values="440;0" dur="1.5s" repeatCount="indefinite" />
+                    </path>
+                    <path d="M 15,235 L 985,235" stroke="#F8B200" strokeWidth="1.2" strokeDasharray="30 150" fill="none" opacity="0.6">
+                      <animate attributeName="stroke-dashoffset" values="0;360" dur="1.2s" repeatCount="indefinite" />
+                    </path>
+
+                    {/* Moving Data Particles on LTL Paths (Orange to Yellow transition) */}
+                    <circle r="4" fill="#F67700">
+                      <animateMotion dur="2.2s" repeatCount="indefinite" path="M 15,235 L 985,235" />
+                    </circle>
+                    <circle r="3" fill="#F8B200" opacity="0.8">
+                      <animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M 15,235 L 985,235" />
+                    </circle>
+
+                    {/* --- Tech Sockets / Docking Pulse Nodes --- */}
+                    {/* Bưu cục Lấy Entry */}
+                    <circle cx="220" cy="235" r="4" fill="#FF5200" />
+                    <circle cx="220" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                      <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* Bưu cục Lấy Exit */}
+                    <circle cx="360" cy="235" r="4" fill="#FF5200" />
+                    <circle cx="360" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                      <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* Bưu cục Giao Entry */}
+                    <circle cx="640" cy="235" r="4" fill="#FF5200" />
+                    <circle cx="640" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                      <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* Bưu cục Giao Exit */}
+                    <circle cx="780" cy="235" r="4" fill="#FF5200" />
+                    <circle cx="780" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                      <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* --- 1. Left Card: Đối tác / Người gửi (Orange and White) --- */}
+                    <g transform="translate(0, 0)">
+                      {/* Glass Card Frame */}
+                      <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                      
+                      {/* Single large partner circle icon */}
+                      <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
+                      
+                      {/* Handshake/Partner Solid Orange Vector Icon */}
+                      <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="0" cy="-5" r="5" />
+                        <path d="M -12,11 C -12,5 -7,3 0,3 C 7,3 12,5 12,11" />
+                      </g>
+
+                      {/* Labels */}
+                      <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">ĐỐI TÁC</text>
+                      <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">/ NGƯỜI GỬI</text>
+                    </g>
+
+                    {/* --- 2. Bưu cục Lấy Card (Orange and White, width=140 - Gap Shrunken) --- */}
+                    <g transform="translate(220, 140)">
+                      {/* Card Frame */}
+                      <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                      
+                      {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
+                      <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
+                      <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Lấy</text>
+
+                      {/* Tiếp nhận capsule */}
+                      <g transform="translate(10, 50)">
+                         <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                         <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Tiếp nhận</text>
+                      </g>
+
+                      {/* Quản lý Khu vực (AM) capsule */}
+                      <g transform="translate(10, 98)">
+                        <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                        <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
+                      </g>
+
+                      {/* Nhân viên xử lý capsule */}
+                      <g 
+                        transform="translate(10, 140)"
+                        style={{ cursor: 'pointer' }}
+                        onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
+                        onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                        onClick={(e) => handleRoleClick(e, 'nvxl')}
+                      >
+                        <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                        <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
+                      </g>
+                    </g>
+
+                    {/* --- 3. Trung tâm phân loại Core (Sunset Gradient Theme) --- */}
+                    <g transform="translate(500, 235)">
+                      {/* Glowing background */}
+                      <circle cx="0" cy="0" r="80" fill="rgba(255, 82, 0, 0.04)" filter="url(#core-glow)" />
+                      
+                      {/* Concentric rotating dash ring 1 */}
+                      <circle cx="0" cy="0" r="100" fill="none" stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" strokeDasharray="3 6" />
+                      
+                      {/* Concentric rotating dash ring 2 (faster rotation) */}
+                      <circle cx="0" cy="0" r="88" fill="none" stroke="#FF5200" strokeWidth="2.2" strokeDasharray="20 40 10 20 40 10" opacity="0.8">
+                        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite" />
+                      </circle>
+                      
+                      {/* Concentric rotating dash ring 3 (opposite direction - faster rotation) */}
+                      <circle cx="0" cy="0" r="76" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeDasharray="8 8">
+                        <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="5s" repeatCount="indefinite" />
+                      </circle>
+
+                      {/* High-tech pulsing waves radiating from the core */}
+                      <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="1.5">
+                        <animate attributeName="r" values="66;95" dur="1.8s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.8;0" dur="1.8s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="0" cy="0" r="66" fill="none" stroke="#F8B200" strokeWidth="1">
+                        <animate attributeName="r" values="66;120" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values="0.5;0" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
+                      </circle>
+
+                      {/* Solid inner core using Orange-Yellow Gradient */}
+                      <circle cx="0" cy="0" r="66" fill="url(#warm-gradient)" stroke="#FFFFFF" strokeWidth="1.5" />
+                      <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="2.5" className="vh-node-pulse" />
+
+                      {/* Core Text Label (TRUNG TÂM TRUNG CHUYỂN at the top) */}
+                      <text x="0" y="-22" fontSize="12" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.1em" opacity="0.9">TRUNG TÂM</text>
+                      <text x="0" y="-5" fontSize="14" fontWeight="900" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" fontStyle="italic" letterSpacing="0.05em">TRUNG CHUYỂN</text>
+
+                      {/* Nhân viên Phân hàng section */}
+                      <g
+                        style={{ cursor: 'pointer' }}
+                        onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvph' }))}
+                        onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                        onClick={(e) => handleRoleClick(e, 'nvph')}
+                      >
+                        {/* Nhân viên Phân hàng Icon (shifted to center/bottom) */}
+                        <g transform="translate(0, 14)" stroke="#FFFFFF" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.95">
+                          {/* Head / Helmet */}
+                          <circle cx="0" cy="-5" r="4.5" />
+                          <path d="M -4.5,-5 C -4.5,-8 4.5,-8 4.5,-5" fill="#F8B200" stroke="none" />
+                          <path d="M -6,-5 L 6,-5" strokeWidth="1" />
+                          {/* Shoulders */}
+                          <path d="M -9,6 C -9,2 -6,0.5 0,0.5 C 6,0.5 9,2 9,6" />
+                          {/* Package being sorted */}
+                          <rect x="-5" y="6" width="10" height="8" rx="1" stroke="#FFFFFF" strokeWidth="1" fill="#FF5200" />
+                          <path d="M -2.5,10 L 2.5,10" stroke="#FFFFFF" strokeWidth="0.8" />
+                        </g>
+
+                        {/* Caption Label for the worker */}
+                        <text x="0" y="42" fontSize="10" fontWeight="700" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Nhân viên Phân hàng</text>
+                      </g>
+                    </g>
+
+                    {/* --- 4. Phát hàng Card (Bưu cục Giao - Orange and White, width=140 - Gap Shrunken) --- */}
+                    <g transform="translate(640, 140)">
+                      {/* Card Frame */}
+                      <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                      
+                      {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
+                      <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
+                      <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Giao</text>
+
+                      {/* Giao hàng capsule */}
+                      <g transform="translate(10, 50)">
+                        <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                        <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Giao hàng</text>
+                      </g>
+
+                      {/* Quản lý Khu vực capsule */}
+                      <g transform="translate(10, 98)">
+                        <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                        <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
+                      </g>
+
+                      {/* Nhân viên xử lý capsule */}
+                      <g 
+                        transform="translate(10, 140)"
+                        style={{ cursor: 'pointer' }}
+                        onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
+                        onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                        onClick={(e) => handleRoleClick(e, 'nvxl')}
+                      >
+                        <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                        <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
+                      </g>
+                    </g>
+
+                    {/* --- 5. Right Card: Điểm nhận hàng (Orange and White) --- */}
+                    <g transform="translate(875, 0)">
+                      {/* Card Frame */}
+                      <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+
+                      {/* Single circle icon for Destination */}
+                      <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
+                      
+                      {/* Building Solid Orange Vector Icon */}
+                      <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M -12,1 L 0,-9 L 12,1" />
+                        <path d="M -9,1 L -9,10 L 9,10 L 9,1" />
+                        <rect x="-3" y="5" width="6" height="5" fill="#FF5200" stroke="none" />
+                      </g>
+
+                      {/* Labels */}
+                      <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">KHÁCH HÀNG</text>
+                      <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">/ NGƯỜI NHẬN</text>
+                    </g>
+
+                    {/* --- 6. Floating Motorbike Widget 1 (between Partner and Bưu cục Lấy - Orange) --- */}
+                    <g 
+                      transform="translate(160, 210)"
+                      style={{ cursor: 'pointer' }}
+                      onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
+                      onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                      onClick={(e) => handleRoleClick(e, 'nvpttt')}
+                    >
+                      {/* Speed trails behind the widget circle */}
+                      <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                      <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                      {/* Motorbike vector icon */}
+                      <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        {/* Rear cargo/delivery box */}
+                        <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
+                        <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
+                        {/* Main Chassis / Body (Futuristic scooter design) */}
+                        <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Windshield / Front fairing */}
+                        <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Seat line */}
+                        <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
+                        {/* Front Wheel */}
+                        <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                        <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                        {/* Rear Wheel */}
+                        <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                        <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                      </g>
+                      
+                      {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
+                      <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
+                      <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
+                    </g>
+
+                    {/* --- 7. Floating Truck Widget 2 (between Bưu cục Lấy and TTTC - Orange Accent) --- */}
+                    <g transform="translate(382, 210)">
+                      {/* Speed trails behind the widget circle */}
+                      <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                      <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                      {/* Truck vector icon in orange */}
+                      <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
+                        <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
+                        <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                        <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                      </g>
+                    </g>
+
+                    {/* --- 8. Floating Truck Widget 3 (between TTTC and Bưu cục Giao - Orange Accent) --- */}
+                    <g transform="translate(594, 210)">
+                      {/* Speed trails behind the widget circle */}
+                      <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                      <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                      {/* Truck vector icon in orange */}
+                      <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
+                        <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
+                        <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                        <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                      </g>
+                    </g>
+
+                    {/* --- 9. Floating Motorbike Widget 4 (between Bưu cục Giao and Recipient - Orange) --- */}
+                    <g 
+                      transform="translate(823, 210)"
+                      style={{ cursor: 'pointer' }}
+                      onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
+                      onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                      onClick={(e) => handleRoleClick(e, 'nvpttt')}
+                    >
+                      {/* Speed trails behind the widget circle */}
+                      <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                      <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                      {/* Motorbike vector icon */}
+                      <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        {/* Rear cargo/delivery box */}
+                        <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
+                        <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
+                        {/* Main Chassis / Body (Futuristic scooter design) */}
+                        <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Windshield / Front fairing */}
+                        <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Seat line */}
+                        <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
+                        {/* Front Wheel */}
+                        <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                        <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                        {/* Rear Wheel */}
+                        <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                        <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                      </g>
+                      
+                      {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
+                      <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
+                      <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
+                    </g>
+                  </svg>
+
+                  {/* High-end floating details tooltip */}
+                  {tooltip.visible && tooltip.role && (
+                    <div 
+                      className="vh-diagram-tooltip"
+                      style={{
+                        position: 'absolute',
+                        left: `${tooltip.x > 620 ? tooltip.x - 380 : tooltip.x + 20}px`,
+                        top: `${tooltip.y + 20}px`,
+                        pointerEvents: 'none',
+                        zIndex: 100,
+                      }}
+                    >
+                      <div className="vh-tooltip-content">
+                        <img 
+                          src={roleData[tooltip.role].image} 
+                          alt={roleData[tooltip.role].name} 
+                          className="vh-tooltip-img" 
+                        />
+                        <div className="vh-tooltip-text">
+                          <h4 className="vh-tooltip-title">{roleData[tooltip.role].name}</h4>
+                          <p className="vh-tooltip-desc">{roleData[tooltip.role].function}</p>
+                        </div>
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
-
-                {/* Related Roles Drawer Link Trigger Badges */}
-                {stages[activeStageIndex].roles && stages[activeStageIndex].roles.length > 0 && (
-                  <div className="vh-stage-roles-flex">
-                    <h4 className="vh-stage-roles-title">Vai trò liên quan:</h4>
-                    <div className="vh-stage-roles-list">
-                      {stages[activeStageIndex].roles.map((roleKey) => (
-                        <button
-                          key={roleKey}
-                          className="vh-stage-role-badge"
-                          onClick={() => setActiveMobileRole(roleKey as 'nvxl' | 'nvpttt' | 'nvph')}
-                        >
-                          {roleData[roleKey as keyof typeof roleData].name} <span>ℹ️</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </section>
@@ -2308,7 +2218,12 @@ export default function KhoiThiTruongPage() {
                 {/* Mobile Card 2: Nhân viên Phát triển Thị trường */}
                 <div className="vh-mobile-role-card">
                   <div className="vh-mobile-role-img-container">
-                    <img src="/Ship 1.JPG" alt="Nhân viên Phát triển Thị trường" className="vh-mobile-role-img" />
+                    <img 
+                      src="/Ship 1.JPG" 
+                      alt="Nhân viên Phát triển Thị trường" 
+                      className="vh-mobile-role-img" 
+                      style={{ objectPosition: 'center 15%' }} 
+                    />
                     <span className="vh-mobile-role-num-badge">R—02</span>
                   </div>
                   <div className="vh-mobile-role-info">
@@ -2358,6 +2273,7 @@ export default function KhoiThiTruongPage() {
                   src={roleData[activeMobileRole].image} 
                   alt={roleData[activeMobileRole].name} 
                   className="vh-drawer-img" 
+                  style={activeMobileRole === 'nvpttt' ? { objectPosition: 'center 15%' } : undefined}
                 />
                 <div className="vh-drawer-content-area">
                   <h3 className="vh-drawer-title">{roleData[activeMobileRole].name}</h3>
