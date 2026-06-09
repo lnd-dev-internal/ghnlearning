@@ -1171,20 +1171,14 @@ export default function KhoiThiTruongPage() {
             font-size: 11px !important;
           }
 
-          /* Mobile responsive horizontal scroll visual */
+          /* Mobile responsive fit visual */
           .vh-network-scroll-wrapper {
-            overflow-x: auto;
-            padding-bottom: 16px;
-            -webkit-overflow-scrolling: touch;
-            width: calc(100% + 48px);
-            margin-left: -24px;
-            padding-left: 24px;
-            padding-right: 24px;
+            width: 100%;
+            overflow: visible;
           }
           .vh-network-visual {
-            width: 1024px !important;
-            flex-shrink: 0;
-            padding: 24px 16px !important;
+            width: 100% !important;
+            padding: 16px 8px !important;
             border-radius: 16px !important;
           }
 
