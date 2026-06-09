@@ -69,6 +69,7 @@ export default function KhoiThiTruongPage() {
   const [mounted, setMounted] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeMobileRole, setActiveMobileRole] = useState<'nvxl' | 'nvpttt' | 'nvph' | null>(null);
+  const [activeStageIndex, setActiveStageIndex] = useState(0);
 
   const [tooltip, setTooltip] = useState<{
     visible: boolean;
@@ -99,6 +100,236 @@ export default function KhoiThiTruongPage() {
       function: 'Vận hành hệ thống băng tải tự động tại các Kho Trung chuyển (TTTC), thực hiện rã tải Feeder, chia chọn đơn và đóng kiện xuất hàng đi.'
     }
   };
+
+  const stages = [
+    {
+      title: 'Lấy hàng',
+      shortLabel: 'Lấy hàng',
+      subtitle: 'Chặng 1: Tiếp nhận yêu cầu & Lấy hàng',
+      steps: [
+        { num: 'Bước 1', title: 'Đối tác gửi yêu cầu', desc: 'Đối tác chuẩn bị hàng hóa và tạo đơn giao trên hệ thống.' },
+        { num: 'Bước 2', title: 'NVPTTT đi lấy hàng', desc: 'Nhân viên Phát triển Thị trường nhận tuyến, đến kho đối tác nhận hàng và cập nhật hệ thống.' }
+      ],
+      roles: ['nvpttt'],
+      svg: (
+        <svg viewBox="0 0 320 180" className="vh-stage-svg" style={{ width: '100%', height: 'auto', display: 'block' }}>
+          <defs>
+            <linearGradient id="svg-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgba(255, 82, 0, 0.08)" />
+              <stop offset="100%" stopColor="rgba(255, 178, 0, 0.03)" />
+            </linearGradient>
+          </defs>
+          <rect width="320" height="180" rx="16" fill="url(#svg-grad-1)" />
+          <g stroke="rgba(255, 82, 0, 0.1)" strokeWidth="1" fill="none">
+            <circle cx="160" cy="90" r="60" />
+            <circle cx="160" cy="90" r="40" />
+            <line x1="160" y1="20" x2="160" y2="160" />
+            <line x1="20" y1="90" x2="300" y2="90" />
+          </g>
+          
+          {/* Package Icon */}
+          <g transform="translate(80, 90)" stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M -15,-10 L 0,-20 L 15,-10 L 15,15 L 0,25 L -15,15 Z" fill="rgba(255, 255, 255, 0.9)" />
+            <path d="M -15,-10 L 0,0 L 15,-10" />
+            <path d="M 0,-20 L 0,0" />
+            <path d="M 0,0 L 0,25" />
+            <circle cx="0" cy="-20" r="3" fill="#FF5200" stroke="none" />
+          </g>
+          
+          {/* Transmitting wave effect */}
+          <path d="M 120,90 Q 140,70 160,90 T 200,90" stroke="#FF5200" strokeWidth="2" strokeDasharray="5 5" fill="none" opacity="0.8">
+            <animate attributeName="stroke-dashoffset" values="0;20" dur="1.2s" repeatCount="indefinite" />
+          </path>
+          
+          {/* Motorbike Shifting */}
+          <g transform="translate(210, 80)">
+            <g stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="-10" y="-12" width="12" height="12" rx="2" fill="#FF5200" stroke="none" />
+              <path d="M -5,0 L 5,0 L 12,-10 L 22,-10 L 25,-4 L 18,8" />
+              <path d="M 5,0 L 10,8" />
+              <circle cx="-5" cy="8" r="7" stroke="#FF5200" strokeWidth="2.5" fill="#FFFFFF" />
+              <circle cx="18" cy="8" r="7" stroke="#FF5200" strokeWidth="2.5" fill="#FFFFFF" />
+            </g>
+            <animateTransform 
+              attributeName="transform" 
+              type="translate" 
+              values="200,80; 210,80; 200,80" 
+              dur="4s" 
+              repeatCount="indefinite" 
+            />
+          </g>
+        </svg>
+      )
+    },
+    {
+      title: 'Bưu cục Lấy',
+      shortLabel: 'BC Lấy',
+      subtitle: 'Chặng 2: Tập kết & Phân loại Bưu cục gửi',
+      steps: [
+        { num: 'Bước 3', title: 'Tập kết hàng hoá', desc: 'Các kiện hàng từ đối tác được gom về bưu cục lấy đầu gửi.' },
+        { num: 'Bước 4', title: 'Rã tải & Phân tuyến', desc: 'Nhân viên Xử lý tiến hành mở bao, quét mã bắn kiểm và phân loại hàng theo từng cụm tỉnh thành.' }
+      ],
+      roles: ['nvxl'],
+      svg: (
+        <svg viewBox="0 0 320 180" className="vh-stage-svg" style={{ width: '100%', height: 'auto', display: 'block' }}>
+          <rect width="320" height="180" rx="16" fill="rgba(255, 82, 0, 0.08)" />
+          <g stroke="rgba(255, 82, 0, 0.1)" strokeWidth="1" fill="none">
+            <line x1="20" y1="120" x2="300" y2="120" strokeWidth="2" stroke="rgba(255, 82, 0, 0.2)" />
+            <circle cx="60" cy="70" r="30" />
+            <circle cx="260" cy="70" r="30" />
+          </g>
+          
+          {/* Post Office Station Visual */}
+          <g transform="translate(45, 60)" stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M 0,40 L 0,10 L 15,0 L 30,10 L 30,40 Z" fill="rgba(255, 255, 255, 0.9)" />
+            <rect x="8" y="20" width="14" height="20" fill="#FF5200" stroke="none" />
+            <circle cx="15" cy="-8" r="4" fill="#FF5200" stroke="none" />
+          </g>
+          
+          {/* Sorting Scan Laser beam */}
+          <g transform="translate(160, 50)">
+            <path d="M -30,0 L 30,0" stroke="#FF5200" strokeWidth="2.5" />
+            <polygon points="-25,0 25,0 40,65 -40,65" fill="rgba(255, 82, 0, 0.15)" stroke="none" />
+            <line x1="0" y1="0" x2="0" y2="65" stroke="#FF5200" strokeWidth="1.5" strokeDasharray="3 3">
+              <animate attributeName="opacity" values="0.2;1;0.2" dur="1.5s" repeatCount="indefinite" />
+            </line>
+          </g>
+          
+          {/* Package on sorting belt */}
+          <g transform="translate(160, 105)" stroke="#FF5200" strokeWidth="2" fill="none">
+            <rect x="-16" y="-12" width="32" height="22" rx="3" fill="#FFFFFF" />
+            <line x1="-8" y1="-1" x2="8" y2="-1" strokeWidth="1.5" />
+            <line x1="-8" y1="3" x2="4" y2="3" strokeWidth="1.5" />
+            <circle cx="10" cy="-6" r="2" fill="#FF5200" stroke="none">
+              <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite" />
+            </circle>
+          </g>
+        </svg>
+      )
+    },
+    {
+      title: 'TTTC & TC',
+      shortLabel: 'TTTC',
+      subtitle: 'Chặng 3: Vận chuyển Liên tỉnh & Phân loại tự động tại TTTC',
+      steps: [
+        { num: 'Trung chuyển', title: 'Xe tải trung chuyển', desc: 'Đóng bao tải và vận chuyển kiện hàng lớn kết nối bưu cục đi qua mạng lưới xe liên tỉnh.' },
+        { num: 'Bước 5', title: 'Băng tải phân loại tự động', desc: 'Nhân viên Phân hàng vận hành hệ thống băng tải tự động tại TTTC, chia chọn đơn hàng chính xác tuyệt đối.' }
+      ],
+      roles: ['nvph'],
+      svg: (
+        <svg viewBox="0 0 320 180" className="vh-stage-svg" style={{ width: '100%', height: 'auto', display: 'block' }}>
+          <rect width="320" height="180" rx="16" fill="rgba(255, 82, 0, 0.08)" />
+          <g stroke="rgba(255, 82, 0, 0.1)" strokeWidth="1" fill="none">
+            <path d="M 20,135 Q 160,115 300,135" stroke="rgba(255, 82, 0, 0.2)" strokeWidth="2" />
+            <circle cx="160" cy="50" r="30" />
+          </g>
+          
+          {/* Cargo Truck Travelling */}
+          <g transform="translate(40, 100)">
+            <g stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="-15" y="-18" width="35" height="24" rx="2" fill="#FFFFFF" />
+              <path d="M 20,6 L 28,6 L 33,-2 L 33,-12 L 20,-12 Z" fill="rgba(255, 255, 255, 0.9)" />
+              <rect x="23" y="-8" width="6" height="5" />
+              <circle cx="-5" cy="11" r="5.5" stroke="#FF5200" strokeWidth="2" fill="#FFFFFF" />
+              <circle cx="15" cy="11" r="5.5" stroke="#FF5200" strokeWidth="2" fill="#FFFFFF" />
+              <circle cx="26" cy="11" r="5.5" stroke="#FF5200" strokeWidth="2" fill="#FFFFFF" />
+            </g>
+            <path d="M -24,-12 L -18,-12 M -28,-6 L -20,-6 M -26,0 L -18,0" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round">
+              <animate attributeName="stroke-dashoffset" values="0;10" dur="0.8s" repeatCount="indefinite" />
+            </path>
+          </g>
+          
+          {/* Warehouse Automated Hub Visual */}
+          <g transform="translate(230, 45)" stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="15" cy="15" r="22" strokeDasharray="6 6">
+              <animateTransform attributeName="transform" type="rotate" from="0 15 15" to="360 15 15" dur="6s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="15" cy="15" r="14" />
+            <circle cx="15" cy="15" r="4" fill="#FF5200" stroke="none" />
+          </g>
+          
+          <line x1="160" y1="110" x2="215" y2="70" stroke="#FF5200" strokeWidth="2" strokeDasharray="4 4" opacity="0.6">
+            <animate attributeName="stroke-dashoffset" values="0;15" dur="1s" repeatCount="indefinite" />
+          </line>
+        </svg>
+      )
+    },
+    {
+      title: 'Bưu cục Giao',
+      shortLabel: 'BC Giao',
+      subtitle: 'Chặng 4: Nhận hàng tại đích & Phân tuyến giao',
+      steps: [
+        { num: 'Transit', title: 'Trung chuyển về đích', desc: 'Kiện hàng sau phân loại được vận chuyển về bưu cục giao đích.' },
+        { num: 'Bước 6', title: 'Rã tải & Bàn giao', desc: 'Nhân viên Xử lý bưu cục nhận rã tải, phân chia đơn hàng theo tuyến đường cụ thể của từng NVPTTT.' }
+      ],
+      roles: ['nvxl'],
+      svg: (
+        <svg viewBox="0 0 320 180" className="vh-stage-svg" style={{ width: '100%', height: 'auto', display: 'block' }}>
+          <rect width="320" height="180" rx="16" fill="rgba(255, 82, 0, 0.08)" />
+          <g stroke="rgba(255, 82, 0, 0.1)" strokeWidth="1" fill="none">
+            <circle cx="160" cy="90" r="50" />
+            <line x1="20" y1="90" x2="300" y2="90" strokeWidth="1.5" strokeDasharray="4 8" />
+          </g>
+          
+          {/* Post office target station */}
+          <g transform="translate(220, 60)" stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M 0,40 L 0,10 L 15,0 L 30,10 L 30,40 Z" fill="rgba(255, 255, 255, 0.9)" />
+            <rect x="8" y="20" width="14" height="20" fill="#FF5200" stroke="none" />
+            <path d="M 15,-12 C 11,-12 8,-9 8,-5 C 8,-1 15,4 15,4 C 15,4 22,-1 22,-5 C 22,-9 19,-12 15,-12 Z" fill="#FF5200" stroke="none" />
+            <circle cx="15" cy="-5" r="2.5" fill="#FFFFFF" stroke="none" />
+          </g>
+          
+          {/* Packages distribution */}
+          <g transform="translate(70, 75)" stroke="#FF5200" strokeWidth="1.8" fill="none">
+            <rect x="-10" y="-8" width="20" height="16" rx="2" fill="#FFFFFF" />
+            <rect x="-24" y="6" width="16" height="14" rx="2" fill="#FFFFFF" />
+            <rect x="14" y="6" width="16" height="14" rx="2" fill="#FFFFFF" />
+            <path d="M -4,12 L -12,12" strokeWidth="1" strokeLinecap="round" />
+            <path d="M 4,12 L 12,12" strokeWidth="1" strokeLinecap="round" />
+          </g>
+        </svg>
+      )
+    },
+    {
+      title: 'Giao hàng',
+      shortLabel: 'Giao hàng',
+      subtitle: 'Chặng 5: Giao hàng tận tay & Xác thực POD',
+      steps: [
+        { num: 'Bước 7', title: 'Giao tận nơi', desc: 'NVPTTT xếp hàng lên xe, giao tới địa chỉ người nhận đúng thời gian quy định.' },
+        { num: 'Bước 8', title: 'Hoàn tất & Ký nhận', desc: 'Khách hàng kiểm hàng, ký xác nhận. NVPTTT chụp ảnh POD gửi lên hệ thống và hoàn thành đơn hàng.' }
+      ],
+      roles: ['nvpttt'],
+      svg: (
+        <svg viewBox="0 0 320 180" className="vh-stage-svg" style={{ width: '100%', height: 'auto', display: 'block' }}>
+          <rect width="320" height="180" rx="16" fill="rgba(255, 82, 0, 0.08)" />
+          <g stroke="rgba(255, 82, 0, 0.1)" strokeWidth="1" fill="none">
+            <circle cx="240" cy="90" r="45" />
+            <circle cx="80" cy="90" r="35" />
+          </g>
+          
+          {/* Shipper Moto */}
+          <g transform="translate(60, 80)" stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="-8" y="-12" width="10" height="10" rx="1" fill="#FF5200" stroke="none" />
+            <path d="M -4,0 L 5,0 L 10,-8 L 18,-8" />
+            <circle cx="-4" cy="6" r="5" stroke="#FF5200" strokeWidth="2" fill="#FFFFFF" />
+            <circle cx="14" cy="6" r="5" stroke="#FF5200" strokeWidth="2" fill="#FFFFFF" />
+            <path d="M -16,4 Q -10,-2 -4,4" strokeWidth="1.5" strokeDasharray="3 3">
+              <animate attributeName="stroke-dashoffset" values="0;10" dur="0.8s" repeatCount="indefinite" />
+            </path>
+          </g>
+          
+          {/* Smart phone screen success */}
+          <g transform="translate(230, 50)" stroke="#FF5200" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="-14" y="-5" width="28" height="52" rx="4" fill="#FFFFFF" />
+            <line x1="-4" y1="2" x2="4" y2="2" strokeWidth="1" />
+            <circle cx="0" cy="24" r="7" fill="rgba(255, 82, 0, 0.1)" />
+            <path d="M -3,24 L -1,26 L 3,21" strokeWidth="1.8" />
+            <circle cx="0" cy="42" r="2.5" />
+          </g>
+        </svg>
+      )
+    }
+  ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -868,39 +1099,44 @@ export default function KhoiThiTruongPage() {
           }
 
           .vh-hero-section {
-            height: 60vh;
-            min-height: 420px;
+            height: 45vh;
+            min-height: 320px;
           }
           .vh-hero-hud-title {
-            top: 88px;
+            top: 80px;
             left: 20px;
           }
           .vh-hud-line {
             display: none;
           }
           .vh-hud-main-title {
-            font-size: 24px !important;
+            font-size: 22px !important;
+          }
+          .vh-hud-badge {
+            padding: 4px 10px;
+            font-size: 9px;
           }
           .vh-slide-item {
-            padding: 40px 16px 80px;
+            padding: 30px 12px 50px;
           }
           .vh-slide-content {
-            padding: 20px;
-            max-width: 100%;
-            margin: 0 10px 10px;
+            padding: 16px;
+            max-width: calc(100% - 24px);
+            margin: 0 12px 12px;
             border-radius: 16px;
           }
           .vh-slider-title {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
+            margin-bottom: 6px;
           }
           .vh-slider-desc {
-            font-size: 13px;
+            font-size: 12.5px;
           }
           .vh-slider-counter {
             display: none;
           }
           .vh-slider-dots {
-            bottom: 24px;
+            bottom: 18px;
           }
           .vh-slider-btn {
             display: none;
@@ -930,6 +1166,247 @@ export default function KhoiThiTruongPage() {
           .vh-page {
             padding: 0 0 80px;
             gap: 80px;
+          }
+
+          /* Mobile interactive workflow stepper map */
+          .vh-mobile-step-map {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            margin: 10px 0 24px;
+            padding: 0 4px;
+          }
+
+          .vh-step-line-bg {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            height: 3px;
+            background: rgba(255, 82, 0, 0.1);
+            z-index: 1;
+          }
+
+          .vh-step-line-fill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            height: 3px;
+            background: #FF5200;
+            z-index: 2;
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+          }
+
+          .vh-step-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+            flex: 1;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            font-family: inherit;
+          }
+
+          .vh-step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            border: 2px solid rgba(255, 82, 0, 0.3);
+            color: #3D3D3D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+          }
+
+          .vh-step-node:active .vh-step-circle {
+            transform: scale(0.9);
+          }
+
+          .vh-step-node-active .vh-step-circle {
+            background: #FF5200;
+            border-color: #FF5200;
+            color: #FFFFFF;
+            box-shadow: 0 0 15px rgba(255, 82, 0, 0.4);
+          }
+
+          .vh-step-node-label {
+            font-family: 'Exo', sans-serif !important;
+            font-size: 10px;
+            font-weight: 800;
+            color: #666666;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+            transition: color 0.3s ease;
+          }
+
+          .vh-step-node-active .vh-step-node-label {
+            color: #FF5200;
+            font-weight: 900;
+          }
+
+          /* Mobile stage card visualizer */
+          .vh-mobile-stage-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 12px 30px rgba(255, 82, 0, 0.04);
+            padding: 24px 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            text-align: left;
+          }
+
+          @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+
+          .vh-stage-card-header {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+          }
+
+          .vh-stage-card-tag {
+            font-size: 10px;
+            font-weight: 800;
+            color: #FF5200;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+          }
+
+          .vh-stage-card-title {
+            font-family: 'Exo', sans-serif !important;
+            font-weight: 900 !important;
+            font-size: 20px;
+            color: #3D3D3D !important;
+            margin: 0;
+          }
+
+          .vh-stage-illustration-box {
+            width: 100%;
+            background: #FFF7F5;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 82, 0, 0.08);
+            overflow: hidden;
+          }
+
+          .vh-stage-svg {
+            width: 100%;
+            max-height: 160px;
+          }
+
+          .vh-stage-steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+          }
+
+          .vh-stage-step-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+          }
+
+          .vh-stage-step-num-badge {
+            background: rgba(255, 82, 0, 0.1);
+            color: #FF5200;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-top: 2px;
+            letter-spacing: 0.03em;
+          }
+
+          .vh-stage-step-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+          }
+
+          .vh-stage-step-title {
+            font-family: 'Exo', sans-serif !important;
+            font-weight: 800 !important;
+            font-size: 15px;
+            color: #3D3D3D !important;
+            margin: 0;
+          }
+
+          .vh-stage-step-desc {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #666666 !important;
+            margin: 0;
+          }
+
+          .vh-stage-roles-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+          }
+
+          .vh-stage-roles-title {
+            font-family: 'Exo', sans-serif !important;
+            font-weight: 800 !important;
+            font-size: 12px;
+            color: #3D3D3D !important;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin: 0;
+          }
+
+          .vh-stage-roles-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+          }
+
+          .vh-stage-role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #FFFFFF;
+            border: 1.5px solid #FF5200;
+            color: #FF5200 !important;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(255, 82, 0, 0.05);
+          }
+
+          .vh-stage-role-badge:active {
+            background: #FF5200;
+            color: #FFFFFF !important;
+            transform: scale(0.96);
           }
         }
 
@@ -1830,139 +2307,70 @@ export default function KhoiThiTruongPage() {
             </div>
 
             <div className="mobile-only" style={{ width: '100%' }}>
-              <div className="vh-mobile-timeline">
-                {/* Step 1: Đối tác */}
-                <div className="vh-timeline-item">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon">🤝</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">BƯỚC 1</div>
-                    <h4 className="vh-timeline-title">Đối tác / Người gửi</h4>
-                    <p className="vh-timeline-desc">Đối tác chuẩn bị hàng hóa và gửi yêu cầu giao hàng trên hệ thống.</p>
-                  </div>
+              {/* Stepper progress mini-map */}
+              <div className="vh-mobile-step-map">
+                <div className="vh-step-line-bg" />
+                <div 
+                  className="vh-step-line-fill" 
+                  style={{ width: `${(activeStageIndex / (stages.length - 1)) * 100}%` }}
+                />
+                {stages.map((stage, idx) => (
+                  <button
+                    key={idx}
+                    className={`vh-step-node ${idx === activeStageIndex ? 'vh-step-node-active' : ''}`}
+                    onClick={() => setActiveStageIndex(idx)}
+                    aria-label={`Go to stage ${stage.title}`}
+                  >
+                    <div className="vh-step-circle">
+                      {idx + 1}
+                    </div>
+                    <div className="vh-step-node-label">{stage.shortLabel}</div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Active Stage Details Card */}
+              <div className="vh-mobile-stage-card" key={activeStageIndex}>
+                <div className="vh-stage-card-header">
+                  <div className="vh-stage-card-tag">{stages[activeStageIndex].subtitle}</div>
+                  <h3 className="vh-stage-card-title">{stages[activeStageIndex].title}</h3>
                 </div>
 
-                {/* Step 2: Lấy hàng (NVPTTT) */}
-                <div className="vh-timeline-item">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvpttt')}>🏍️</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">BƯỚC 2</div>
-                    <h4 className="vh-timeline-title">Lấy hàng & Vận chuyển</h4>
-                    <p className="vh-timeline-desc">Nhân viên Phát triển Thị trường tiếp nhận yêu cầu và đi lấy hàng từ Đối tác.</p>
-                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvpttt')}>
-                      Vai trò: NVPTTT <span>ℹ️</span>
-                    </button>
-                  </div>
+                {/* Inline SVG Illustration */}
+                <div className="vh-stage-illustration-box">
+                  {stages[activeStageIndex].svg}
                 </div>
 
-                {/* Step 3: Bưu cục Lấy */}
-                <div className="vh-timeline-item">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvxl')}>🏬</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">BƯỚC 3</div>
-                    <h4 className="vh-timeline-title">Bưu cục Lấy</h4>
-                    <p className="vh-timeline-desc">Hàng được tập kết về bưu cục lấy. Nhân viên xử lý tiếp nhận, rã tải và chuẩn bị đóng kiện trung chuyển.</p>
-                    <div className="vh-timeline-role-buttons">
-                      <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvxl')}>
-                        Vai trò: NVXL <span>ℹ️</span>
-                      </button>
+                {/* Sub-steps of this stage */}
+                <div className="vh-stage-steps-list">
+                  {stages[activeStageIndex].steps.map((step, idx) => (
+                    <div key={idx} className="vh-stage-step-item">
+                      <div className="vh-stage-step-num-badge">{step.num}</div>
+                      <div className="vh-stage-step-content">
+                        <h4 className="vh-stage-step-title">{step.title}</h4>
+                        <p className="vh-stage-step-desc">{step.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Related Roles Drawer Link Trigger Badges */}
+                {stages[activeStageIndex].roles && stages[activeStageIndex].roles.length > 0 && (
+                  <div className="vh-stage-roles-flex">
+                    <h4 className="vh-stage-roles-title">Vai trò liên quan:</h4>
+                    <div className="vh-stage-roles-list">
+                      {stages[activeStageIndex].roles.map((roleKey) => (
+                        <button
+                          key={roleKey}
+                          className="vh-stage-role-badge"
+                          onClick={() => setActiveMobileRole(roleKey as 'nvxl' | 'nvpttt' | 'nvph')}
+                        >
+                          {roleData[roleKey as keyof typeof roleData].name} <span>ℹ️</span>
+                        </button>
+                      ))}
                     </div>
                   </div>
-                </div>
-
-                {/* Step 4: Xe tải Trung chuyển 1 */}
-                <div className="vh-timeline-item vh-timeline-transit">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon">🚚</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">TRUNG CHUYỂN</div>
-                    <h4 className="vh-timeline-title">Vận chuyển Liên tỉnh</h4>
-                    <p className="vh-timeline-desc">Hệ thống xe tải vận chuyển các kiện hàng lớn kết nối bưu cục về Kho trung chuyển.</p>
-                  </div>
-                </div>
-
-                {/* Step 5: Trung tâm Trung chuyển */}
-                <div className="vh-timeline-item">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvph')}>⚙️</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">BƯỚC 4</div>
-                    <h4 className="vh-timeline-title">Trung tâm Phân loại (TTTC)</h4>
-                    <p className="vh-timeline-desc">Nhân viên Phân hàng vận hành hệ thống băng tải tự động hóa, chia chọn hàng trăm ngàn đơn mỗi giờ.</p>
-                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvph')}>
-                      Vai trò: NVPH <span>ℹ️</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Step 6: Xe tải Trung chuyển 2 */}
-                <div className="vh-timeline-item vh-timeline-transit">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon">🚚</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">TRUNG CHUYỂN</div>
-                    <h4 className="vh-timeline-title">Vận chuyển Kiện hàng phân loại</h4>
-                    <p className="vh-timeline-desc">Hệ thống xe tải chở hàng sau khi chia chọn về bưu cục giao đích.</p>
-                  </div>
-                </div>
-
-                {/* Step 7: Bưu cục Giao */}
-                <div className="vh-timeline-item">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvxl')}>🏬</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">BƯỚC 5</div>
-                    <h4 className="vh-timeline-title">Bưu cục Giao</h4>
-                    <p className="vh-timeline-desc">Nhân viên Xử lý tại bưu cục giao tiếp nhận, rã tải, phân loại tuyến và bàn giao đơn cho NVPTTT.</p>
-                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvxl')}>
-                      Vai trò: NVXL <span>ℹ️</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Step 8: Giao hàng & POD */}
-                <div className="vh-timeline-item">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvpttt')}>🏍️</div>
-                    <div className="vh-timeline-line" />
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">BƯỚC 6</div>
-                    <h4 className="vh-timeline-title">Giao hàng & Hoàn tất POD</h4>
-                    <p className="vh-timeline-desc">NVPTTT nhận hàng giao và giao đến tận tay khách hàng nhận, cập nhật trạng thái POD.</p>
-                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvpttt')}>
-                      Vai trò: NVPTTT <span>ℹ️</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Step 9: Khách hàng nhận */}
-                <div className="vh-timeline-item">
-                  <div className="vh-timeline-icon-wrapper">
-                    <div className="vh-timeline-icon">🏠</div>
-                  </div>
-                  <div className="vh-timeline-content">
-                    <div className="vh-timeline-tag">BƯỚC 7</div>
-                    <h4 className="vh-timeline-title">Khách hàng / Người nhận</h4>
-                    <p className="vh-timeline-desc">Hoàn tất giao đơn hàng, khách hàng ký nhận và thanh toán tiền COD.</p>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </section>
