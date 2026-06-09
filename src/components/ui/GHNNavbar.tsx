@@ -43,8 +43,6 @@ const technicalHrefs = [
 export default function GHNNavbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [openMobileMenu, setOpenMobileMenu] = useState<string | null>(null);
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
 
   // Auto-switch mode based on current page
@@ -114,13 +112,13 @@ export default function GHNNavbar() {
           display: flex !important;
           align-items: center !important;
           gap: 8px !important;
+          height: 38px !important;
         }
         .ghn-logo img {
-          height: 180px !important;
+          height: 38px !important;
           width: auto !important;
           display: block !important;
           object-fit: contain !important;
-          transform: translateY(8px) !important;
         }
 
         /* Center nav */
@@ -468,7 +466,26 @@ export default function GHNNavbar() {
 
         @media (max-width: 1024px) {
           .ghn-navbar { display: none !important; }
-          .ghn-mobile-header { display: flex !important; }
+          .ghn-mobile-header {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 0 16px !important;
+            height: 56px !important;
+          }
+          .ghn-mobile-header .ghn-logo {
+            display: flex !important;
+            align-items: center !important;
+            height: 34px !important;
+            text-decoration: none !important;
+            flex-shrink: 0 !important;
+          }
+          .ghn-mobile-header .ghn-logo img {
+            height: 34px !important;
+            width: auto !important;
+            display: block !important;
+            object-fit: contain !important;
+          }
           .ghn-mobile-mode-bar {
             display: block;
             position: sticky;
@@ -582,15 +599,8 @@ export default function GHNNavbar() {
 
       {/* ── Mobile Header ── */}
       <div className="ghn-mobile-header">
-        <button className="ghn-hamburger" onClick={() => setDrawerOpen(true)} aria-label="Mở menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </button>
         <Link href="/homepage" className="ghn-logo">
-          <img src="/Learning GHN dam.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
+          <img src="/Learning GHN dam.png" alt="GHN Learning" />
         </Link>
         
         {/* Toggle Mode Button on top right */}
@@ -617,7 +627,7 @@ export default function GHNNavbar() {
             <polyline points="16 18 22 12 16 6"/>
             <polyline points="8 6 2 12 8 18"/>
           </svg>
-          {navMode === 'main' ? 'Technical' : 'General'}
+          {navMode === 'main' ? 'Technical Skills' : 'Onboarding'}
         </button>
       </div>
 
@@ -712,82 +722,6 @@ export default function GHNNavbar() {
                   )}
                 </div>
               ))}
-        </div>
-      </div>
-
-      {/* ── Mobile Overlay ── */}
-      <div className={`ghn-overlay${drawerOpen ? ' open' : ''}`} onClick={() => setDrawerOpen(false)} />
-
-      {/* ── Mobile Drawer ── */}
-      <div className={`ghn-drawer${drawerOpen ? ' open' : ''}`}>
-        <div className="ghn-drawer-header">
-          <Link href="/homepage" className="ghn-logo" onClick={() => setDrawerOpen(false)}>
-            <img src="/Learning GHN dam.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
-          </Link>
-          <button className="ghn-drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Đóng menu">✕</button>
-        </div>
-
-        <nav className="ghn-drawer-nav">
-          {navMode === 'main'
-            ? mainNavItems.map((item) => (
-                <Link key={item.href} href={item.href}
-                  className={`ghn-drawer-link${isActive(item.href) ? ' active' : ''}`}
-                  onClick={() => setDrawerOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))
-            : technicalNavItems.map((item) => (
-                <div key={item.label}>
-                  <div
-                    className={`ghn-drawer-group-toggle${isActive(item.defaultHref) || isDropdownActive(item.children) ? ' active' : ''}`}
-                    style={{ padding: '0 20px 0 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                  >
-                    <Link
-                      href={item.defaultHref}
-                      style={{ 
-                        flexGrow: 1, 
-                        borderLeft: 'none', 
-                        padding: '13px 20px', 
-                        margin: 0,
-                        fontWeight: 600,
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: '15px',
-                        color: 'inherit',
-                        textDecoration: 'none'
-                      }}
-                      onClick={() => setDrawerOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                    <div
-                      onClick={() => setOpenMobileMenu(openMobileMenu === item.label ? null : item.label)}
-                      style={{ padding: '13px 20px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                        style={{ transform: openMobileMenu === item.label ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}>
-                        <path d="m6 9 6 6 6-6"/>
-                      </svg>
-                    </div>
-                  </div>
-                  {openMobileMenu === item.label && (
-                    <div className="ghn-drawer-submenu">
-                      {item.children.map((child) => (
-                        <Link key={child.href} href={child.href}
-                          className={isActive(child.href) ? 'active' : ''}
-                          onClick={() => setDrawerOpen(false)}
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-        </nav>
-
-        <div className="ghn-drawer-search">
-          <input type="text" placeholder="Tìm kiếm khóa học..." />
         </div>
       </div>
 
