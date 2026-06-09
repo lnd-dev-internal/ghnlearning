@@ -112,10 +112,10 @@ export default function GHNNavbar() {
           display: flex !important;
           align-items: center !important;
           gap: 8px !important;
-          height: 38px !important;
+          height: 52px !important;
         }
         .ghn-logo img {
-          height: 38px !important;
+          height: 52px !important;
           width: auto !important;
           display: block !important;
           object-fit: contain !important;
@@ -476,12 +476,12 @@ export default function GHNNavbar() {
           .ghn-mobile-header .ghn-logo {
             display: flex !important;
             align-items: center !important;
-            height: 34px !important;
+            height: 44px !important;
             text-decoration: none !important;
             flex-shrink: 0 !important;
           }
           .ghn-mobile-header .ghn-logo img {
-            height: 34px !important;
+            height: 44px !important;
             width: auto !important;
             display: block !important;
             object-fit: contain !important;
@@ -496,6 +496,7 @@ export default function GHNNavbar() {
             border-bottom: 1px solid rgba(0,0,0,0.08);
             box-sizing: border-box;
             padding: 4px 8px;
+            overflow: visible !important;
           }
           .ghn-mobile-nav-links {
             display: flex;
@@ -503,11 +504,7 @@ export default function GHNNavbar() {
             align-items: center;
             gap: 8px;
             width: 100%;
-            overflow-x: auto;
-            scrollbar-width: none;
-          }
-          .ghn-mobile-nav-links::-webkit-scrollbar {
-            display: none;
+            overflow: visible !important;
           }
           .ghn-mobile-nav-link {
             font-family: 'Inter', sans-serif !important;
@@ -515,7 +512,7 @@ export default function GHNNavbar() {
             font-size: 13px !important;
             color: #3D3D3D !important;
             text-decoration: none !important;
-            padding: 8px 12px;
+            padding: 8px 10px !important;
             border-bottom: 2px solid transparent;
             transition: all 0.2s;
             white-space: nowrap;
@@ -530,7 +527,7 @@ export default function GHNNavbar() {
       {/* ── Desktop Navbar ── */}
       <nav className="ghn-navbar">
         <Link href="/homepage" className="ghn-logo">
-          <img src="/Learning GHN dam.png" alt="GHN Learning" />
+          <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
         </Link>
 
         {/* Center — animated swap */}
@@ -600,7 +597,7 @@ export default function GHNNavbar() {
       {/* ── Mobile Header ── */}
       <div className="ghn-mobile-header">
         <Link href="/homepage" className="ghn-logo">
-          <img src="/Learning GHN dam.png" alt="GHN Learning" />
+          <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
         </Link>
         
         {/* Toggle Mode Button on top right */}
