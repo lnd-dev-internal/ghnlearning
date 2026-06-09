@@ -629,7 +629,7 @@ export default function GHNNavbar() {
       </div>
 
       {/* ── Mobile Top Navigation Bar (Horizontal Tab/Menu) ── */}
-      <div className="ghn-mobile-mode-bar">
+      <div className="ghn-mobile-mode-bar" style={{ zIndex: activeMobileDropdown ? 150 : 99 }}>
         <div className="ghn-mobile-nav-links">
           {navMode === 'main'
             ? mainNavItems.map((item) => (
