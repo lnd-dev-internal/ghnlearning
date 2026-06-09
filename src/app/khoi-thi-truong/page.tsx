@@ -68,6 +68,7 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
 export default function KhoiThiTruongPage() {
   const [mounted, setMounted] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [activeMobileRole, setActiveMobileRole] = useState<'nvxl' | 'nvpttt' | 'nvph' | null>(null);
 
   const [tooltip, setTooltip] = useState<{
     visible: boolean;
@@ -849,11 +850,26 @@ export default function KhoiThiTruongPage() {
         }
 
 
+        /* Visibility helpers */
+        .desktop-only {
+          display: block;
+        }
+        .mobile-only {
+          display: none;
+        }
+
         /* Responsive overrides */
         @media (max-width: 968px) {
+          .desktop-only {
+            display: none !important;
+          }
+          .mobile-only {
+            display: block !important;
+          }
+
           .vh-hero-section {
-            height: 70vh;
-            min-height: 520px;
+            height: 60vh;
+            min-height: 420px;
           }
           .vh-hero-hud-title {
             top: 88px;
@@ -866,17 +882,19 @@ export default function KhoiThiTruongPage() {
             font-size: 24px !important;
           }
           .vh-slide-item {
-            padding: 40px 20px 80px;
+            padding: 40px 16px 80px;
           }
           .vh-slide-content {
-            padding: 24px;
+            padding: 20px;
             max-width: 100%;
+            margin: 0 10px 10px;
+            border-radius: 16px;
           }
           .vh-slider-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
           }
           .vh-slider-desc {
-            font-size: 13.5px;
+            font-size: 13px;
           }
           .vh-slider-counter {
             display: none;
@@ -887,67 +905,395 @@ export default function KhoiThiTruongPage() {
           .vh-slider-btn {
             display: none;
           }
-          .vh-accordion {
-            flex-direction: column;
-            height: auto;
-            gap: 16px;
-            margin-top: 8px;
+          
+          /* Stats Grid */
+          .vh-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
           }
-          .vh-accordion-item {
-            flex: none;
-            width: 100%;
-            height: 120px;
-            transition: height 0.5s cubic-bezier(0.25, 1, 0.2, 1);
+          .vh-stat-card {
+            padding: 20px 16px !important;
+            gap: 6px !important;
           }
-          .vh-accordion-item:hover {
-            flex: none;
-            height: 340px;
+          .vh-stat-num {
+            font-size: 26px !important;
           }
-          .vh-accordion-img {
-            opacity: 1 !important;
+          .vh-stat-label {
+            font-size: 11px !important;
           }
-          .vh-accordion-header {
-            padding: 8px 16px;
-            gap: 8px;
+
+          .vh-network-visual {
+            padding: 24px 16px !important;
+            border-radius: 16px !important;
           }
-          .vh-accordion-item .vh-accordion-header {
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(0deg);
-          }
-          .vh-accordion-item:hover .vh-accordion-header {
-            top: 20px;
-            bottom: auto;
-            left: 20px;
-            transform: translate(0, 0) rotate(0deg);
-          }
-          .vh-accordion-divider {
-            height: 12px;
-          }
-          .vh-accordion-title {
-            font-size: 14px;
-          }
-          .vh-accordion-item:hover .vh-accordion-title {
-            font-size: 16px;
-          }
-          .vh-accordion-body {
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            padding: 16px;
-            gap: 12px;
-          }
-          .vh-accordion-desc {
-            font-size: 13px;
-          }
-          .vh-expanded-btn {
-            height: 40px;
-            padding: 0 20px;
-            font-size: 12px;
-          }
+
           .vh-page {
             padding: 0 0 80px;
+            gap: 80px;
           }
+        }
+
+        /* Mobile-only workflow timeline styles */
+        .vh-mobile-timeline {
+          display: flex;
+          flex-direction: column;
+          gap: 0px;
+          padding: 8px 0;
+          width: 100%;
+        }
+
+        .vh-timeline-item {
+          display: flex;
+          gap: 20px;
+          position: relative;
+        }
+
+        .vh-timeline-icon-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 48px;
+          flex-shrink: 0;
+        }
+
+        .vh-timeline-icon {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: #FFFFFF;
+          border: 1.5px solid #FF5200;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20px;
+          box-shadow: 0 4px 12px rgba(255, 82, 0, 0.1);
+          z-index: 2;
+          transition: all 0.2s ease;
+        }
+
+        .vh-timeline-role-icon {
+          cursor: pointer;
+          background: #FFF7F5;
+        }
+
+        .vh-timeline-role-icon:active {
+          transform: scale(0.92);
+          background: #FF5200;
+          color: #FFF;
+        }
+
+        .vh-timeline-line {
+          width: 2px;
+          flex-grow: 1;
+          background: rgba(255, 82, 0, 0.15);
+          margin: 4px 0;
+          z-index: 1;
+        }
+
+        .vh-timeline-content {
+          padding-bottom: 32px;
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+        }
+
+        .vh-timeline-tag {
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          color: #FF5200;
+          margin-bottom: 4px;
+          text-transform: uppercase;
+        }
+
+        .vh-timeline-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800 !important;
+          font-size: 17px;
+          color: #3D3D3D !important;
+          margin: 0 0 6px;
+        }
+
+        .vh-timeline-desc {
+          font-size: 13px;
+          line-height: 1.5;
+          color: #666666 !important;
+          margin: 0 0 12px;
+        }
+
+        .vh-timeline-role-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: #FFFFFF;
+          border: 1px solid #FF5200;
+          color: #FF5200 !important;
+          font-size: 12px;
+          font-weight: 700;
+          padding: 6px 14px;
+          border-radius: 20px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          box-shadow: 0 2px 6px rgba(255, 82, 0, 0.05);
+        }
+
+        .vh-timeline-role-btn:active {
+          background: #FF5200;
+          color: #FFFFFF !important;
+          transform: scale(0.97);
+        }
+
+        .vh-timeline-role-buttons {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .vh-timeline-transit .vh-timeline-icon {
+          border-color: #006FAD;
+          box-shadow: 0 4px 12px rgba(0, 111, 173, 0.1);
+        }
+
+        .vh-timeline-transit .vh-timeline-line {
+          background: rgba(0, 111, 173, 0.15);
+        }
+
+        .vh-timeline-transit .vh-timeline-tag {
+          color: #006FAD;
+        }
+
+        /* Mobile Slide-up Drawer/Modal Styles */
+        .vh-drawer-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          z-index: 1000;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          align-items: flex-end;
+        }
+
+        .vh-drawer-overlay.active {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .vh-mobile-drawer {
+          width: 100%;
+          background: #FFFFFF;
+          border-radius: 24px 24px 0 0;
+          box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+          transform: translateY(100%);
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          overflow: hidden;
+        }
+
+        .vh-mobile-drawer.active {
+          transform: translateY(0);
+        }
+
+        .vh-drawer-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 12px 16px 8px;
+          position: relative;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .vh-drawer-bar {
+          width: 40px;
+          height: 4px;
+          background: #E0E0E0;
+          border-radius: 2px;
+          margin-bottom: 8px;
+        }
+
+        .vh-drawer-close {
+          position: absolute;
+          right: 16px;
+          top: 10px;
+          background: #F0F0F0;
+          border: none;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          font-size: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: #666;
+        }
+
+        .vh-drawer-body {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .vh-drawer-img {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+          border-bottom: 1.5px solid rgba(255, 82, 0, 0.1);
+        }
+
+        .vh-drawer-content-area {
+          padding: 24px 20px 40px;
+          text-align: left;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .vh-drawer-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 900 !important;
+          font-size: 20px;
+          color: #FF5200 !important;
+          margin: 0;
+          text-transform: uppercase;
+          letter-spacing: 0.02em;
+        }
+
+        .vh-drawer-desc {
+          font-size: 14px;
+          line-height: 1.6;
+          color: #4A4A4A !important;
+          margin: 0;
+        }
+
+        .vh-drawer-action-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          height: 48px;
+          border-radius: 24px;
+          background: #FF5200;
+          color: #FFFFFF !important;
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 700;
+          font-size: 13px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          text-decoration: none !important;
+          margin-top: 12px;
+          transition: all 0.2s ease;
+          box-shadow: 0 4px 15px rgba(255, 82, 0, 0.2);
+          border: none;
+        }
+
+        .vh-drawer-action-btn:active {
+          background: #E04800;
+          transform: scale(0.98);
+        }
+
+        /* Mobile Role Card list styles */
+        .vh-mobile-roles-list {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          width: 100%;
+          margin-top: 16px;
+        }
+
+        .vh-mobile-role-card {
+          background: #FFFFFF;
+          border-radius: 20px;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          overflow: hidden;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+          display: flex;
+          flex-direction: column;
+        }
+
+        .vh-mobile-role-img-container {
+          position: relative;
+          width: 100%;
+          height: 160px;
+          overflow: hidden;
+        }
+
+        .vh-mobile-role-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .vh-mobile-role-num-badge {
+          position: absolute;
+          top: 16px;
+          left: 16px;
+          background: rgba(17, 17, 21, 0.75);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #FF5200;
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 800;
+          font-size: 11px;
+          padding: 4px 10px;
+          border-radius: 12px;
+          letter-spacing: 0.1em;
+        }
+
+        .vh-mobile-role-info {
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+          gap: 8px;
+        }
+
+        .vh-mobile-role-title {
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 900 !important;
+          font-size: 18px;
+          color: #3D3D3D !important;
+          margin: 0;
+          text-transform: uppercase;
+        }
+
+        .vh-mobile-role-desc {
+          font-size: 13px;
+          line-height: 1.55;
+          color: #666666 !important;
+          margin: 0;
+        }
+
+        .vh-mobile-role-btn-cta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          height: 40px;
+          padding: 0 20px;
+          border-radius: 20px;
+          background: #FF5200;
+          color: #FFFFFF !important;
+          font-family: 'Exo', sans-serif !important;
+          font-weight: 700;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          text-decoration: none !important;
+          margin-top: 12px;
+          transition: all 0.2s ease;
+          box-shadow: 0 4px 12px rgba(255, 82, 0, 0.15);
+        }
+
+        .vh-mobile-role-btn-cta:active {
+          background: #E04800;
+          transform: scale(0.97);
         }
 
         /* Tooltip styles */
@@ -1093,392 +1439,531 @@ export default function KhoiThiTruongPage() {
               <h2 className="vh-sec-title">Quy trình vận hành</h2>
               <div className="vh-divider" />
             </div>
-            <div 
-              className="vh-network-visual" 
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', position: 'relative' }}
-              onMouseMove={handleMouseMove}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <h3 style={{ fontFamily: 'Exo', fontWeight: 800, fontSize: '20px', color: '#FF5200', textTransform: 'uppercase', margin: 0 }}>Tích hợp công nghệ mạnh mẽ</h3>
-                <p style={{ fontFamily: 'Exo', fontWeight: 600, fontSize: '13px', color: '#3D3D3D', opacity: 0.85, margin: '4px 0 0' }}>Tối ưu hóa quá trình giao nhận, nâng cao hiệu quả kinh doanh</p>
-              </div>
-              <svg viewBox="0 100 1000 260" style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
-                <defs>
-                  {/* Glowing Core Filter */}
-                  <filter id="core-glow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="6" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                  </filter>
+            <div className="desktop-only" style={{ width: '100%' }}>
+              <div 
+                className="vh-network-visual" 
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', position: 'relative' }}
+                onMouseMove={handleMouseMove}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <h3 style={{ fontFamily: 'Exo', fontWeight: 800, fontSize: '20px', color: '#FF5200', textTransform: 'uppercase', margin: 0 }}>Tích hợp công nghệ mạnh mẽ</h3>
+                  <p style={{ fontFamily: 'Exo', fontWeight: 600, fontSize: '13px', color: '#3D3D3D', opacity: 0.85, margin: '4px 0 0' }}>Tối ưu hóa quá trình giao nhận, nâng cao hiệu quả kinh doanh</p>
+                </div>
+                <svg viewBox="0 100 1000 260" style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
+                  <defs>
+                    {/* Glowing Core Filter */}
+                    <filter id="core-glow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="6" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
 
-                  {/* Core Orange-Yellow Gradient for TTTC and Headers */}
-                  <linearGradient id="warm-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#FF5200" />
-                    <stop offset="50%" stopColor="#F67700" />
-                    <stop offset="100%" stopColor="#F8B200" />
-                  </linearGradient>
+                    {/* Core Orange-Yellow Gradient for TTTC and Headers */}
+                    <linearGradient id="warm-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#FF5200" />
+                      <stop offset="50%" stopColor="#F67700" />
+                      <stop offset="100%" stopColor="#F8B200" />
+                    </linearGradient>
 
-                  {/* Card Gradient Fill */}
-                  <linearGradient id="glass-card-fill" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="rgba(255, 255, 255, 0.95)" />
-                    <stop offset="100%" stopColor="rgba(255, 255, 255, 0.85)" />
-                  </linearGradient>
-                </defs>
+                    {/* Card Gradient Fill */}
+                    <linearGradient id="glass-card-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(255, 255, 255, 0.95)" />
+                      <stop offset="100%" stopColor="rgba(255, 255, 255, 0.85)" />
+                    </linearGradient>
+                  </defs>
 
-                {/* --- Circuit Board Background Tracers (Orange Tracers adjusted to viewBox) --- */}
-                <g stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" fill="none">
-                  <path d="M 50,120 L 150,120 L 170,135" />
-                  <path d="M 120,350 L 220,350 L 240,335" />
-                  <path d="M 850,110 L 930,110 L 950,125" />
-                  <path d="M 400,120 L 500,105 L 600,120" />
-                  <circle cx="50" cy="120" r="2" fill="rgba(255, 82, 0, 0.15)" />
-                  <circle cx="170" cy="135" r="2" fill="rgba(255, 82, 0, 0.15)" />
-                  <circle cx="950" cy="125" r="2" fill="rgba(255, 82, 0, 0.15)" />
-                </g>
-
-                {/* Flowing background tracer pulses */}
-                <path d="M 50,120 L 150,120 L 170,135" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
-                  <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
-                </path>
-                <path d="M 850,110 L 930,110 L 950,125" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
-                  <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
-                </path>
-
-                {/* --- Node Connections & Flowing Pulses (Premium dual trace) --- */}
-                <path d="M 15,235 L 985,235" stroke="rgba(255, 82, 0, 0.12)" strokeWidth="3" fill="none" strokeLinecap="round" />
-                <path d="M 15,235 L 985,235" stroke="url(#warm-gradient)" strokeWidth="1.2" strokeDasharray="8 12" opacity="0.6" fill="none" strokeLinecap="round" />
-
-                {/* Fast-flowing speed line streams */}
-                <path d="M 15,235 L 985,235" stroke="#FF5200" strokeWidth="1.8" strokeDasharray="40 180" fill="none" opacity="0.8">
-                  <animate attributeName="stroke-dashoffset" values="440;0" dur="1.5s" repeatCount="indefinite" />
-                </path>
-                <path d="M 15,235 L 985,235" stroke="#F8B200" strokeWidth="1.2" strokeDasharray="30 150" fill="none" opacity="0.6">
-                  <animate attributeName="stroke-dashoffset" values="0;360" dur="1.2s" repeatCount="indefinite" />
-                </path>
-
-                {/* Moving Data Particles on LTL Paths (Orange to Yellow transition) */}
-                <circle r="4" fill="#F67700">
-                  <animateMotion dur="2.2s" repeatCount="indefinite" path="M 15,235 L 985,235" />
-                </circle>
-                <circle r="3" fill="#F8B200" opacity="0.8">
-                  <animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M 15,235 L 985,235" />
-                </circle>
-
-                {/* --- Tech Sockets / Docking Pulse Nodes --- */}
-                {/* Bưu cục Lấy Entry */}
-                <circle cx="220" cy="235" r="4" fill="#FF5200" />
-                <circle cx="220" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
-                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
-                </circle>
-
-                {/* Bưu cục Lấy Exit */}
-                <circle cx="360" cy="235" r="4" fill="#FF5200" />
-                <circle cx="360" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
-                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
-                </circle>
-
-                {/* Bưu cục Giao Entry */}
-                <circle cx="640" cy="235" r="4" fill="#FF5200" />
-                <circle cx="640" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
-                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
-                </circle>
-
-                {/* Bưu cục Giao Exit */}
-                <circle cx="780" cy="235" r="4" fill="#FF5200" />
-                <circle cx="780" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
-                  <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
-                </circle>
-
-                {/* --- 1. Left Card: Đối tác / Người gửi (Orange and White) --- */}
-                <g transform="translate(0, 0)">
-                  {/* Glass Card Frame */}
-                  <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
-                  
-                  {/* Single large partner circle icon */}
-                  <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
-                  
-                  {/* Handshake/Partner Solid Orange Vector Icon */}
-                  <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="0" cy="-5" r="5" />
-                    <path d="M -12,11 C -12,5 -7,3 0,3 C 7,3 12,5 12,11" />
+                  {/* --- Circuit Board Background Tracers (Orange Tracers adjusted to viewBox) --- */}
+                  <g stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" fill="none">
+                    <path d="M 50,120 L 150,120 L 170,135" />
+                    <path d="M 120,350 L 220,350 L 240,335" />
+                    <path d="M 850,110 L 930,110 L 950,125" />
+                    <path d="M 400,120 L 500,105 L 600,120" />
+                    <circle cx="50" cy="120" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                    <circle cx="170" cy="135" r="2" fill="rgba(255, 82, 0, 0.15)" />
+                    <circle cx="950" cy="125" r="2" fill="rgba(255, 82, 0, 0.15)" />
                   </g>
 
-                  {/* Labels */}
-                  <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">ĐỐI TÁC</text>
-                  <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">/ NGƯỜI GỬI</text>
-                </g>
+                  {/* Flowing background tracer pulses */}
+                  <path d="M 50,120 L 150,120 L 170,135" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
+                    <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
+                  </path>
+                  <path d="M 850,110 L 930,110 L 950,125" stroke="#FF5200" strokeWidth="1.2" strokeDasharray="10 50" fill="none" opacity="0.4">
+                    <animate attributeName="stroke-dashoffset" values="60;0" dur="2s" repeatCount="indefinite" />
+                  </path>
 
-                {/* --- 2. Bưu cục Lấy Card (Orange and White, width=140 - Gap Shrunken) --- */}
-                <g transform="translate(220, 140)">
-                  {/* Card Frame */}
-                  <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
-                  
-                  {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
-                  <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
-                  <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Lấy</text>
+                  {/* --- Node Connections & Flowing Pulses (Premium dual trace) --- */}
+                  <path d="M 15,235 L 985,235" stroke="rgba(255, 82, 0, 0.12)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                  <path d="M 15,235 L 985,235" stroke="url(#warm-gradient)" strokeWidth="1.2" strokeDasharray="8 12" opacity="0.6" fill="none" strokeLinecap="round" />
 
-                  {/* Tiếp nhận capsule */}
-                  <g transform="translate(10, 50)">
-                     <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
-                     <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Tiếp nhận</text>
-                  </g>
+                  {/* Fast-flowing speed line streams */}
+                  <path d="M 15,235 L 985,235" stroke="#FF5200" strokeWidth="1.8" strokeDasharray="40 180" fill="none" opacity="0.8">
+                    <animate attributeName="stroke-dashoffset" values="440;0" dur="1.5s" repeatCount="indefinite" />
+                  </path>
+                  <path d="M 15,235 L 985,235" stroke="#F8B200" strokeWidth="1.2" strokeDasharray="30 150" fill="none" opacity="0.6">
+                    <animate attributeName="stroke-dashoffset" values="0;360" dur="1.2s" repeatCount="indefinite" />
+                  </path>
 
-                  {/* Quản lý Khu vực (AM) capsule */}
-                  <g transform="translate(10, 98)">
-                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
-                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
-                  </g>
-
-                  {/* Nhân viên xử lý capsule */}
-                  <g 
-                    transform="translate(10, 140)"
-                    style={{ cursor: 'pointer' }}
-                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
-                    onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
-                  >
-                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
-                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
-                  </g>
-                </g>
-
-                {/* --- 3. Trung tâm phân loại Core (Sunset Gradient Theme) --- */}
-                <g transform="translate(500, 235)">
-                  {/* Glowing background */}
-                  <circle cx="0" cy="0" r="80" fill="rgba(255, 82, 0, 0.04)" filter="url(#core-glow)" />
-                  
-                  {/* Concentric rotating dash ring 1 */}
-                  <circle cx="0" cy="0" r="100" fill="none" stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" strokeDasharray="3 6" />
-                  
-                  {/* Concentric rotating dash ring 2 (faster rotation) */}
-                  <circle cx="0" cy="0" r="88" fill="none" stroke="#FF5200" strokeWidth="2.2" strokeDasharray="20 40 10 20 40 10" opacity="0.8">
-                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite" />
+                  {/* Moving Data Particles on LTL Paths (Orange to Yellow transition) */}
+                  <circle r="4" fill="#F67700">
+                    <animateMotion dur="2.2s" repeatCount="indefinite" path="M 15,235 L 985,235" />
                   </circle>
-                  
-                  {/* Concentric rotating dash ring 3 (opposite direction - faster rotation) */}
-                  <circle cx="0" cy="0" r="76" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeDasharray="8 8">
-                    <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="5s" repeatCount="indefinite" />
+                  <circle r="3" fill="#F8B200" opacity="0.8">
+                    <animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M 15,235 L 985,235" />
                   </circle>
 
-                  {/* High-tech pulsing waves radiating from the core */}
-                  <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="1.5">
-                    <animate attributeName="r" values="66;95" dur="1.8s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.8;0" dur="1.8s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="0" cy="0" r="66" fill="none" stroke="#F8B200" strokeWidth="1">
-                    <animate attributeName="r" values="66;120" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.5;0" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
+                  {/* --- Tech Sockets / Docking Pulse Nodes --- */}
+                  {/* Bưu cục Lấy Entry */}
+                  <circle cx="220" cy="235" r="4" fill="#FF5200" />
+                  <circle cx="220" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                    <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
                   </circle>
 
-                  {/* Solid inner core using Orange-Yellow Gradient */}
-                  <circle cx="0" cy="0" r="66" fill="url(#warm-gradient)" stroke="#FFFFFF" strokeWidth="1.5" />
-                  <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="2.5" className="vh-node-pulse" />
+                  {/* Bưu cục Lấy Exit */}
+                  <circle cx="360" cy="235" r="4" fill="#FF5200" />
+                  <circle cx="360" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                    <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                  </circle>
 
-                  {/* Core Text Label (TRUNG TÂM TRUNG CHUYỂN at the top) */}
-                  <text x="0" y="-22" fontSize="12" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.1em" opacity="0.9">TRUNG TÂM</text>
-                  <text x="0" y="-5" fontSize="14" fontWeight="900" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" fontStyle="italic" letterSpacing="0.05em">TRUNG CHUYỂN</text>
+                  {/* Bưu cục Giao Entry */}
+                  <circle cx="640" cy="235" r="4" fill="#FF5200" />
+                  <circle cx="640" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                    <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                  </circle>
 
-                  {/* Nhân viên Phân hàng section */}
-                  <g
-                    style={{ cursor: 'pointer' }}
-                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvph' }))}
-                    onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
-                  >
-                    {/* Nhân viên Phân hàng Icon (shifted to center/bottom) */}
-                    <g transform="translate(0, 14)" stroke="#FFFFFF" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.95">
-                      {/* Head / Helmet */}
-                      <circle cx="0" cy="-5" r="4.5" />
-                      <path d="M -4.5,-5 C -4.5,-8 4.5,-8 4.5,-5" fill="#F8B200" stroke="none" />
-                      <path d="M -6,-5 L 6,-5" strokeWidth="1" />
-                      {/* Shoulders */}
-                      <path d="M -9,6 C -9,2 -6,0.5 0,0.5 C 6,0.5 9,2 9,6" />
-                      {/* Package being sorted */}
-                      <rect x="-5" y="6" width="10" height="8" rx="1" stroke="#FFFFFF" strokeWidth="1" fill="#FF5200" />
-                      <path d="M -2.5,10 L 2.5,10" stroke="#FFFFFF" strokeWidth="0.8" />
+                  {/* Bưu cục Giao Exit */}
+                  <circle cx="780" cy="235" r="4" fill="#FF5200" />
+                  <circle cx="780" cy="235" r="4" fill="none" stroke="#FF5200" strokeWidth="1">
+                    <animate attributeName="r" values="4;12" dur="1.5s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite" />
+                  </circle>
+
+                  {/* --- 1. Left Card: Đối tác / Người gửi (Orange and White) --- */}
+                  <g transform="translate(0, 0)">
+                    {/* Glass Card Frame */}
+                    <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                    
+                    {/* Single large partner circle icon */}
+                    <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
+                    
+                    {/* Handshake/Partner Solid Orange Vector Icon */}
+                    <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="0" cy="-5" r="5" />
+                      <path d="M -12,11 C -12,5 -7,3 0,3 C 7,3 12,5 12,11" />
                     </g>
 
-                    {/* Caption Label for the worker */}
-                    <text x="0" y="42" fontSize="10" fontWeight="700" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Nhân viên Phân hàng</text>
-                  </g>
-                </g>
-
-                {/* --- 4. Phát hàng Card (Bưu cục Giao - Orange and White, width=140 - Gap Shrunken) --- */}
-                <g transform="translate(640, 140)">
-                  {/* Card Frame */}
-                  <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
-                  
-                  {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
-                  <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
-                  <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Giao</text>
-
-                  {/* Giao hàng capsule */}
-                  <g transform="translate(10, 50)">
-                    <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
-                    <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Giao hàng</text>
+                    {/* Labels */}
+                    <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">ĐỐI TÁC</text>
+                    <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.03em">/ NGƯỜI GỬI</text>
                   </g>
 
-                  {/* Quản lý Khu vực capsule */}
-                  <g transform="translate(10, 98)">
-                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
-                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
+                  {/* --- 2. Bưu cục Lấy Card (Orange and White, width=140 - Gap Shrunken) --- */}
+                  <g transform="translate(220, 140)">
+                    {/* Card Frame */}
+                    <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                    
+                    {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
+                    <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
+                    <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Lấy</text>
+
+                    {/* Tiếp nhận capsule */}
+                    <g transform="translate(10, 50)">
+                       <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                       <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Tiếp nhận</text>
+                    </g>
+
+                    {/* Quản lý Khu vực (AM) capsule */}
+                    <g transform="translate(10, 98)">
+                      <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                      <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
+                    </g>
+
+                    {/* Nhân viên xử lý capsule */}
+                    <g 
+                      transform="translate(10, 140)"
+                      style={{ cursor: 'pointer' }}
+                      onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
+                      onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                    >
+                      <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                      <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
+                    </g>
                   </g>
 
-                  {/* Nhân viên xử lý capsule */}
+                  {/* --- 3. Trung tâm phân loại Core (Sunset Gradient Theme) --- */}
+                  <g transform="translate(500, 235)">
+                    {/* Glowing background */}
+                    <circle cx="0" cy="0" r="80" fill="rgba(255, 82, 0, 0.04)" filter="url(#core-glow)" />
+                    
+                    {/* Concentric rotating dash ring 1 */}
+                    <circle cx="0" cy="0" r="100" fill="none" stroke="rgba(255, 82, 0, 0.08)" strokeWidth="1" strokeDasharray="3 6" />
+                    
+                    {/* Concentric rotating dash ring 2 (faster rotation) */}
+                    <circle cx="0" cy="0" r="88" fill="none" stroke="#FF5200" strokeWidth="2.2" strokeDasharray="20 40 10 20 40 10" opacity="0.8">
+                      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    {/* Concentric rotating dash ring 3 (opposite direction - faster rotation) */}
+                    <circle cx="0" cy="0" r="76" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.2" strokeDasharray="8 8">
+                      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="5s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* High-tech pulsing waves radiating from the core */}
+                    <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="1.5">
+                      <animate attributeName="r" values="66;95" dur="1.8s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.8;0" dur="1.8s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="0" cy="0" r="66" fill="none" stroke="#F8B200" strokeWidth="1">
+                      <animate attributeName="r" values="66;120" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.5;0" dur="1.8s" begin="0.9s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* Solid inner core using Orange-Yellow Gradient */}
+                    <circle cx="0" cy="0" r="66" fill="url(#warm-gradient)" stroke="#FFFFFF" strokeWidth="1.5" />
+                    <circle cx="0" cy="0" r="66" fill="none" stroke="#FF5200" strokeWidth="2.5" className="vh-node-pulse" />
+
+                    {/* Core Text Label (TRUNG TÂM TRUNG CHUYỂN at the top) */}
+                    <text x="0" y="-22" fontSize="12" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.1em" opacity="0.9">TRUNG TÂM</text>
+                    <text x="0" y="-5" fontSize="14" fontWeight="900" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" fontStyle="italic" letterSpacing="0.05em">TRUNG CHUYỂN</text>
+
+                    {/* Nhân viên Phân hàng section */}
+                    <g
+                      style={{ cursor: 'pointer' }}
+                      onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvph' }))}
+                      onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                    >
+                      {/* Nhân viên Phân hàng Icon (shifted to center/bottom) */}
+                      <g transform="translate(0, 14)" stroke="#FFFFFF" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" opacity="0.95">
+                        {/* Head / Helmet */}
+                        <circle cx="0" cy="-5" r="4.5" />
+                        <path d="M -4.5,-5 C -4.5,-8 4.5,-8 4.5,-5" fill="#F8B200" stroke="none" />
+                        <path d="M -6,-5 L 6,-5" strokeWidth="1" />
+                        {/* Shoulders */}
+                        <path d="M -9,6 C -9,2 -6,0.5 0,0.5 C 6,0.5 9,2 9,6" />
+                        {/* Package being sorted */}
+                        <rect x="-5" y="6" width="10" height="8" rx="1" stroke="#FFFFFF" strokeWidth="1" fill="#FF5200" />
+                        <path d="M -2.5,10 L 2.5,10" stroke="#FFFFFF" strokeWidth="0.8" />
+                      </g>
+
+                      {/* Caption Label for the worker */}
+                      <text x="0" y="42" fontSize="10" fontWeight="700" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Nhân viên Phân hàng</text>
+                    </g>
+                  </g>
+
+                  {/* --- 4. Phát hàng Card (Bưu cục Giao - Orange and White, width=140 - Gap Shrunken) --- */}
+                  <g transform="translate(640, 140)">
+                    {/* Card Frame */}
+                    <rect x="0" y="0" width="140" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                    
+                    {/* Card Header with Top-Only Rounded Corners using Sunset Gradient */}
+                    <path d="M 0,16 A 16,16 0 0,1 16,0 L 124,0 A 16,16 0 0,1 140,16 L 140,36 L 0,36 Z" fill="url(#warm-gradient)" />
+                    <text x="70" y="18" dominantBaseline="central" fontSize="13" fontWeight="800" textAnchor="middle" fill="#FFFFFF" fontFamily="Exo" letterSpacing="0.05em">Bưu cục Giao</text>
+
+                    {/* Giao hàng capsule */}
+                    <g transform="translate(10, 50)">
+                      <rect x="0" y="0" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+                      <text x="60" y="18" dominantBaseline="central" fontSize="12" fontWeight="800" fill="#FF5200" textAnchor="middle" fontFamily="Exo">Giao hàng</text>
+                    </g>
+
+                    {/* Quản lý Khu vực capsule */}
+                    <g transform="translate(10, 98)">
+                      <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                      <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
+                    </g>
+
+                    {/* Nhân viên xử lý capsule */}
+                    <g 
+                      transform="translate(10, 140)"
+                      style={{ cursor: 'pointer' }}
+                      onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
+                      onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                    >
+                      <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
+                      <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
+                    </g>
+                  </g>
+
+                  {/* --- 5. Right Card: Điểm nhận hàng (Orange and White) --- */}
+                  <g transform="translate(875, 0)">
+                    {/* Card Frame */}
+                    <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
+
+                    {/* Single circle icon for Destination */}
+                    <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
+                    
+                    {/* Building Solid Orange Vector Icon */}
+                    <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M -12,1 L 0,-9 L 12,1" />
+                      <path d="M -9,1 L -9,10 L 9,10 L 9,1" />
+                      <rect x="-3" y="5" width="6" height="5" fill="#FF5200" stroke="none" />
+                    </g>
+
+                    {/* Labels */}
+                    <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">KHÁCH HÀNG</text>
+                    <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">/ NGƯỜI NHẬN</text>
+                  </g>
+
+                  {/* --- 6. Floating Motorbike Widget 1 (between Partner and Bưu cục Lấy - Orange) --- */}
                   <g 
-                    transform="translate(10, 140)"
+                    transform="translate(160, 210)"
                     style={{ cursor: 'pointer' }}
-                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
+                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
                     onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
                   >
-                    <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
-                    <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Nhân viên xử lý</text>
+                    {/* Speed trails behind the widget circle */}
+                    <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                    <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                    {/* Motorbike vector icon */}
+                    <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      {/* Rear cargo/delivery box */}
+                      <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
+                      <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
+                      {/* Main Chassis / Body (Futuristic scooter design) */}
+                      <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      {/* Windshield / Front fairing */}
+                      <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      {/* Seat line */}
+                      <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
+                      {/* Front Wheel */}
+                      <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                      <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                      {/* Rear Wheel */}
+                      <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                      <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                    </g>
+                    
+                    {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
+                    <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
+                    <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
                   </g>
-                </g>
 
-                {/* --- 5. Right Card: Điểm nhận hàng (Orange and White) --- */}
-                <g transform="translate(875, 0)">
-                  {/* Card Frame */}
-                  <rect x="15" y="140" width="110" height="190" rx="16" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" />
-
-                  {/* Single circle icon for Destination */}
-                  <circle cx="70" cy="205" r="24" fill="none" stroke="#FF5200" strokeWidth="1.2" />
-                  
-                  {/* Building Solid Orange Vector Icon */}
-                  <g transform="translate(70, 205)" stroke="#FF5200" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M -12,1 L 0,-9 L 12,1" />
-                    <path d="M -9,1 L -9,10 L 9,10 L 9,1" />
-                    <rect x="-3" y="5" width="6" height="5" fill="#FF5200" stroke="none" />
+                  {/* --- 7. Floating Truck Widget 2 (between Bưu cục Lấy and TTTC - Orange Accent) --- */}
+                  <g transform="translate(382, 210)">
+                    {/* Speed trails behind the widget circle */}
+                    <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                    <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                    {/* Truck vector icon in orange */}
+                    <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
+                      <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
+                      <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                      <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                    </g>
                   </g>
 
-                  {/* Labels */}
-                  <text x="70" y="282" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">KHÁCH HÀNG</text>
-                  <text x="70" y="296" fontSize="12" fontWeight="800" fill="#3D3D3D" textAnchor="middle" fontFamily="Exo" letterSpacing="0.05em">/ NGƯỜI NHẬN</text>
-                </g>
-
-                {/* --- 6. Floating Motorbike Widget 1 (between Partner and Bưu cục Lấy - Orange) --- */}
-                <g 
-                  transform="translate(160, 210)"
-                  style={{ cursor: 'pointer' }}
-                  onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
-                  onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
-                >
-                  {/* Speed trails behind the widget circle */}
-                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
-                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
-                  {/* Motorbike vector icon */}
-                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                    {/* Rear cargo/delivery box */}
-                    <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
-                    <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
-                    {/* Main Chassis / Body (Futuristic scooter design) */}
-                    <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    {/* Windshield / Front fairing */}
-                    <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                    {/* Seat line */}
-                    <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
-                    {/* Front Wheel */}
-                    <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
-                    <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
-                    {/* Rear Wheel */}
-                    <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
-                    <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                  {/* --- 8. Floating Truck Widget 3 (between TTTC and Bưu cục Giao - Orange Accent) --- */}
+                  <g transform="translate(594, 210)">
+                    {/* Speed trails behind the widget circle */}
+                    <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                    <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                    {/* Truck vector icon in orange */}
+                    <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
+                      <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
+                      <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                      <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                    </g>
                   </g>
-                  
-                  {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
-                  <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
-                  <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
-                </g>
 
-                {/* --- 7. Floating Truck Widget 2 (between Bưu cục Lấy and TTTC - Orange Accent) --- */}
-                <g transform="translate(382, 210)">
-                  {/* Speed trails behind the widget circle */}
-                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
-                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
-                  {/* Truck vector icon in orange */}
-                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
-                    <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
-                    <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
-                    <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
+                  {/* --- 9. Floating Motorbike Widget 4 (between Bưu cục Giao and Recipient - Orange) --- */}
+                  <g 
+                    transform="translate(823, 210)"
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
+                    onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                  >
+                    {/* Speed trails behind the widget circle */}
+                    <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+                    <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
+                    {/* Motorbike vector icon */}
+                    <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      {/* Rear cargo/delivery box */}
+                      <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
+                      <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
+                      {/* Main Chassis / Body (Futuristic scooter design) */}
+                      <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      {/* Windshield / Front fairing */}
+                      <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      {/* Seat line */}
+                      <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
+                      {/* Front Wheel */}
+                      <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                      <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                      {/* Rear Wheel */}
+                      <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
+                      <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
+                    </g>
+                    
+                    {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
+                    <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
+                    <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
                   </g>
-                </g>
+                </svg>
 
-                {/* --- 8. Floating Truck Widget 3 (between TTTC and Bưu cục Giao - Orange Accent) --- */}
-                <g transform="translate(594, 210)">
-                  {/* Speed trails behind the widget circle */}
-                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
-                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
-                  {/* Truck vector icon in orange */}
-                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M 2,-3 L 5,-3 L 7,-0.5 L 7,3 L 2,3 Z" />
-                    <rect x="-7" y="-4" width="8.5" height="7" rx="0.5" fill="#FF5200" stroke="none" />
-                    <circle cx="-4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
-                    <circle cx="4.5" cy="4" r="1.5" fill="#FF5200" stroke="none" />
-                  </g>
-                </g>
+                {/* High-end floating details tooltip */}
+                {tooltip.visible && tooltip.role && (
+                  <div 
+                    className="vh-diagram-tooltip"
+                    style={{
+                      position: 'absolute',
+                      left: `${tooltip.x > 620 ? tooltip.x - 380 : tooltip.x + 20}px`,
+                      top: `${tooltip.y + 20}px`,
+                      pointerEvents: 'none',
+                      zIndex: 100,
+                    }}
+                  >
+                    <div className="vh-tooltip-content">
+                      <img 
+                        src={roleData[tooltip.role].image} 
+                        alt={roleData[tooltip.role].name} 
+                        className="vh-tooltip-img" 
+                      />
+                      <div className="vh-tooltip-text">
+                        <h4 className="vh-tooltip-title">{roleData[tooltip.role].name}</h4>
+                        <p className="vh-tooltip-desc">{roleData[tooltip.role].function}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
 
-                {/* --- 9. Floating Motorbike Widget 4 (between Bưu cục Giao and Recipient - Orange) --- */}
-                <g 
-                  transform="translate(823, 210)"
-                  style={{ cursor: 'pointer' }}
-                  onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvpttt' }))}
-                  onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
-                >
-                  {/* Speed trails behind the widget circle */}
-                  <path d="M -16,12 L -6,12 M -12,6 L -4,6 M -10,18 L -4,18" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
-                  <circle cx="12" cy="12" r="14" fill="#FFFFFF" stroke="#FF5200" strokeWidth="1.2" style={{ filter: 'drop-shadow(0px 2px 6px rgba(255, 82, 0, 0.15))' }} />
-                  {/* Motorbike vector icon */}
-                  <g transform="translate(12, 12)" stroke="#FF5200" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                    {/* Rear cargo/delivery box */}
-                    <rect x="-9" y="-3.5" width="5.5" height="5.5" rx="1.2" fill="#FF5200" stroke="none" />
-                    <line x1="-8" y1="-1" x2="-4.5" y2="-1" stroke="#FFFFFF" strokeWidth="0.8" />
-                    {/* Main Chassis / Body (Futuristic scooter design) */}
-                    <path d="M -6.5,2 L -3.5,2 Q 0,2 1.5,-1.5 L 4.5,-2 L 5.5,1 L 3.5,5" stroke="#FF5200" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    {/* Windshield / Front fairing */}
-                    <path d="M 2,-1.5 L 4.5,-5.5 L 2.5,-5.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                    {/* Seat line */}
-                    <path d="M -3.5,0.5 L 0,0.5" stroke="#FF5200" strokeWidth="1.2" strokeLinecap="round" />
-                    {/* Front Wheel */}
-                    <circle cx="5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
-                    <circle cx="5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
-                    {/* Rear Wheel */}
-                    <circle cx="-5" cy="5.2" r="2.8" stroke="#FF5200" strokeWidth="1.5" fill="#FFFFFF" />
-                    <circle cx="-5" cy="5.2" r="0.8" fill="#FF5200" stroke="none" />
-                  </g>
-                  
-                  {/* Pointer text "NVPTTT" (1 Line, Width = 56, x = -16, rx = 8) */}
-                  <rect x="-16" y="32" width="56" height="16" rx="8" fill="#FF5200" />
-                  <text x="12" y="40" dominantBaseline="central" fontSize="8.5" fontWeight="800" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">NVPTTT</text>
-                </g>
-              </svg>
+            <div className="mobile-only" style={{ width: '100%' }}>
+              <div className="vh-mobile-timeline">
+                {/* Step 1: Đối tác */}
+                <div className="vh-timeline-item">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon">🤝</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">BƯỚC 1</div>
+                    <h4 className="vh-timeline-title">Đối tác / Người gửi</h4>
+                    <p className="vh-timeline-desc">Đối tác chuẩn bị hàng hóa và gửi yêu cầu giao hàng trên hệ thống.</p>
+                  </div>
+                </div>
 
-              {/* High-end floating details tooltip */}
-              {tooltip.visible && tooltip.role && (
-                <div 
-                  className="vh-diagram-tooltip"
-                  style={{
-                    position: 'absolute',
-                    left: `${tooltip.x > 620 ? tooltip.x - 380 : tooltip.x + 20}px`,
-                    top: `${tooltip.y + 20}px`,
-                    pointerEvents: 'none',
-                    zIndex: 100,
-                  }}
-                >
-                  <div className="vh-tooltip-content">
-                    <img 
-                      src={roleData[tooltip.role].image} 
-                      alt={roleData[tooltip.role].name} 
-                      className="vh-tooltip-img" 
-                    />
-                    <div className="vh-tooltip-text">
-                      <h4 className="vh-tooltip-title">{roleData[tooltip.role].name}</h4>
-                      <p className="vh-tooltip-desc">{roleData[tooltip.role].function}</p>
+                {/* Step 2: Lấy hàng (NVPTTT) */}
+                <div className="vh-timeline-item">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvpttt')}>🏍️</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">BƯỚC 2</div>
+                    <h4 className="vh-timeline-title">Lấy hàng & Vận chuyển</h4>
+                    <p className="vh-timeline-desc">Nhân viên Phát triển Thị trường tiếp nhận yêu cầu và đi lấy hàng từ Đối tác.</p>
+                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvpttt')}>
+                      Vai trò: NVPTTT <span>ℹ️</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 3: Bưu cục Lấy */}
+                <div className="vh-timeline-item">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvxl')}>🏬</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">BƯỚC 3</div>
+                    <h4 className="vh-timeline-title">Bưu cục Lấy</h4>
+                    <p className="vh-timeline-desc">Hàng được tập kết về bưu cục lấy. Nhân viên xử lý tiếp nhận, rã tải và chuẩn bị đóng kiện trung chuyển.</p>
+                    <div className="vh-timeline-role-buttons">
+                      <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvxl')}>
+                        Vai trò: NVXL <span>ℹ️</span>
+                      </button>
                     </div>
                   </div>
                 </div>
-              )}
+
+                {/* Step 4: Xe tải Trung chuyển 1 */}
+                <div className="vh-timeline-item vh-timeline-transit">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon">🚚</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">TRUNG CHUYỂN</div>
+                    <h4 className="vh-timeline-title">Vận chuyển Liên tỉnh</h4>
+                    <p className="vh-timeline-desc">Hệ thống xe tải vận chuyển các kiện hàng lớn kết nối bưu cục về Kho trung chuyển.</p>
+                  </div>
+                </div>
+
+                {/* Step 5: Trung tâm Trung chuyển */}
+                <div className="vh-timeline-item">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvph')}>⚙️</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">BƯỚC 4</div>
+                    <h4 className="vh-timeline-title">Trung tâm Phân loại (TTTC)</h4>
+                    <p className="vh-timeline-desc">Nhân viên Phân hàng vận hành hệ thống băng tải tự động hóa, chia chọn hàng trăm ngàn đơn mỗi giờ.</p>
+                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvph')}>
+                      Vai trò: NVPH <span>ℹ️</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 6: Xe tải Trung chuyển 2 */}
+                <div className="vh-timeline-item vh-timeline-transit">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon">🚚</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">TRUNG CHUYỂN</div>
+                    <h4 className="vh-timeline-title">Vận chuyển Kiện hàng phân loại</h4>
+                    <p className="vh-timeline-desc">Hệ thống xe tải chở hàng sau khi chia chọn về bưu cục giao đích.</p>
+                  </div>
+                </div>
+
+                {/* Step 7: Bưu cục Giao */}
+                <div className="vh-timeline-item">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvxl')}>🏬</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">BƯỚC 5</div>
+                    <h4 className="vh-timeline-title">Bưu cục Giao</h4>
+                    <p className="vh-timeline-desc">Nhân viên Xử lý tại bưu cục giao tiếp nhận, rã tải, phân loại tuyến và bàn giao đơn cho NVPTTT.</p>
+                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvxl')}>
+                      Vai trò: NVXL <span>ℹ️</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 8: Giao hàng & POD */}
+                <div className="vh-timeline-item">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon vh-timeline-role-icon" onClick={() => setActiveMobileRole('nvpttt')}>🏍️</div>
+                    <div className="vh-timeline-line" />
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">BƯỚC 6</div>
+                    <h4 className="vh-timeline-title">Giao hàng & Hoàn tất POD</h4>
+                    <p className="vh-timeline-desc">NVPTTT nhận hàng giao và giao đến tận tay khách hàng nhận, cập nhật trạng thái POD.</p>
+                    <button className="vh-timeline-role-btn" onClick={() => setActiveMobileRole('nvpttt')}>
+                      Vai trò: NVPTTT <span>ℹ️</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 9: Khách hàng nhận */}
+                <div className="vh-timeline-item">
+                  <div className="vh-timeline-icon-wrapper">
+                    <div className="vh-timeline-icon">🏠</div>
+                  </div>
+                  <div className="vh-timeline-content">
+                    <div className="vh-timeline-tag">BƯỚC 7</div>
+                    <h4 className="vh-timeline-title">Khách hàng / Người nhận</h4>
+                    <p className="vh-timeline-desc">Hoàn tất giao đơn hàng, khách hàng ký nhận và thanh toán tiền COD.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -1500,84 +1985,175 @@ export default function KhoiThiTruongPage() {
           <section className="vh-question-sec">
             <h2 className="vh-question-title">Bạn là ai trong Khối Thị trường GHN?</h2>
             
-            <div className="vh-accordion">
-              {/* Card 1: Nhân viên Xử lý */}
-              <div className="vh-accordion-item">
-                <div 
-                  className="vh-accordion-img"
-                  style={{ backgroundImage: "url('/NVXL 1.JPG')" }}
-                />
-                <div className="vh-accordion-overlay" />
-                
-                <div className="vh-accordion-header">
-                  <span className="vh-accordion-num">R—01</span>
-                  <div className="vh-accordion-divider" />
-                  <h3 className="vh-accordion-title">Nhân viên Xử lý</h3>
+            <div className="desktop-only" style={{ width: '100%' }}>
+              <div className="vh-accordion">
+                {/* Card 1: Nhân viên Xử lý */}
+                <div className="vh-accordion-item">
+                  <div 
+                    className="vh-accordion-img"
+                    style={{ backgroundImage: "url('/NVXL 1.JPG')" }}
+                  />
+                  <div className="vh-accordion-overlay" />
+                  
+                  <div className="vh-accordion-header">
+                    <span className="vh-accordion-num">R—01</span>
+                    <div className="vh-accordion-divider" />
+                    <h3 className="vh-accordion-title">Nhân viên Xử lý</h3>
+                  </div>
+                  
+                  <div className="vh-accordion-body">
+                    <p className="vh-accordion-desc">
+                      Chuyên gia quy trình phân loại và xử lý tại bưu cục. Đảm nhận nghiệp vụ tiếp nhận hàng, rã kiện, gán đơn giao, bắn kiểm và bàn giao hàng hóa chính xác.
+                    </p>
+                    <Link href="/nvxl" className="vh-expanded-btn">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
                 </div>
-                
-                <div className="vh-accordion-body">
-                  <p className="vh-accordion-desc">
-                    Chuyên gia quy trình phân loại và xử lý tại bưu cục. Đảm nhận nghiệp vụ tiếp nhận hàng, rã kiện, gán đơn giao, bắn kiểm và bàn giao hàng hóa chính xác.
-                  </p>
-                  <Link href="/nvxl" className="vh-expanded-btn">
-                    <span>Xem quy trình</span>
-                    <span>→</span>
-                  </Link>
+
+                {/* Card 2: Nhân viên Phát triển Thị trường */}
+                <div className="vh-accordion-item">
+                  <div 
+                    className="vh-accordion-img"
+                    style={{ backgroundImage: "url('/Ship 1.JPG')", backgroundPosition: '80% center' }}
+                  />
+                  <div className="vh-accordion-overlay" />
+                  
+                  <div className="vh-accordion-header">
+                    <span className="vh-accordion-num">R—02</span>
+                    <div className="vh-accordion-divider" />
+                    <h3 className="vh-accordion-title">Nhân viên Phát triển Thị trường</h3>
+                  </div>
+                  
+                  <div className="vh-accordion-body">
+                    <p className="vh-accordion-desc">
+                      Lực lượng giao nhận tuyến đầu trực tiếp tương tác khách hàng. Đảm nhận quy trình giao hàng, lấy hàng, nộp COD và lưu trữ chứng từ số POD chuẩn chỉnh.
+                    </p>
+                    <Link href="/nvpttt" className="vh-expanded-btn">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Card 3: Nhân viên Phân hàng */}
+                <div className="vh-accordion-item">
+                  <div 
+                    className="vh-accordion-img vh-accordion-img-zoomed"
+                    style={{ backgroundImage: "url('/NVPH.jpg')" }}
+                  />
+                  <div className="vh-accordion-overlay" />
+                  
+                  <div className="vh-accordion-header">
+                    <span className="vh-accordion-num">R—03</span>
+                    <div className="vh-accordion-divider" />
+                    <h3 className="vh-accordion-title">Nhân viên Phân hàng</h3>
+                  </div>
+                  
+                  <div className="vh-accordion-body">
+                    <p className="vh-accordion-desc">
+                      Chuyên gia chia chọn tại các Trung tâm trung chuyển lớn. Vận hành hệ thống băng tải tự động hóa, thực hiện rã tải, cấp hàng Feeder và đóng kiện xuất hàng liên tỉnh.
+                    </p>
+                    <Link href="/nvph" className="vh-expanded-btn">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              {/* Card 2: Nhân viên Phát triển Thị trường */}
-              <div className="vh-accordion-item">
-                <div 
-                  className="vh-accordion-img"
-                  style={{ backgroundImage: "url('/Ship 1.JPG')", backgroundPosition: '80% center' }}
-                />
-                <div className="vh-accordion-overlay" />
-                
-                <div className="vh-accordion-header">
-                  <span className="vh-accordion-num">R—02</span>
-                  <div className="vh-accordion-divider" />
-                  <h3 className="vh-accordion-title">Nhân viên Phát triển Thị trường</h3>
+            <div className="mobile-only" style={{ width: '100%' }}>
+              <div className="vh-mobile-roles-list">
+                {/* Mobile Card 1: Nhân viên Xử lý */}
+                <div className="vh-mobile-role-card">
+                  <div className="vh-mobile-role-img-container">
+                    <img src="/NVXL 1.JPG" alt="Nhân viên Xử lý" className="vh-mobile-role-img" />
+                    <span className="vh-mobile-role-num-badge">R—01</span>
+                  </div>
+                  <div className="vh-mobile-role-info">
+                    <h3 className="vh-mobile-role-title">Nhân viên Xử lý</h3>
+                    <p className="vh-mobile-role-desc">
+                      Chuyên gia quy trình phân loại và xử lý tại bưu cục. Đảm nhận nghiệp vụ tiếp nhận hàng, rã kiện, gán đơn giao, bắn kiểm và bàn giao hàng hóa chính xác.
+                    </p>
+                    <Link href="/nvxl" className="vh-mobile-role-btn-cta">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
                 </div>
-                
-                <div className="vh-accordion-body">
-                  <p className="vh-accordion-desc">
-                    Lực lượng giao nhận tuyến đầu trực tiếp tương tác khách hàng. Đảm nhận quy trình giao hàng, lấy hàng, nộp COD và lưu trữ chứng từ số POD chuẩn chỉnh.
-                  </p>
-                  <Link href="/nvpttt" className="vh-expanded-btn">
-                    <span>Xem quy trình</span>
-                    <span>→</span>
-                  </Link>
-                </div>
-              </div>
 
-              {/* Card 3: Nhân viên Phân hàng */}
-              <div className="vh-accordion-item">
-                <div 
-                  className="vh-accordion-img vh-accordion-img-zoomed"
-                  style={{ backgroundImage: "url('/NVPH.jpg')" }}
-                />
-                <div className="vh-accordion-overlay" />
-                
-                <div className="vh-accordion-header">
-                  <span className="vh-accordion-num">R—03</span>
-                  <div className="vh-accordion-divider" />
-                  <h3 className="vh-accordion-title">Nhân viên Phân hàng</h3>
+                {/* Mobile Card 2: Nhân viên Phát triển Thị trường */}
+                <div className="vh-mobile-role-card">
+                  <div className="vh-mobile-role-img-container">
+                    <img src="/Ship 1.JPG" alt="Nhân viên Phát triển Thị trường" className="vh-mobile-role-img" />
+                    <span className="vh-mobile-role-num-badge">R—02</span>
+                  </div>
+                  <div className="vh-mobile-role-info">
+                    <h3 className="vh-mobile-role-title">Nhân viên Phát triển Thị trường</h3>
+                    <p className="vh-mobile-role-desc">
+                      Lực lượng giao nhận tuyến đầu trực tiếp tương tác khách hàng. Đảm nhận quy trình giao hàng, lấy hàng, nộp COD và lưu trữ chứng từ số POD chuẩn chỉnh.
+                    </p>
+                    <Link href="/nvpttt" className="vh-mobile-role-btn-cta">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
                 </div>
-                
-                <div className="vh-accordion-body">
-                  <p className="vh-accordion-desc">
-                    Chuyên gia chia chọn tại các Trung tâm trung chuyển lớn. Vận hành hệ thống băng tải tự động hóa, thực hiện rã tải, cấp hàng Feeder và đóng kiện xuất hàng liên tỉnh.
-                  </p>
-                  <Link href="/nvph" className="vh-expanded-btn">
-                    <span>Xem quy trình</span>
-                    <span>→</span>
-                  </Link>
+
+                {/* Mobile Card 3: Nhân viên Phân hàng */}
+                <div className="vh-mobile-role-card">
+                  <div className="vh-mobile-role-img-container">
+                    <img src="/NVPH.jpg" alt="Nhân viên Phân hàng" className="vh-mobile-role-img" />
+                    <span className="vh-mobile-role-num-badge">R—03</span>
+                  </div>
+                  <div className="vh-mobile-role-info">
+                    <h3 className="vh-mobile-role-title">Nhân viên Phân hàng</h3>
+                    <p className="vh-mobile-role-desc">
+                      Chuyên gia chia chọn tại các Trung tâm trung chuyển lớn. Vận hành hệ thống băng tải tự động hóa, thực hiện rã tải, cấp hàng Feeder và đóng kiện xuất hàng liên tỉnh.
+                    </p>
+                    <Link href="/nvph" className="vh-mobile-role-btn-cta">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
         </div>
+
+        {/* Mobile bottom drawer details for roles */}
+        {activeMobileRole && (
+          <div className="vh-drawer-overlay active" onClick={() => setActiveMobileRole(null)}>
+            <div className="vh-mobile-drawer active" onClick={(e) => e.stopPropagation()}>
+              <div className="vh-drawer-header">
+                <div className="vh-drawer-bar" />
+                <button className="vh-drawer-close" onClick={() => setActiveMobileRole(null)}>×</button>
+              </div>
+              <div className="vh-drawer-body">
+                <img 
+                  src={roleData[activeMobileRole].image} 
+                  alt={roleData[activeMobileRole].name} 
+                  className="vh-drawer-img" 
+                />
+                <div className="vh-drawer-content-area">
+                  <h3 className="vh-drawer-title">{roleData[activeMobileRole].name}</h3>
+                  <p className="vh-drawer-desc">{roleData[activeMobileRole].function}</p>
+                  <Link 
+                    href={`/${activeMobileRole}`} 
+                    className="vh-drawer-action-btn"
+                    onClick={() => setActiveMobileRole(null)}
+                  >
+                    <span>Xem quy trình làm việc</span>
+                    <span>→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
