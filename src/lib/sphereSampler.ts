@@ -33,12 +33,12 @@ export function fourMiniSpheres(count: number): Float32Array {
   const positions = new Float32Array(count * 3);
 
   // Centers of 4 mini-spheres — evenly spaced, centered horizontally
-  // Slightly shifted up (y=0.5) to sit in the upper half during section 3
+  // Shifted up (y=0.9) to sit in the upper half during section 3 and avoid card overlap
   const centers = [
-    [-1.65, 0.5, 0.0],
-    [-0.55, 0.5, 0.0],
-    [ 0.55, 0.5, 0.0],
-    [ 1.65, 0.5, 0.0],
+    [-1.65, 0.9, 0.0],
+    [-0.55, 0.9, 0.0],
+    [ 0.55, 0.9, 0.0],
+    [ 1.65, 0.9, 0.0],
   ] as const;
 
   const miniRadius = 0.42;

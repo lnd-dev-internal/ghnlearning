@@ -9,9 +9,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  padding-top: 12vh;
   padding-bottom: 6vh;
-  gap: 2.4rem;
 }
 
 /* ── Section heading ── */
@@ -103,14 +103,22 @@
 
 /* ── Responsive ── */
 @media (max-width: 800px) {
+  .wrapper {
+    padding-top: 130px;
+    padding-bottom: 4vh;
+  }
   .cards {
     grid-template-columns: repeat(2, 1fr);
     padding: 0 1.5rem;
+    gap: 1.2rem 1rem;
   }
   .card {
     border-left: none;
     border-top: 1px solid rgba(255, 82, 0, 0.10);
-    padding: 1.2rem 0 0;
+    padding: 0.8rem 0 0;
   }
-  .card:first-child { border-top: none; padding-top: 0; }
+  .card:nth-child(-n+2) {
+    border-top: none;
+    padding-top: 0;
+  }
 }

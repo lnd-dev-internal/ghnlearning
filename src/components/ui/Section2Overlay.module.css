@@ -34,3 +34,9 @@
   max-width: 540px;
   opacity: 0;
 }
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-top: 130px;
+  }
+}

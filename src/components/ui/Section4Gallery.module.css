@@ -203,4 +203,31 @@
   z-index: 5;
 }
 
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 110px 1.5rem 0;
+  }
+  .filmOuter {
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+  }
+  .subtext {
+    white-space: normal;
+    font-size: 0.85rem;
+    padding: 0 1rem;
+  }
+  .filmCard {
+    width: 170px;
+  }
+  .rowLeft {
+    animation-duration: 12s;
+  }
+  .rowRight {
+    animation-duration: 16s;
+  }
+  .rowLeftSlow {
+    animation-duration: 20s;
+  }
+}
+
 /* Edge masks removed — film strip shows edge-to-edge */
