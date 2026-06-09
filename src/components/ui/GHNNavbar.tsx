@@ -45,6 +45,7 @@ export default function GHNNavbar() {
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMobileMenu, setOpenMobileMenu] = useState<string | null>(null);
+  const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
 
   // Auto-switch mode based on current page
   const isTechnicalPage = technicalHrefs.some(
@@ -58,6 +59,7 @@ export default function GHNNavbar() {
   useEffect(() => {
     if (isTechnicalPage) setNavMode('technical');
     else setNavMode('main');
+    setActiveMobileDropdown(null);
   }, [pathname, isTechnicalPage]);
 
   // Toggle mode + navigate to default page of that side
@@ -476,10 +478,34 @@ export default function GHNNavbar() {
             background: #ffffff;
             border-bottom: 1px solid rgba(0,0,0,0.08);
             box-sizing: border-box;
-            padding: 8px 16px;
+            padding: 4px 8px;
           }
-          .ghn-mobile-mode-bar .ghn-drawer-mode-toggle {
-            margin: 0 !important;
+          .ghn-mobile-nav-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+          }
+          .ghn-mobile-nav-links::-webkit-scrollbar {
+            display: none;
+          }
+          .ghn-mobile-nav-link {
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            color: #3D3D3D !important;
+            text-decoration: none !important;
+            padding: 8px 12px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+          }
+          .ghn-mobile-nav-link.active {
+            color: #FF5200 !important;
+            border-bottom: 2px solid #FF5200;
           }
         }
       `}</style>
@@ -566,24 +592,126 @@ export default function GHNNavbar() {
         <Link href="/homepage" className="ghn-logo">
           <img src="/Learning GHN dam.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
         </Link>
-        <div style={{ width: 40 }} />
+        
+        {/* Toggle Mode Button on top right */}
+        <button
+          className={`ghn-tech-btn-mobile${navMode === 'technical' ? ' active' : ''}`}
+          onClick={() => handleModeSwitch(navMode === 'main' ? 'technical' : 'main')}
+          style={{
+            background: navMode === 'technical' ? '#FF5200' : '#ffffff',
+            border: '1.5px solid #FF5200',
+            borderRadius: '6px',
+            color: navMode === 'technical' ? '#ffffff' : '#FF5200',
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '11px',
+            fontWeight: 700,
+            padding: '5px 10px',
+            cursor: 'pointer',
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}
+        >
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+          {navMode === 'main' ? 'Technical' : 'General'}
+        </button>
       </div>
 
-      {/* ── Mobile Top Mode Switcher Bar ── */}
+      {/* ── Mobile Top Navigation Bar (Horizontal Tab/Menu) ── */}
       <div className="ghn-mobile-mode-bar">
-        <div className="ghn-drawer-mode-toggle">
-          <button
-            className={`ghn-drawer-mode-btn${navMode === 'main' ? ' active' : ''}`}
-            onClick={() => handleModeSwitch('main')}
-          >
-            Tổng quát
-          </button>
-          <button
-            className={`ghn-drawer-mode-btn${navMode === 'technical' ? ' active' : ''}`}
-            onClick={() => handleModeSwitch('technical')}
-          >
-            Technical Skills
-          </button>
+        <div className="ghn-mobile-nav-links">
+          {navMode === 'main'
+            ? mainNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`ghn-mobile-nav-link${isActive(item.href) ? ' active' : ''}`}
+                >
+                  {item.label}
+                </Link>
+              ))
+            : technicalNavItems.map((item) => (
+                <div key={item.label} className="ghn-mobile-nav-item-wrapper" style={{ position: 'relative' }}>
+                  <button
+                    className={`ghn-mobile-nav-link${isActive(item.defaultHref) || isDropdownActive(item.children) ? ' active' : ''}`}
+                    onClick={() => setActiveMobileDropdown(activeMobileDropdown === item.label ? null : item.label)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '8px 12px',
+                      color: isActive(item.defaultHref) || isDropdownActive(item.children) ? '#FF5200' : '#3D3D3D'
+                    }}
+                  >
+                    {item.label}
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{
+                        transform: activeMobileDropdown === item.label ? 'rotate(180deg)' : 'none',
+                        transition: 'transform 0.2s',
+                        color: 'inherit'
+                      }}
+                    >
+                      <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+
+                  {activeMobileDropdown === item.label && (
+                    <div 
+                      className="ghn-mobile-dropdown-menu"
+                      style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: '#ffffff',
+                        border: '1px solid rgba(0,0,0,0.08)',
+                        borderRadius: '8px',
+                        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                        zIndex: 150,
+                        minWidth: '200px',
+                        padding: '6px 0',
+                        marginTop: '4px'
+                      }}
+                    >
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={`ghn-mobile-dropdown-item${isActive(child.href) ? ' active' : ''}`}
+                          style={{
+                            display: 'block',
+                            padding: '10px 16px',
+                            fontFamily: "'Inter', sans-serif",
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: isActive(child.href) ? '#FF5200' : '#3D3D3D',
+                            textDecoration: 'none',
+                            background: isActive(child.href) ? 'rgba(255,82,0,0.05)' : 'none'
+                          }}
+                          onClick={() => setActiveMobileDropdown(null)}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
         </div>
       </div>
 
@@ -662,6 +790,19 @@ export default function GHNNavbar() {
           <input type="text" placeholder="Tìm kiếm khóa học..." />
         </div>
       </div>
+
+      {/* Backdrop overlay for closing mobile dropdowns on outside click */}
+      {activeMobileDropdown && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 140,
+            background: 'transparent'
+          }}
+          onClick={() => setActiveMobileDropdown(null)}
+        />
+      )}
     </>
   );
 }
