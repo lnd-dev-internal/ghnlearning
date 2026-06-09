@@ -734,6 +734,8 @@ export default function NvptttKinhDoanhPage() {
             border-radius: 12px;
           }
           .hn-hero-title {
+            font-size: 1.25rem !important;
+            line-height: 1.25 !important;
             white-space: normal !important;
           }
         }

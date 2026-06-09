@@ -545,6 +545,8 @@ export default function NvxlBotchatPage() {
             border-radius: 12px;
           }
           .hn-hero-title {
+            font-size: 1.25rem !important;
+            line-height: 1.25 !important;
             white-space: normal !important;
           }
           .hn-bot-container {

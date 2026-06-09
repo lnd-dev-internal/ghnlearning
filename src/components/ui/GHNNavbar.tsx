@@ -707,7 +707,7 @@ export default function GHNNavbar() {
                           borderRadius: '8px',
                           boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
                           zIndex: 150,
-                          minWidth: '200px',
+                          minWidth: '260px',
                           padding: '6px 0',
                           marginTop: '4px'
                         }}
@@ -725,7 +725,8 @@ export default function GHNNavbar() {
                               fontWeight: 500,
                               color: isActive(child.href) ? '#FF5200' : '#3D3D3D',
                               textDecoration: 'none',
-                              background: isActive(child.href) ? 'rgba(255,82,0,0.05)' : 'none'
+                              background: isActive(child.href) ? 'rgba(255,82,0,0.05)' : 'none',
+                              whiteSpace: 'nowrap'
                             }}
                             onClick={(e) => {
                               e.preventDefault();
