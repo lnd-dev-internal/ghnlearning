@@ -722,19 +722,28 @@ export default function NvptttPage() {
         @media (max-width: 968px) {
           .hn-row {
             flex-direction: column !important;
-            gap: 32px;
+            gap: 20px !important;
+            background: #FFFFFF !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            border-radius: 16px !important;
+            padding: 16px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+            box-sizing: border-box !important;
           }
           .hn-img-wrap {
-            aspect-ratio: 16 / 9;
-            width: 100%;
+            aspect-ratio: 16 / 10 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 10px !important;
           }
           .hn-info {
-            width: 100%;
-            gap: 16px;
+            width: 100% !important;
+            gap: 12px !important;
+            padding: 4px 8px !important;
           }
           .hn-container {
-            gap: 80px;
-            padding: 40px 20px 0;
+            gap: 24px !important;
+            padding: 24px 16px 0 !important;
           }
           .hn-page {
             padding: 0 0 80px !important;
