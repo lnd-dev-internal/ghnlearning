@@ -460,9 +460,27 @@ export default function GHNNavbar() {
         }
         .ghn-drawer-search input::placeholder { color: rgba(0,0,0,0.3) !important; }
 
+        .ghn-mobile-mode-bar {
+          display: none;
+        }
+
         @media (max-width: 1024px) {
           .ghn-navbar { display: none !important; }
           .ghn-mobile-header { display: flex !important; }
+          .ghn-mobile-mode-bar {
+            display: block;
+            position: sticky;
+            top: 56px;
+            z-index: 99;
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            box-sizing: border-box;
+            padding: 8px 16px;
+          }
+          .ghn-mobile-mode-bar .ghn-drawer-mode-toggle {
+            margin: 0 !important;
+          }
         }
       `}</style>
 
@@ -551,6 +569,24 @@ export default function GHNNavbar() {
         <div style={{ width: 40 }} />
       </div>
 
+      {/* ── Mobile Top Mode Switcher Bar ── */}
+      <div className="ghn-mobile-mode-bar">
+        <div className="ghn-drawer-mode-toggle">
+          <button
+            className={`ghn-drawer-mode-btn${navMode === 'main' ? ' active' : ''}`}
+            onClick={() => handleModeSwitch('main')}
+          >
+            Tổng quát
+          </button>
+          <button
+            className={`ghn-drawer-mode-btn${navMode === 'technical' ? ' active' : ''}`}
+            onClick={() => handleModeSwitch('technical')}
+          >
+            Technical Skills
+          </button>
+        </div>
+      </div>
+
       {/* ── Mobile Overlay ── */}
       <div className={`ghn-overlay${drawerOpen ? ' open' : ''}`} onClick={() => setDrawerOpen(false)} />
 
@@ -561,21 +597,6 @@ export default function GHNNavbar() {
             <img src="/Learning GHN dam.png" alt="GHN Learning" style={{ height: 120, width: "auto" }} />
           </Link>
           <button className="ghn-drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Đóng menu">✕</button>
-        </div>
-
-        <div className="ghn-drawer-mode-toggle">
-          <button
-            className={`ghn-drawer-mode-btn${navMode === 'main' ? ' active' : ''}`}
-            onClick={() => { handleModeSwitch('main'); setDrawerOpen(false); }}
-          >
-            Tổng quát
-          </button>
-          <button
-            className={`ghn-drawer-mode-btn${navMode === 'technical' ? ' active' : ''}`}
-            onClick={() => { handleModeSwitch('technical'); setDrawerOpen(false); }}
-          >
-            Technical Skills
-          </button>
         </div>
 
         <nav className="ghn-drawer-nav">
