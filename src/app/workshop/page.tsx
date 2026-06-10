@@ -171,9 +171,9 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
 
         {/* Sub-tab Strip */}
         <nav className="strip" id="strip-nav" aria-label="Leaders Talk sections">
-          <a href="/leaders-talk#strip-nav">Tổng quan</a>
-          <a className="active" href="/workshop#strip-nav">Workshop</a>
-          <a href="/dien-gia#strip-nav">Diễn giả</a>
+          <a href="/leaders-talk">Tổng quan</a>
+          <a className="active" href="/workshop">Workshop</a>
+          <a href="/dien-gia">Diễn giả</a>
         </nav>
 
         {/* Workshop List */}
