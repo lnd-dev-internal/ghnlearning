@@ -1,9 +1,6 @@
-import type { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Trải nghiệm vận hành – GHN L&D Portal',
-  description: 'Chương trình trải nghiệm thực tế 5 vị trí vận hành tại Giao Hàng Nhanh (GHN). Trải nghiệm thật, công việc thật, áp lực thật.',
-};
+import GHNFooter from '@/components/ui/GHNFooter';
 
 export default function TraiNghiemVanHanhPage() {
   return (
@@ -31,6 +28,8 @@ export default function TraiNghiemVanHanhPage() {
           loading="lazy"
         />
       </div>
+      <GHNFooter />
     </>
   );
 }
+

@@ -4,97 +4,89 @@ export default function GHNFooter() {
   return (
     <>
       <style>{`
-        .footer-wrap {
+        .footer {
+          border-top: 1px solid #E2E8F0;
+          padding: 40px 60px;
           display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 24px 0 0;
+          align-items: center;
+          justify-content: space-between;
+          background: #F8FAFC;
           max-width: 1920px;
           width: 100%;
           margin: 0 auto;
-        }
-        .footer {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 96px;
-          max-width: 1920px;
-          width: 100%;
-          height: 125px;
-          background: #F8FAFC;
-          border-top: 1px solid #E2E8F0;
           box-sizing: border-box;
         }
         .footer-brand {
           font-family: 'Montserrat', sans-serif;
-          font-weight: 700;
-          font-size: 18px;
+          font-size: 0.7rem;
+          font-weight: 600;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
           color: #0F172A;
-          margin-bottom: 8px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
         }
-        .footer-info {
+        .footer-brand .brand-dot {
+          width: 5px;
+          height: 5px;
+          background: #FF5200;
+          border-radius: 50%;
+          flex-shrink: 0;
+        }
+        .footer-dept {
           font-family: 'Be Vietnam Pro', sans-serif;
-          font-size: 12px;
-          line-height: 20px;
+          font-weight: 400;
+          font-size: 0.6rem;
+          letter-spacing: 0.05em;
+          text-transform: none;
           color: #64748B;
+        }
+        .footer-email {
+          font-family: 'Be Vietnam Pro', sans-serif;
+          font-size: 0.75rem;
+          color: #64748B;
+          text-decoration: none;
+          margin-top: 6px;
+          display: inline-block;
+          transition: color 0.3s ease;
+        }
+        .footer-email:hover {
+          color: #FF5200;
         }
         .footer-right {
           font-family: 'Be Vietnam Pro', sans-serif;
-          font-size: 12px;
+          font-size: 0.7rem;
           color: #94A3B8;
         }
-        @media(max-width: 960px) {
-          .footer-wrap {
-            width: 100% !important;
-            padding: 16px 24px !important;
-            margin-top: 40px !important;
-            border-top: 1px solid #EBEEF0 !important;
-            background: #fff !important;
-          }
+        @media (max-width: 960px) {
           .footer {
-            width: 100% !important;
-            height: auto !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            padding: 24px 0 !important;
-            gap: 16px !important;
-            background: transparent !important;
-            border-top: none !important;
-          }
-          .footer > div:first-child {
-            display: flex;
             flex-direction: column;
-            gap: 8px;
-            border-top: 1px solid #F1F5F9;
-            padding-top: 24px;
-            width: 100%;
+            align-items: flex-start;
+            padding: 24px 24px;
+            gap: 16px;
           }
           .footer-brand {
-            font-size: 14px !important;
-          }
-          .footer-info {
-            font-size: 11px !important;
-            line-height: 16px !important;
+            flex-wrap: wrap;
           }
           .footer-right {
-            font-size: 11px !important;
-            margin-top: 16px;
             align-self: center;
-            text-align: center;
+            margin-top: 8px;
           }
         }
       `}</style>
-      <div className="footer-wrap">
-        <footer className="footer">
-          <div>
-            <div className="footer-brand">Giao Hàng Nhanh</div>
-            <div className="footer-info">Bộ phận Học tập và Phát triển</div>
-            <div className="footer-info">📩 Liên hệ: lnd@scommerce.asia</div>
+      <footer className="footer">
+        <div>
+          <div className="footer-brand">
+            <span>Giao Hàng Nhanh</span>
+            <span className="brand-dot"></span>
+            <span className="footer-dept">Bộ phận Học tập và Phát triển</span>
           </div>
-          <div className="footer-right">© 2026 GHN Learning &amp; Development</div>
-        </footer>
-      </div>
+          <a className="footer-email" href="mailto:lnd@scommerce.asia">📩 lnd@scommerce.asia</a>
+        </div>
+        <div className="footer-right">© 2026 GHN Learning &amp; Development</div>
+      </footer>
     </>
   );
 }
+

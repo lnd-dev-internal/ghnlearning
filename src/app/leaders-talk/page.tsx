@@ -9,6 +9,7 @@ import Section4Gallery from "@/components/ui/Section4Gallery";
 import Section5Featured from "@/components/ui/Section5Featured";
 import ScrollController from "@/components/ui/ScrollController";
 import ClientIntroLoader from "@/components/ui/ClientIntroLoader";
+import GHNFooter from "@/components/ui/GHNFooter";
 
 export const metadata: Metadata = {
   title: "Leaders Talk — Where Leaders Shape Tomorrow",
@@ -73,6 +74,10 @@ export default function Page() {
 
       {/* Section 5 — Featured episode (normal flow, below scroll-root) */}
       <Section5Featured />
+
+      {/* Footer */}
+      <GHNFooter />
     </>
   );
 }
+

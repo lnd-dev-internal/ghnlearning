@@ -10,18 +10,18 @@ export default function ClientLayoutWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const hideFooter = ['/onboarding', '/leaders-talk', '/trai-nghiem-van-hanh'].includes(pathname);
 
   return (
     <>
       <GHNNavbar />
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 68px)' }}>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: '1 0 auto' }}>
           {children}
         </div>
-        <GHNFooter />
+        {!hideFooter && <GHNFooter />}
       </div>
     </>
   );
 }
-
 
