@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 // --- Main nav items (default view) ---
 const mainNavItems = [
-  { label: 'Trang chủ', href: '/homepage' },
+  { label: 'Onboarding', href: '/onboarding' },
   { label: 'Leaders Talk', href: '/leaders-talk' },
   { label: 'Trải nghiệm vận hành', href: '/trai-nghiem-van-hanh' },
 ];
@@ -66,7 +66,7 @@ export default function GHNNavbar() {
     if (mode === 'technical') {
       router.push('/khoi-thi-truong');
     } else {
-      router.push('/homepage');
+      router.push('/onboarding');
     }
   };
 
@@ -77,7 +77,7 @@ export default function GHNNavbar() {
     const isLeadersTalk = pathname?.startsWith('/leaders-talk') || pathname?.startsWith('/workshop') || pathname?.startsWith('/dien-gia');
     if (!isLeadersTalk) return false;
 
-    if (href === '/homepage') return pathname === '/homepage' || pathname === '/';
+    if (href === '/onboarding') return pathname === '/onboarding' || pathname === '/';
     return pathname === href || pathname.startsWith(href + '/') || pathname.startsWith(href + '-');
   };
 
@@ -536,7 +536,7 @@ export default function GHNNavbar() {
 
       {/* ── Desktop Navbar ── */}
       <nav className="ghn-navbar">
-        <Link href="/homepage" className="ghn-logo">
+        <Link href="/onboarding" className="ghn-logo">
           <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
         </Link>
 
@@ -606,7 +606,7 @@ export default function GHNNavbar() {
 
       {/* ── Mobile Header ── */}
       <div className="ghn-mobile-header">
-        <Link href="/homepage" className="ghn-logo">
+        <Link href="/onboarding" className="ghn-logo">
           <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
         </Link>
         
