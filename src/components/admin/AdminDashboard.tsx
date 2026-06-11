@@ -4,12 +4,14 @@ import Image from 'next/image';
 import type { Article } from '@/lib/articleStore';
 import { useArticles, updateArticle, deleteArticle } from '@/lib/articleStore';
 import ArticleEditor from './ArticleEditor';
+import FormEditor from './FormEditor';
 import styles from './AdminDashboard.module.css';
 
 
 export default function AdminDashboard() {
   const articles = useArticles();
   const [editTarget, setEditTarget] = useState<Article | null | undefined>(undefined);
+  const [activeTab, setActiveTab] = useState<'articles' | 'form'>('articles');
 
   // undefined = closed, null = new article, Article = editing
 
@@ -53,107 +55,129 @@ export default function AdminDashboard() {
         </a>
       </header>
 
+      {/* Tabs */}
+      <div className={styles.tabBar}>
+        <button
+          className={`${styles.tab} ${activeTab === 'articles' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('articles')}
+        >
+          📝 Bài viết
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === 'form' ? styles.tabActive : ''}`}
+          onClick={() => setActiveTab('form')}
+        >
+          📋 Form đăng ký
+        </button>
+      </div>
+
       {/* Content */}
-      <main className={styles.main}>
-        {/* List header */}
-        <div className={styles.listHeader}>
-          <div>
-            <h2 className={styles.listTitle}>Danh sách bài viết ({articles.length})</h2>
-            <p className={styles.listHint}>Nhấn vào trạng thái hoặc ghim để thay đổi nhanh</p>
-          </div>
-          <button className={styles.addBtn} onClick={() => setEditTarget(null)}>
-            + Thêm bài viết
-          </button>
-        </div>
-
-        {/* Table */}
-        <div className={styles.tableWrap}>
-          {sorted.length === 0 ? (
-            <div className={styles.empty}>
-              Chưa có bài viết nào. Nhấn <strong>+ Thêm bài viết</strong> để bắt đầu.
+      {activeTab === 'articles' ? (
+        <main className={styles.main}>
+          {/* List header */}
+          <div className={styles.listHeader}>
+            <div>
+              <h2 className={styles.listTitle}>Danh sách bài viết ({articles.length})</h2>
+              <p className={styles.listHint}>Nhấn vào trạng thái hoặc ghim để thay đổi nhanh</p>
             </div>
-          ) : (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th className={styles.thArticle}>BÀI VIẾT</th>
-                  <th className={styles.thCat}>DANH MỤC</th>
-                  <th className={styles.thStatus}>TRẠNG THÁI</th>
-                  <th className={styles.thPin}>GHIM</th>
-                  <th className={styles.thOrder}>THỨ TỰ</th>
-                  <th className={styles.thActions}></th>
-                </tr>
-              </thead>
-              <tbody>
-                {sorted.map(a => (
-                  <tr key={a.id} className={styles.row}>
-                    {/* Article */}
-                    <td className={styles.tdArticle}>
-                      <div className={styles.articleCell}>
-                        <div className={styles.thumbWrap}>
-                          <Image
-                            src={a.coverImage || '/Wst5.png'}
-                            alt=""
-                            fill
-                            className={styles.thumb}
-                            sizes="56px"
-                          />
-                        </div>
-                        <div className={styles.articleInfo}>
-                          <p className={styles.articleTitle}>{a.title}</p>
-                          <p className={styles.articleAuthor}>{a.author}</p>
-                        </div>
-                      </div>
-                    </td>
-                    {/* Category */}
-                    <td className={styles.tdCat}>
-                      <span className={styles.catBadge}>{a.category}</span>
-                    </td>
-                    {/* Status */}
-                    <td className={styles.tdStatus}>
-                      <button
-                        className={`${styles.statusBtn} ${a.status === 'published' ? styles.statusPub : styles.statusDraft}`}
-                        onClick={() => toggleStatus(a)}
-                        title="Nhấn để thay đổi"
-                      >
-                        <span className={styles.statusDot} />
-                        {a.status === 'published' ? 'Hiện thị' : 'Bản nháp'}
-                      </button>
-                    </td>
-                    {/* Pin */}
-                    <td className={styles.tdPin}>
-                      <button
-                        className={styles.pinBtn}
-                        onClick={() => togglePin(a)}
-                        title={a.pinned ? 'Bỏ ghim' : 'Ghim'}
-                        aria-label={a.pinned ? 'Bỏ ghim' : 'Ghim bài viết'}
-                      >
-                        {a.pinned ? '⭐' : '☆'}
-                      </button>
-                    </td>
-                    {/* Order */}
-                    <td className={styles.tdOrder}>{a.order}</td>
-                    {/* Actions */}
-                    <td className={styles.tdActions}>
-                      <button className={styles.editBtn} onClick={() => setEditTarget(a)}>Sửa</button>
-                      <button className={styles.deleteBtn} onClick={() => handleDelete(a)}>Xóa</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </main>
+            <button className={styles.addBtn} onClick={() => setEditTarget(null)}>
+              + Thêm bài viết
+            </button>
+          </div>
 
-      {/* Editor modal */}
-      {editTarget !== undefined && (
-        <ArticleEditor
-          article={editTarget}
-          defaultOrder={articles.length > 0 ? Math.max(...articles.map(a => a.order)) + 1 : 1}
-          onClose={() => setEditTarget(undefined)}
-          onSave={handleSave}
-        />
+          {/* Table */}
+          <div className={styles.tableWrap}>
+            {sorted.length === 0 ? (
+              <div className={styles.empty}>
+                Chưa có bài viết nào. Nhấn <strong>+ Thêm bài viết</strong> để bắt đầu.
+              </div>
+            ) : (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th className={styles.thArticle}>BÀI VIẾT</th>
+                    <th className={styles.thCat}>DANH MỤC</th>
+                    <th className={styles.thStatus}>TRẠNG THÁI</th>
+                    <th className={styles.thPin}>GHIM</th>
+                    <th className={styles.thOrder}>THỨ TỰ</th>
+                    <th className={styles.thActions}></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sorted.map(a => (
+                    <tr key={a.id} className={styles.row}>
+                      {/* Article */}
+                      <td className={styles.tdArticle}>
+                        <div className={styles.articleCell}>
+                          <div className={styles.thumbWrap}>
+                            <Image
+                              src={a.coverImage || '/Wst5.png'}
+                              alt=""
+                              fill
+                              className={styles.thumb}
+                              sizes="56px"
+                            />
+                          </div>
+                          <div className={styles.articleInfo}>
+                            <p className={styles.articleTitle}>{a.title}</p>
+                            <p className={styles.articleAuthor}>{a.author}</p>
+                          </div>
+                        </div>
+                      </td>
+                      {/* Category */}
+                      <td className={styles.tdCat}>
+                        <span className={styles.catBadge}>{a.category}</span>
+                      </td>
+                      {/* Status */}
+                      <td className={styles.tdStatus}>
+                        <button
+                          className={`${styles.statusBtn} ${a.status === 'published' ? styles.statusPub : styles.statusDraft}`}
+                          onClick={() => toggleStatus(a)}
+                          title="Nhấn để thay đổi"
+                        >
+                          <span className={styles.statusDot} />
+                          {a.status === 'published' ? 'Hiện thị' : 'Bản nháp'}
+                        </button>
+                      </td>
+                      {/* Pin */}
+                      <td className={styles.tdPin}>
+                        <button
+                          className={styles.pinBtn}
+                          onClick={() => togglePin(a)}
+                          title={a.pinned ? 'Bỏ ghim' : 'Ghim'}
+                          aria-label={a.pinned ? 'Bỏ ghim' : 'Ghim bài viết'}
+                        >
+                          {a.pinned ? '⭐' : '☆'}
+                        </button>
+                      </td>
+                      {/* Order */}
+                      <td className={styles.tdOrder}>{a.order}</td>
+                      {/* Actions */}
+                      <td className={styles.tdActions}>
+                        <button className={styles.editBtn} onClick={() => setEditTarget(a)}>Sửa</button>
+                        <button className={styles.deleteBtn} onClick={() => handleDelete(a)}>Xóa</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          {/* Editor modal */}
+          {editTarget !== undefined && (
+            <ArticleEditor
+              article={editTarget}
+              defaultOrder={articles.length > 0 ? Math.max(...articles.map(a => a.order)) + 1 : 1}
+              onClose={() => setEditTarget(undefined)}
+              onSave={handleSave}
+            />
+          )}
+        </main>
+      ) : (
+        <main className={styles.main}>
+          <FormEditor />
+        </main>
       )}
     </div>
   );

@@ -8,6 +8,7 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useArticles } from "@/lib/articleStore";
 import type { Article } from "@/lib/articleStore";
 import styles from "./Section5Featured.module.css";
+import RegistrationModal from "./RegistrationModal";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -110,6 +111,7 @@ function ArticleModal({
 export default function Section5Featured() {
   const allArticles = useArticles();
   const [modalOpen, setModalOpen] = useState(false);
+  const [showRegModal, setShowRegModal] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Lấy bài được ghim đầu tiên (published)
@@ -236,10 +238,8 @@ export default function Section5Featured() {
 
                 {/* CTA bên ngoài — lấy từ nút CTA admin chèn vào nội dung bài */}
                 {cta && (
-                  <a
-                    href={cta.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => setShowRegModal(true)}
                     id="featured-register-cta"
                     className={styles.registerBtn}
                     style={{ alignSelf: "center" }}
@@ -248,7 +248,7 @@ export default function Section5Featured() {
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                       <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                  </a>
+                  </button>
                 )}
               </div>
             </div>
@@ -258,6 +258,9 @@ export default function Section5Featured() {
 
       {/* Modal — toàn bộ nội dung bài (có cả nút CTA bên trong nếu admin chèn) */}
       {modalOpen && <ArticleModal article={pinnedArticle} onClose={() => setModalOpen(false)} />}
+
+      {/* Registration modal */}
+      {showRegModal && <RegistrationModal onClose={() => setShowRegModal(false)} />}
     </>
   );
 }

@@ -71,6 +71,11 @@
   pointer-events: auto;
 }
 
+/* ── Registration modal overlay must be interactive above all sections ──── */
+[class*='overlay'] {
+  pointer-events: auto !important;
+}
+
 /* ── Anton bold via font-synthesis ──── */
 h1, h2, h3, [class*='heading'], [class*='title'] {
   font-synthesis: weight;

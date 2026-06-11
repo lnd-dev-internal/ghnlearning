@@ -1,0 +1,644 @@
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.editor {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Section card ────────────────────────────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border: 1px solid rgba(61, 61, 61, 0.09);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1a1208;
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardTitleIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 82, 0, 0.08);
+  color: #FF5200;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+/* ── Status bar (loading / init) ─────────────────────────────────────────── */
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  color: rgba(61, 61, 61, 0.45);
+  font-size: 0.88rem;
+  gap: 0.6rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 82, 0, 0.25);
+  border-top-color: #FF5200;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Form field (label + input) ──────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e0ddd8;
+  border-radius: 10px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  color: #0D0B0A;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #FF5200;
+  box-shadow: 0 0 0 3px rgba(255, 82, 0, 0.1);
+}
+
+.input::placeholder {
+  color: #bbb;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e0ddd8;
+  border-radius: 10px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  color: #0D0B0A;
+  background: #fff;
+  resize: vertical;
+  min-height: 72px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  outline: none;
+  line-height: 1.5;
+}
+
+.textarea:focus {
+  border-color: #FF5200;
+  box-shadow: 0 0 0 3px rgba(255, 82, 0, 0.1);
+}
+
+.textarea::placeholder {
+  color: #bbb;
+}
+
+.select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e0ddd8;
+  border-radius: 10px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  color: #0D0B0A;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.select:focus {
+  border-color: #FF5200;
+  box-shadow: 0 0 0 3px rgba(255, 82, 0, 0.1);
+}
+
+.helpText {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+/* ── Row layouts ─────────────────────────────────────────────────────────── */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.row3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .row2, .row3 { grid-template-columns: 1fr; }
+}
+
+/* ── Toggle switch ───────────────────────────────────────────────────────── */
+.toggleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggleLabel {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1a1208;
+}
+
+.toggleTrack {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border: none;
+  border-radius: 100px;
+  background: rgba(61, 61, 61, 0.18);
+  cursor: pointer;
+  padding: 0;
+  transition: background 180ms;
+  flex-shrink: 0;
+}
+
+.toggleTrack[data-active='true'] {
+  background: #FF5200;
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 180ms;
+}
+
+.toggleTrack[data-active='true'] .toggleThumb {
+  transform: translateX(20px);
+}
+
+.toggleStatus {
+  font-size: 0.73rem;
+  font-weight: 600;
+  border-radius: 100px;
+  padding: 0.18rem 0.6rem;
+}
+
+.toggleStatusActive {
+  background: rgba(46, 125, 50, 0.08);
+  color: #2E7D32;
+}
+
+.toggleStatusInactive {
+  background: rgba(61, 61, 61, 0.06);
+  color: rgba(61, 61, 61, 0.55);
+}
+
+/* ── Fields list ─────────────────────────────────────────────────────────── */
+.fieldsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Field card ──────────────────────────────────────────────────────────── */
+.fieldCard {
+  background: #FAFAF8;
+  border: 1px solid rgba(61, 61, 61, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 180ms, box-shadow 180ms;
+}
+
+.fieldCard:hover {
+  border-color: rgba(61, 61, 61, 0.15);
+}
+
+/* ── Field header (always visible) ───────────────────────────────────────── */
+.fieldHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.fieldDragHandle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: grab;
+  padding: 4px 2px;
+  color: rgba(61, 61, 61, 0.3);
+  flex-shrink: 0;
+}
+
+.fieldDragDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.fieldName {
+  flex: 1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1a1208;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fieldTypeBadge {
+  background: rgba(61, 61, 61, 0.07);
+  color: rgba(61, 61, 61, 0.65);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.18rem 0.5rem;
+  border-radius: 100px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.fieldRequiredBadge {
+  background: rgba(255, 82, 0, 0.08);
+  color: #FF5200;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+.fieldChevron {
+  color: rgba(61, 61, 61, 0.35);
+  flex-shrink: 0;
+  transition: transform 180ms;
+}
+
+.fieldChevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ── Field body (expanded) ───────────────────────────────────────────────── */
+.fieldBody {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid rgba(61, 61, 61, 0.06);
+}
+
+.fieldBodyInner {
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Checkbox ────────────────────────────────────────────────────────────── */
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #1a1208;
+  cursor: pointer;
+}
+
+.checkbox input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: #FF5200;
+  cursor: pointer;
+}
+
+/* ── Options list (for select/radio) ─────────────────────────────────────── */
+.optionsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.optionInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #e0ddd8;
+  border-radius: 8px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px;
+  color: #0D0B0A;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.optionInput:focus {
+  border-color: #FF5200;
+  box-shadow: 0 0 0 3px rgba(255, 82, 0, 0.1);
+}
+
+.removeOptionBtn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: rgba(61, 61, 61, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 150ms, color 150ms;
+}
+
+.removeOptionBtn:hover {
+  background: rgba(198, 40, 40, 0.08);
+  color: #C62828;
+}
+
+.addOptionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px dashed rgba(61, 61, 61, 0.2);
+  background: transparent;
+  border-radius: 8px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(61, 61, 61, 0.5);
+  cursor: pointer;
+  transition: border-color 180ms, color 180ms, background 180ms;
+  align-self: flex-start;
+}
+
+.addOptionBtn:hover {
+  border-color: #FF5200;
+  color: #FF5200;
+  background: rgba(255, 82, 0, 0.04);
+}
+
+/* ── Field actions (move / delete) ───────────────────────────────────────── */
+.fieldActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(61, 61, 61, 0.06);
+}
+
+.moveBtn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(61, 61, 61, 0.12);
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  color: rgba(61, 61, 61, 0.5);
+  transition: background 150ms, color 150ms, border-color 150ms;
+}
+
+.moveBtn:hover:not(:disabled) {
+  background: rgba(21, 101, 192, 0.06);
+  color: #1565C0;
+  border-color: rgba(21, 101, 192, 0.2);
+}
+
+.moveBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.deleteFieldBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border: none;
+  background: none;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #C62828;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 150ms;
+  margin-left: auto;
+}
+
+.deleteFieldBtn:hover {
+  background: rgba(198, 40, 40, 0.08);
+}
+
+/* ── Add field button ────────────────────────────────────────────────────── */
+.addFieldBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px dashed rgba(61, 61, 61, 0.12);
+  background: transparent;
+  border-radius: 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(61, 61, 61, 0.45);
+  cursor: pointer;
+  transition: border-color 180ms, color 180ms, background 180ms;
+}
+
+.addFieldBtn:hover {
+  border-color: #FF5200;
+  color: #FF5200;
+  background: rgba(255, 82, 0, 0.03);
+}
+
+/* ── Save footer ─────────────────────────────────────────────────────────── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 1rem 0 0;
+}
+
+.saveIndicator {
+  font-size: 0.73rem;
+  color: rgba(61, 61, 61, 0.42);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto;
+}
+
+.saveIndicatorDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.saveIndicatorDotSaved {
+  background: #2E7D32;
+}
+
+.saveIndicatorDotUnsaved {
+  background: #FF9800;
+}
+
+.saveIndicatorDotSaving {
+  background: #FF5200;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.saveBtn {
+  background: #FF5200;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 28px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 180ms, transform 150ms;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background: #e04900;
+  transform: translateY(-1px);
+}
+
+.saveBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Error ───────────────────────────────────────────────────────────────── */
+.error {
+  font-size: 0.78rem;
+  color: #e53e3e;
+  margin: 0;
+}
+
+/* ── Delete confirm ──────────────────────────────────────────────────────── */
+.deleteConfirm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #C62828;
+  margin-left: auto;
+}
+
+.deleteConfirmBtn {
+  padding: 4px 10px;
+  border: 1px solid #C62828;
+  background: transparent;
+  border-radius: 6px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #C62828;
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+
+.deleteConfirmBtn:hover {
+  background: #C62828;
+  color: #fff;
+}
+
+.deleteCancelBtn {
+  padding: 4px 10px;
+  border: 1px solid rgba(61, 61, 61, 0.15);
+  background: transparent;
+  border-radius: 6px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(61, 61, 61, 0.55);
+  cursor: pointer;
+  transition: background 150ms;
+}
+
+.deleteCancelBtn:hover {
+  background: rgba(61, 61, 61, 0.06);
+}

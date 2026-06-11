@@ -1,7 +1,12 @@
 'use client';
 
+import { useState } from 'react';
+import RegistrationModal from '@/components/ui/RegistrationModal';
+
 
 export default function WorkshopPage() {
+  const [showRegModal, setShowRegModal] = useState(false);
+
   return (
     <>
       <style>{`
@@ -121,7 +126,7 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
             <h1>Học để hành<br /><span className="accent">Không phải để dành</span></h1>
             <p>Leaders Talk không dành cho người chỉ muốn ngồi nghe cho hết giờ. Đây là nơi những Business Leader thật bước lên sân khấu để bóc tách các vấn đề đau đầu nhất trong công việc: đội ngũ không chạy, KPI không đạt, vận hành rối, quyết định sai và áp lực chồng áp lực. Không slide màu mè, không lý thuyết sách vở, chỉ có câu chuyện thật, góc nhìn thật và những cuộc tranh luận thẳng đến tận gốc vấn đề.</p>
             <div className="hero-actions">
-              <a className="btn btn-primary" href="https://forms.gle/XMnH7BKRFpWgiNJ2A" target="_blank" rel="noopener noreferrer">Đăng ký ngay</a>
+              <button className="btn btn-primary" onClick={() => setShowRegModal(true)} style={{ border: 'none', cursor: 'pointer' }}>Đăng ký ngay</button>
             </div>
           </div>
           <div className="hero-visual">
@@ -254,6 +259,7 @@ footer{min-height:164px;display:flex;align-items:center;justify-content:space-be
           </div>
         </section>
       </main>
+      {showRegModal && <RegistrationModal onClose={() => setShowRegModal(false)} />}
     </>
   );
 }
