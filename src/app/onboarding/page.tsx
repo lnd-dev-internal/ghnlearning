@@ -3,6 +3,7 @@ export default function OnboardingPage() {
     <div style={{ margin: '0 -0px', padding: 0, overflow: 'hidden' }}>
       <iframe
         src="/onboarding-static/index.html"
+        allow="autoplay"
         style={{
           width: '100%',
           height: 'calc(100vh - 68px)',

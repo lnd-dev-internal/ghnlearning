@@ -2070,10 +2070,15 @@
     .obj-tall-glass { animation: float 7s ease-in-out 1s infinite; }
     .obj-sphere { animation: float 5s ease-in-out 2s infinite; }
 
-    .hero-canvas { opacity: 0; transform: scale(0.96); }
-    .hero-title .hero-line-1 { opacity: 0; transform: translateY(40px); }
-    .action-bar { opacity: 0; }
-    .meta-grid .meta-cell { opacity: 0; transform: translateY(20px); }
+    .hero-canvas { opacity: 0; transform: scale(0.96); animation: fallback-reveal 0.5s ease 2.5s forwards; }
+    .hero-title .hero-line-1 { opacity: 0; transform: translateY(40px); animation: fallback-reveal 0.5s ease 2.5s forwards; }
+    .action-bar { opacity: 0; animation: fallback-reveal 0.5s ease 2.8s forwards; }
+    .meta-grid .meta-cell { opacity: 0; transform: translateY(20px); animation: fallback-reveal 0.5s ease 3s forwards; }
+
+    /* Fallback: if GSAP doesn't load, CSS animation reveals content after 2.5s */
+    @keyframes fallback-reveal {
+      to { opacity: 1; transform: none; }
+    }
 
     .tag-card { opacity: 0; transform: translateY(40px) rotate(2deg); }
     .cap-card { opacity: 0; transform: scale(0.9); }
