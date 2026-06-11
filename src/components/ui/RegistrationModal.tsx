@@ -16,7 +16,7 @@ interface RegistrationModalProps {
 type SubmitState = 'idle' | 'submitting' | 'success';
 
 export default function RegistrationModal({ onClose }: RegistrationModalProps) {
-  const formConfig = useFormConfig();
+  const { config: formConfig } = useFormConfig();
 
   const overlayRef  = useRef<HTMLDivElement>(null);
   const panelRef    = useRef<HTMLDivElement>(null);

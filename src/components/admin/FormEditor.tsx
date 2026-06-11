@@ -264,7 +264,7 @@ function FieldCard({ field, index, total, onChange, onDelete, onMove }: FieldCar
 type SaveState = 'saved' | 'unsaved' | 'saving' | 'error';
 
 export default function FormEditor() {
-  const formConfig = useFormConfig();
+  const { config: formConfig, loaded: formLoaded } = useFormConfig();
   const [initialized, setInitialized] = useState(false);
   const [creating, setCreating] = useState(false);
 
@@ -299,7 +299,7 @@ export default function FormEditor() {
         setConfigId(formConfig.id);
         setInitialized(true);
       }
-    } else if (formConfig === null && !initialized && !creating) {
+    } else if (formConfig === null && formLoaded && !initialized && !creating) {
       // No config exists — auto-create with defaults
       setCreating(true);
       const defaultConfig = {

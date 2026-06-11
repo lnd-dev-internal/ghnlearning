@@ -87,8 +87,9 @@ export async function createFormConfig(data: Omit<FormConfig, 'id'>): Promise<Fo
 
 /* ─── React hook ─────────────────────────────────────────────────────────── */
 
-export function useFormConfig(): FormConfig | null {
+export function useFormConfig(): { config: FormConfig | null; loaded: boolean } {
   const [config, setConfig] = useState<FormConfig | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -96,6 +97,8 @@ export function useFormConfig(): FormConfig | null {
       setConfig(row);
     } catch (e) {
       console.error('useFormConfig load error:', e);
+    } finally {
+      setLoaded(true);
     }
   }, []);
 
@@ -115,5 +118,5 @@ export function useFormConfig(): FormConfig | null {
     return () => { supabase.removeChannel(channel); };
   }, [load]);
 
-  return config;
+  return { config, loaded };
 }
