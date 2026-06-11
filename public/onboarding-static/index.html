@@ -4121,8 +4121,11 @@
       const slides = heroSlideshow.querySelectorAll('img');
       let currentSlide = 0;
       let slideshowInterval;
+      let slideshowStarted = false;
 
       function startSlideshow() {
+        if (slideshowStarted) return; // prevent double-start
+        slideshowStarted = true;
         if (slides.length === 0) return;
         
         // Show slideshow container
@@ -4151,14 +4154,28 @@
       // Transition to slideshow when video ends
       heroVideo.addEventListener('ended', startSlideshow);
 
-      // Fallback: If video fails to load or play (e.g. format unsupported or blocked)
-      // we check after a short delay if the video has started playing
+      // Try to play video when it has enough data
+      heroVideo.addEventListener('canplay', () => {
+        if (!slideshowStarted) {
+          heroVideo.play().catch(() => {
+            console.warn('Hero video autoplay blocked. Falling back to slideshow.');
+            startSlideshow();
+          });
+        }
+      });
+
+      // Also try to play immediately (video may already be ready)
+      heroVideo.play().catch(() => {
+        // Autoplay was blocked — wait for canplay or fall back
+      });
+
+      // Fallback: If video hasn't started playing after 10s, show slideshow
       setTimeout(() => {
         if (heroVideo.paused && heroVideo.currentTime === 0) {
-          console.warn('Hero video failed to autoplay or load. Falling back to slideshow.');
+          console.warn('Hero video failed to load after 10s. Falling back to slideshow.');
           startSlideshow();
         }
-      }, 3000);
+      }, 10000);
     }
 
     // Force ScrollTrigger refresh after window loads to recalculate trigger positions with pinned/spacer elements
