@@ -1,7 +1,5 @@
 'use client';
 
-import GHNFooter from '@/components/ui/GHNFooter';
-
 export default function TraiNghiemVanHanhPage() {
   return (
     <>
@@ -28,7 +26,6 @@ export default function TraiNghiemVanHanhPage() {
           loading="lazy"
         />
       </div>
-      <GHNFooter />
     </>
   );
 }
