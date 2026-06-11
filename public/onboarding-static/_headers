@@ -1,0 +1,28 @@
+/*.mp4
+  Content-Type: video/mp4
+  Accept-Ranges: bytes
+  Cache-Control: public, max-age=31536000
+
+/*.MP4
+  Content-Type: video/mp4
+  Accept-Ranges: bytes
+  Cache-Control: public, max-age=31536000
+
+/*.jpeg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=31536000
+
+/*.jpg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=31536000
+
+/*.JPG
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=31536000
+
+/*.png
+  Content-Type: image/png
+  Cache-Control: public, max-age=31536000
+
+/index.html
+  Cache-Control: no-cache
