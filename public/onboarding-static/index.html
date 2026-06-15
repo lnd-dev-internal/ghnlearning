@@ -1075,22 +1075,129 @@
       inset: 0;
     }
 
-    /* Mobile active card adjustments */
+    /* Mobile milestones: 2-column — years left, card right */
     @media (max-width: 768px) {
-      .milestone-active-card {
-        padding: 0;
-        margin: 20px auto;
-        min-height: auto;
+      .milestones-section {
+        display: grid !important;
+        grid-template-columns: 100px 1fr;
+        grid-template-rows: auto 1fr;
+        padding: 50px 12px 30px !important;
+        height: auto !important;
+        gap: 0 12px;
+        overflow: visible !important;
       }
-      
-      .card-fade-target {
+
+      .milestones-section .milestones-header {
+        grid-column: 1 / -1;
+        margin-bottom: 16px !important;
+      }
+
+      .milestones-section .timeline-wrapper {
+        grid-column: 1;
+        grid-row: 2;
+        margin: 0 !important;
+        padding: 0 0 0 20px !important;
+        height: auto !important;
+      }
+
+      .milestones-section .timeline-line {
+        left: 14px !important;
+        top: 0 !important;
+        bottom: 0;
+        width: 2px !important;
+        height: 100% !important;
+        transform: none !important;
+      }
+
+      .milestones-section .timeline-nodes {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: auto !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        padding: 0 0 0 20px !important;
+        align-items: flex-start !important;
+      }
+
+      .milestones-section .timeline-node {
+        position: relative !important;
+        left: auto !important;
+        transform: none !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        width: auto !important;
+        gap: 0 !important;
+        cursor: pointer;
+      }
+
+      .milestones-section .node-dot {
+        position: absolute !important;
+        left: -26px !important;
+        top: 5px !important;
+        transform: none !important;
+        margin-bottom: 0 !important;
+        width: 10px !important;
+        height: 10px !important;
+        border-width: 2px !important;
+      }
+
+      .milestones-section .timeline-node:hover .node-dot {
+        transform: scale(1.3) !important;
+      }
+
+      .milestones-section .node-year {
+        font-size: 1.15rem !important;
+        margin-bottom: 0 !important;
+        min-width: auto !important;
+        line-height: 1.3 !important;
+      }
+
+      .milestones-section .node-title {
+        font-size: 0.7rem !important;
+        line-height: 1.3 !important;
+      }
+
+      .milestones-section .milestone-active-card {
+        grid-column: 2;
+        grid-row: 2;
+        position: sticky;
+        top: 60px;
+        align-self: start;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+      }
+
+      .milestones-section .card-fade-target {
         flex-direction: column;
         gap: 0;
       }
-      
-      .active-card-image-wrap {
+
+      .milestones-section .active-card-image-wrap {
         width: 100%;
-        height: 180px;
+        height: 100px;
+      }
+
+      .milestones-section .active-card-text {
+        padding: 10px 14px 14px;
+      }
+
+      .milestones-section .active-card-year {
+        font-size: 1.5rem;
+        margin-bottom: 2px;
+      }
+
+      .milestones-section .active-card-title {
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+      }
+
+      .milestones-section .active-card-desc {
+        font-size: 0.78rem;
+        line-height: 1.4;
       }
     }
 
@@ -1179,83 +1286,15 @@
       padding-top: 20px;
     }
 
-    /* Responsive styles for Milestones */
+    /* Responsive styles for Milestones — overridden by mobile 2-col block below */
     @media (max-width: 768px) {
-      .milestones-section {
-        padding: 80px 24px;
-        height: auto !important;
-        display: block !important;
-      }
-
-      .timeline-wrapper {
-        margin: 50px auto 20px auto;
-        padding: 0 0 0 20px;
-        height: auto;
-        padding-top: 0;
-      }
-
-      .timeline-line {
-        top: 0;
-        bottom: 0;
-        left: 20px;
-        width: 4px;
-        height: 100%;
-        transform: none;
-      }
-
       .timeline-progress {
         width: 100% !important;
         height: 0%;
       }
 
       .timeline-tracker {
-        left: 50% !important;
-        top: 0%;
-        transform: translate(-50%, -50%);
-      }
-
-      .timeline-nodes {
-        position: relative;
-        top: 0;
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        gap: 50px;
-        align-items: flex-start;
-        padding: 0 0 0 30px;
-      }
-
-      .timeline-node {
-        position: relative !important;
-        left: auto !important;
-        transform: none !important;
-        flex-direction: row;
-        align-items: center;
-        text-align: left;
-        width: 100%;
-        gap: 20px;
-      }
-
-      .node-dot {
-        position: absolute;
-        left: -40px;
-        top: 50%;
-        transform: translateY(-50%);
-        margin-bottom: 0;
-      }
-
-      .timeline-node:hover .node-dot {
-        transform: translateY(-50%) scale(1.2);
-      }
-
-      .node-year {
-        font-size: 1.6rem;
-        margin-bottom: 0;
-        min-width: 70px;
-      }
-
-      .node-title {
-        font-size: 0.95rem;
+        display: none !important;
       }
     }
 
@@ -2319,7 +2358,7 @@
        NEW: ROLLING STATS COUNTER
     ═══════════════════════════════════════ */
     .stats-section {
-      padding: 100px 60px;
+      padding: 80px 60px 50px;
       border-top: 1px solid var(--border);
       background: #222222; /* Darker gray background */
       color: var(--white);
@@ -2553,7 +2592,7 @@
        NEW: LEADERSHIP SECTION
     ═══════════════════════════════════════ */
     .leadership-section {
-      padding: 120px 60px;
+      padding: 80px 60px;
       background-color: var(--bg);
       border-bottom: 1px solid var(--border);
       position: relative;
@@ -2813,8 +2852,33 @@
 
     @media (max-width: 480px) {
       .leadership-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .leadership-grid .leader-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        max-width: 50%;
+        justify-self: center;
+      }
+      .leader-img-wrap {
+        aspect-ratio: 1 / 1;
+      }
+      .leader-info {
+        padding: 12px 6px 6px;
+      }
+      .leader-name {
+        font-size: 0.8rem;
+      }
+      .leader-name.name-long {
+        font-size: 0.7rem;
+        white-space: normal;
+        letter-spacing: -0.02em;
+      }
+      .leader-title {
+        font-size: 0.65rem;
+      }
+      .leader-org {
+        font-size: 0.65rem;
       }
     }
 
@@ -2822,7 +2886,7 @@
        NEW: CELEBRATION / QUOTE SECTION
     ═══════════════════════════════════════ */
     .quote-section {
-      padding: 80px 60px 0;
+      padding: 50px 60px 0;
       background: #222222;
       color: var(--white);
       position: relative;
@@ -2996,6 +3060,83 @@
       }
     }
 
+    @media (max-width: 768px) {
+      .quote-section {
+        padding: 0 !important;
+        overflow: hidden;
+      }
+      .quote-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .quote-right {
+        order: -1;
+        position: relative;
+        overflow: visible;
+        margin-top: 0;
+        margin-bottom: -80px;
+      }
+      .ceo-img-wrap {
+        max-width: 80%;
+        margin: 0 auto;
+      }
+      .ceo-img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+      }
+      .ceo-glow {
+        width: 100%;
+        height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(255, 82, 0, 0.18) 0%, transparent 65%);
+      }
+      .quote-left {
+        padding: 0 24px 30px;
+        margin-top: 0;
+        position: relative;
+        z-index: 3;
+      }
+      .quote-label {
+        display: none;
+      }
+      .quote-text-wrap {
+        margin-bottom: 16px;
+      }
+      .quote-large-mark {
+        font-size: 3.5rem;
+        top: -24px;
+        left: -8px;
+        color: rgba(255, 82, 0, 0.25);
+      }
+      .quote-content-text {
+        font-size: 1.05rem;
+        line-height: 1.55;
+      }
+      .quote-author {
+        margin-bottom: 20px;
+      }
+      .quote-author-name {
+        font-size: 1rem;
+      }
+      .quote-author-role {
+        font-size: 0.75rem;
+      }
+      .slogan-divider {
+        margin-bottom: 20px;
+      }
+      .slogan-title {
+        font-size: clamp(2rem, 10vw, 3rem);
+      }
+      .slogan-subtitle {
+        font-size: 0.75rem;
+      }
+    }
+
     .vm-section-header {
       padding: 70px 60px 40px;
       background: var(--bg);
@@ -3088,7 +3229,10 @@
       .hero { padding: 16px; }
       .hero-canvas { aspect-ratio: 4 / 3; }
       .hero-text { padding: 28px 24px; }
-      .hero-title { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+      .hero-title { font-size: clamp(2rem, 8vw, 3.5rem); max-width: 100%; }
+      .hero-title .hero-line-1 { font-size: clamp(1.4rem, 5vw, 2rem) !important; }
+      .hero-title .accent-word-wrap { word-break: keep-all; overflow-wrap: normal; }
+      .hero-title .accent-word { white-space: normal !important; font-size: clamp(1.8rem, 7.5vw, 3.2rem); letter-spacing: -0.02em; }
       .action-bar { padding: 20px 24px; }
       .action-buttons { flex-direction: column; width: 100%; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
@@ -3117,8 +3261,29 @@
       .hscroll-track { padding: 0 20px; gap: 16px; }
       .hscroll-header { padding: 20px; }
       .hscroll-progress { left: 20px; right: 20px; bottom: 20px; }
-      .marquee-item .m-text { font-size: 1.8rem; }
-      .marquee-section { padding: 30px 0; }
+      .marquee-item .m-text { font-size: 1.5rem; }
+      .marquee-section { padding: 24px 0; }
+      .marquee-item { gap: 12px; padding: 0 12px; }
+      .quote-section { padding: 30px 16px 0; }
+      .quote-content-text { font-size: 0.95rem; line-height: 1.5; }
+      .quote-author-name { font-size: 0.9rem; }
+      .quote-author-role { font-size: 0.7rem; }
+      .quote-label { font-size: 0.6rem; margin-bottom: 12px; }
+      .slogan-title { font-size: clamp(1.6rem, 8vw, 2.4rem); }
+      .slogan-subtitle { font-size: 0.7rem; }
+      .slogan-divider { margin-bottom: 20px; }
+      .quote-left { padding-bottom: 20px; }
+      .leadership-section { padding: 50px 20px; }
+      .leadership-header { margin-bottom: 40px; }
+      .leadership-title-main { font-size: clamp(1.8rem, 7vw, 2.5rem); }
+      .leadership-title-sub { font-size: clamp(0.9rem, 3vw, 1.2rem); }
+      .stat-digit { font-size: 2.8rem; line-height: 3.5rem; }
+      .stat-number-wrap { height: 3.5rem; }
+      .stat-suffix { font-size: 1.5rem; }
+      .stat-cell { padding: 28px 20px; }
+      .stats-header .section-title { font-size: clamp(1.2rem, 4.5vw, 1.6rem) !important; }
+      .vm-section-header { padding: 40px 20px 24px; }
+      .vm-section-header .vm-section-title { font-size: clamp(1.5rem, 5vw, 2rem); }
     }
 
     
@@ -3425,7 +3590,7 @@
         <div class="leader-info">
           <h3 class="leader-name name-long">Anh Nguyễn Phước Thanh Hải</h3>
           <p class="leader-title">
-            <span class="leader-org">Scommerce</span>
+            <span class="leader-org">Scommerce/Giao Hàng Nhanh</span>
             <span class="leader-role">Phó Tổng Giám Đốc Khối Công Nghệ</span>
           </p>
         </div>
@@ -3547,7 +3712,7 @@
       <div class="quote-right">
         <div class="ceo-glow"></div>
         <div class="ceo-img-wrap">
-          <img class="ceo-img" src="CEO.png" alt="Anh Lương Duy Hoài - Nhà sáng lập Scommerce">
+          <img class="ceo-img" src="SMT/1.png" alt="Anh Lương Duy Hoài - Nhà sáng lập Scommerce">
         </div>
       </div>
       
@@ -4044,12 +4209,34 @@
 
     // Mobile: Vertical progress line and node coloring
     timelineMM.add("(max-width: 768px)", () => {
+      // Hide timeline content initially, reveal when header scrolls past half screen
+      gsap.set('.timeline-wrapper', { opacity: 0 });
+      gsap.set('.milestone-active-card', { opacity: 0 });
+
+      ScrollTrigger.create({
+        trigger: '.milestones-header',
+        start: 'bottom 40%',
+        once: true,
+        onEnter: () => {
+          gsap.to('.timeline-wrapper', { opacity: 1, duration: 0.5, ease: 'power2.out' });
+          gsap.to('.milestone-active-card', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', delay: 0.2 });
+          gsap.from('.timeline-node', {
+            opacity: 0,
+            x: -20,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: 'power2.out',
+            delay: 0.1
+          });
+        }
+      });
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '.timeline-wrapper',
-          start: 'top 75%',
-          end: 'bottom 45%',
-          scrub: 0.05, // Almost instant follow
+          start: 'top 35%',
+          end: 'bottom 35%',
+          scrub: 0.05,
           id: 'milestones-mobile-trigger',
           snap: {
             snapTo: [0, 0.25, 0.5, 0.75, 1.0],
@@ -4065,28 +4252,29 @@
             else if (progress < 0.625) activeIdx = 2;
             else if (progress < 0.875) activeIdx = 3;
             else activeIdx = 4;
-            
+
             updateActiveCard(activeIdx);
           }
         }
       });
 
-      tl.to('.timeline-progress', { height: '100%', duration: 1, ease: 'none' })
-        .to('.timeline-tracker', { top: '100%', duration: 1, ease: 'none' }, 0);
+      tl.to('.timeline-progress', { height: '100%', duration: 1, ease: 'none' });
     });
 
-    // Staggered fade-in of timeline nodes
-    gsap.from('.timeline-node', {
-      scrollTrigger: {
-        trigger: '.timeline-wrapper',
-        start: 'top 80%',
-      },
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: 'power3.out'
-    });
+    // Desktop: Staggered fade-in of timeline nodes
+    if (window.innerWidth > 768) {
+      gsap.from('.timeline-node', {
+        scrollTrigger: {
+          trigger: '.timeline-wrapper',
+          start: 'top 80%',
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out'
+      });
+    }
 
     // Smooth scroll when clicking a timeline node
     timelineNodes.forEach(node => {
