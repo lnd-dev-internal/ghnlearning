@@ -745,6 +745,8 @@ export default function KhoiThiTruongPage() {
           text-transform: uppercase;
           color: #3D3D3D !important;
           margin: 0;
+          overflow-wrap: break-word;
+          word-break: break-word;
         }
 
         .vh-desc {
@@ -795,6 +797,8 @@ export default function KhoiThiTruongPage() {
           text-transform: uppercase;
           margin: 0;
           letter-spacing: 0.02em;
+          overflow-wrap: break-word;
+          word-break: break-word;
         }
 
         /* Technology Integration Network Overview (Orange-White High-End Style) */
@@ -1202,6 +1206,12 @@ export default function KhoiThiTruongPage() {
           .vh-page {
             padding: 0 0 80px;
             gap: 80px;
+          }
+          .vh-sec-title {
+            font-size: clamp(1.5rem, 6vw, 2rem) !important;
+          }
+          .vh-title {
+            font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
           }
         }
 

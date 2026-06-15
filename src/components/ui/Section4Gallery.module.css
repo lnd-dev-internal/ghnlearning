@@ -219,6 +219,10 @@
   .filmCard {
     width: 170px;
   }
+  .heading {
+    flex-wrap: wrap;
+    font-size: clamp(1.8rem, 7vw, 2.6rem);
+  }
   .rowLeft {
     animation-duration: 12s;
   }

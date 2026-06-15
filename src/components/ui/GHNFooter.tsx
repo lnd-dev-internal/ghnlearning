@@ -61,17 +61,32 @@ export default function GHNFooter() {
         }
         @media (max-width: 960px) {
           .footer {
-            flex-direction: column;
+            flex-direction: row;
+            flex-wrap: wrap;
             align-items: flex-start;
-            padding: 24px 24px;
-            gap: 16px;
+            justify-content: space-between;
+            padding: 24px 20px;
+            gap: 8px;
           }
           .footer-brand {
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+          }
+          .footer-brand .brand-dot {
+            display: none;
+          }
+          .footer-dept {
+            font-size: 0.55rem;
+          }
+          .footer-email {
+            font-size: 0.7rem;
+            margin-top: 4px;
           }
           .footer-right {
-            align-self: center;
-            margin-top: 8px;
+            font-size: 0.6rem;
+            text-align: right;
+            align-self: flex-start;
           }
         }
       `}</style>

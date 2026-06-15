@@ -636,4 +636,14 @@
   .content { padding: 2rem 1.5rem; }
   .modalOverlay { padding: 1rem; }
   .modalBody { padding: 1.5rem 1.4rem 2rem; }
+  .sectionHeading {
+    flex-wrap: wrap;
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
+  }
+  .sectionHeadingGray {
+    white-space: normal;
+  }
+  .sectionHeadingText {
+    white-space: normal;
+  }
 }

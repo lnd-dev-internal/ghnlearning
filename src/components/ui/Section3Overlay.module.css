@@ -121,4 +121,8 @@
     border-top: none;
     padding-top: 0;
   }
+  .cardTitle {
+    white-space: normal;
+    font-size: clamp(0.7rem, 2.5vw, 0.95rem);
+  }
 }
