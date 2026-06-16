@@ -13,15 +13,15 @@ const mainNavItems = [
 
 // --- Technical Skills nav items (secondary view) ---
 const technicalNavItems = [
-  {
-    label: 'Khối Văn Phòng',
-    defaultHref: '/newbie',
-    children: [
-      { label: 'Lộ trình nhân viên mới', href: '/newbie' },
-      { label: 'CSKH', href: '/cskh' },
-      { label: 'Field Sale', href: '/fieldsale' },
-    ],
-  },
+  // {
+  //   label: 'Khối Văn Phòng',
+  //   defaultHref: '/newbie',
+  //   children: [
+  //     { label: 'Lộ trình nhân viên mới', href: '/newbie' },
+  //     { label: 'CSKH', href: '/cskh' },
+  //     { label: 'Field Sale', href: '/fieldsale' },
+  //   ],
+  // },
   {
     label: 'Khối Thị Trường',
     defaultHref: '/khoi-thi-truong',
