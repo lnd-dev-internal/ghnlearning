@@ -3,8 +3,11 @@ import "./globals.css";
 import ClientLayoutWrapper from "@/components/ui/ClientLayoutWrapper";
 
 export const metadata: Metadata = {
-  title: "Leaders Talk",
+  title: "GHN Learning",
   description: "Where visionary leaders shape tomorrow's conversations",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
