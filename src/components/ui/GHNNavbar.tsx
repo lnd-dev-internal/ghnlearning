@@ -26,6 +26,7 @@ const technicalNavItems = [
     label: 'Khối Thị Trường',
     defaultHref: '/khoi-thi-truong',
     children: [
+      { label: 'Quản lý khu vực (AM)', href: '/am' },
       { label: 'Nhân viên xử lý', href: '/nvxl' },
       { label: 'Nhân viên Phát triển thị trường', href: '/nvpttt' },
       { label: 'Nhân viên Phân hàng', href: '/nvph' },

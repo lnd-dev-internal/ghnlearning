@@ -68,12 +68,12 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
 export default function KhoiThiTruongPage() {
   const [mounted, setMounted] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [activeMobileRole, setActiveMobileRole] = useState<'nvxl' | 'nvpttt' | 'nvph' | null>(null);
+  const [activeMobileRole, setActiveMobileRole] = useState<'nvxl' | 'nvpttt' | 'nvph' | 'am' | null>(null);
   const [activeStageIndex, setActiveStageIndex] = useState(0);
 
   const [tooltip, setTooltip] = useState<{
     visible: boolean;
-    role: 'nvxl' | 'nvpttt' | 'nvph' | null;
+    role: 'nvxl' | 'nvpttt' | 'nvph' | 'am' | null;
     x: number;
     y: number;
   }>({
@@ -98,6 +98,11 @@ export default function KhoiThiTruongPage() {
       name: 'Nhân viên Phân hàng',
       image: '/NVPH 1.jpeg',
       function: 'Vận hành hệ thống băng tải tự động tại các Kho Trung chuyển (TTTC), thực hiện rã tải Feeder, chia chọn đơn và đóng kiện xuất hàng đi.'
+    },
+    am: {
+      name: 'Area Manager',
+      image: '/AmDEMO2.jpeg',
+      function: 'Quản lý toàn diện hoạt động bưu cục trong khu vực: điều phối vận hành, quản trị nhân sự, kiểm soát ngân sách và đảm bảo chất lượng dịch vụ.'
     }
   };
 
@@ -340,7 +345,7 @@ export default function KhoiThiTruongPage() {
     }));
   };
 
-  const handleRoleClick = (e: React.MouseEvent, roleKey: 'nvxl' | 'nvpttt' | 'nvph') => {
+  const handleRoleClick = (e: React.MouseEvent, roleKey: 'nvxl' | 'nvpttt' | 'nvph' | 'am') => {
     if (window.innerWidth <= 968) {
       e.preventDefault();
       setActiveMobileRole(roleKey);
@@ -952,6 +957,15 @@ export default function KhoiThiTruongPage() {
           transform: scale(1.45) !important;
           transform-origin: center 40% !important;
           transition: transform 0.8s cubic-bezier(0.25, 1, 0.2, 1) !important;
+        }
+
+        /* Mirror the image horizontally so the subject sits on the right,
+           clear of the rotated badge pinned to the left edge. */
+        .vh-accordion-img-flip {
+          transform: scaleX(-1);
+        }
+        .vh-accordion-item:hover .vh-accordion-img-flip {
+          transform: scaleX(-1) scale(1.06);
         }
 
         .vh-accordion-item:hover .vh-accordion-img-zoomed {
@@ -1857,13 +1871,19 @@ export default function KhoiThiTruongPage() {
                       </g>
 
                       {/* Quản lý Khu vực (AM) capsule */}
-                      <g transform="translate(10, 98)">
+                      <g
+                        transform="translate(10, 98)"
+                        style={{ cursor: 'pointer' }}
+                        onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'am' }))}
+                        onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                        onClick={(e) => handleRoleClick(e, 'am')}
+                      >
                         <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
                         <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
                       </g>
 
                       {/* Nhân viên xử lý capsule */}
-                      <g 
+                      <g
                         transform="translate(10, 140)"
                         style={{ cursor: 'pointer' }}
                         onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'nvxl' }))}
@@ -1952,7 +1972,13 @@ export default function KhoiThiTruongPage() {
                       </g>
 
                       {/* Quản lý Khu vực capsule */}
-                      <g transform="translate(10, 98)">
+                      <g
+                        transform="translate(10, 98)"
+                        style={{ cursor: 'pointer' }}
+                        onMouseEnter={() => setTooltip(prev => ({ ...prev, visible: true, role: 'am' }))}
+                        onMouseLeave={() => setTooltip(prev => ({ ...prev, visible: false, role: null }))}
+                        onClick={(e) => handleRoleClick(e, 'am')}
+                      >
                         <rect x="0" y="0" width="120" height="30" rx="6" fill="#FF5200" stroke="#FF5200" />
                         <text x="60" y="15" dominantBaseline="central" fontSize="11" fontWeight="700" fill="#FFFFFF" textAnchor="middle" fontFamily="Exo">Quản lý (AM)</text>
                       </g>
@@ -2139,20 +2165,45 @@ export default function KhoiThiTruongPage() {
             
             <div className="desktop-only" style={{ width: '100%' }}>
               <div className="vh-accordion">
-                {/* Card 1: Nhân viên Xử lý */}
+                {/* Card 1: Area Manager */}
                 <div className="vh-accordion-item">
-                  <div 
+                  <div
+                    className="vh-accordion-img vh-accordion-img-flip"
+                    style={{ backgroundImage: "url('/AmDEMO2.jpeg')", backgroundPosition: '28% center' }}
+                  />
+                  <div className="vh-accordion-overlay" />
+
+                  <div className="vh-accordion-header">
+                    <span className="vh-accordion-num">R—01</span>
+                    <div className="vh-accordion-divider" />
+                    <h3 className="vh-accordion-title">Area Manager</h3>
+                  </div>
+
+                  <div className="vh-accordion-body">
+                    <p className="vh-accordion-desc">
+                      Người quản lý khu vực điều phối toàn bộ hoạt động bưu cục. Đảm nhận quản trị vận hành, tuyển dụng & phát triển đội ngũ, kiểm soát ngân sách và giám sát chất lượng dịch vụ.
+                    </p>
+                    <Link href="/am" className="vh-expanded-btn">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Card 2: Nhân viên Xử lý */}
+                <div className="vh-accordion-item">
+                  <div
                     className="vh-accordion-img"
                     style={{ backgroundImage: "url('/NVXL 1.JPG')" }}
                   />
                   <div className="vh-accordion-overlay" />
-                  
+
                   <div className="vh-accordion-header">
-                    <span className="vh-accordion-num">R—01</span>
+                    <span className="vh-accordion-num">R—02</span>
                     <div className="vh-accordion-divider" />
                     <h3 className="vh-accordion-title">Nhân viên Xử lý</h3>
                   </div>
-                  
+
                   <div className="vh-accordion-body">
                     <p className="vh-accordion-desc">
                       Chuyên gia quy trình phân loại và xử lý tại bưu cục. Đảm nhận nghiệp vụ tiếp nhận hàng, rã kiện, gán đơn giao, bắn kiểm và bàn giao hàng hóa chính xác.
@@ -2164,20 +2215,20 @@ export default function KhoiThiTruongPage() {
                   </div>
                 </div>
 
-                {/* Card 2: Nhân viên Phát triển Thị trường */}
+                {/* Card 3: Nhân viên Phát triển Thị trường */}
                 <div className="vh-accordion-item">
-                  <div 
+                  <div
                     className="vh-accordion-img"
                     style={{ backgroundImage: "url('/Ship 1.JPG')", backgroundPosition: '80% center' }}
                   />
                   <div className="vh-accordion-overlay" />
-                  
+
                   <div className="vh-accordion-header">
-                    <span className="vh-accordion-num">R—02</span>
+                    <span className="vh-accordion-num">R—03</span>
                     <div className="vh-accordion-divider" />
                     <h3 className="vh-accordion-title">Nhân viên Phát triển Thị trường</h3>
                   </div>
-                  
+
                   <div className="vh-accordion-body">
                     <p className="vh-accordion-desc">
                       Lực lượng giao nhận tuyến đầu trực tiếp tương tác khách hàng. Đảm nhận quy trình giao hàng, lấy hàng, nộp COD và lưu trữ chứng từ số POD chuẩn chỉnh.
@@ -2189,20 +2240,20 @@ export default function KhoiThiTruongPage() {
                   </div>
                 </div>
 
-                {/* Card 3: Nhân viên Phân hàng */}
+                {/* Card 4: Nhân viên Phân hàng */}
                 <div className="vh-accordion-item">
-                  <div 
+                  <div
                     className="vh-accordion-img vh-accordion-img-zoomed"
                     style={{ backgroundImage: "url('/NVPH.jpg')" }}
                   />
                   <div className="vh-accordion-overlay" />
-                  
+
                   <div className="vh-accordion-header">
-                    <span className="vh-accordion-num">R—03</span>
+                    <span className="vh-accordion-num">R—04</span>
                     <div className="vh-accordion-divider" />
                     <h3 className="vh-accordion-title">Nhân viên Phân hàng</h3>
                   </div>
-                  
+
                   <div className="vh-accordion-body">
                     <p className="vh-accordion-desc">
                       Chuyên gia chia chọn tại các Trung tâm trung chuyển lớn. Vận hành hệ thống băng tải tự động hóa, thực hiện rã tải, cấp hàng Feeder và đóng kiện xuất hàng liên tỉnh.
@@ -2218,11 +2269,34 @@ export default function KhoiThiTruongPage() {
 
             <div className="mobile-only" style={{ width: '100%' }}>
               <div className="vh-mobile-roles-list">
-                {/* Mobile Card 1: Nhân viên Xử lý */}
+                {/* Mobile Card 1: Area Manager */}
+                <div className="vh-mobile-role-card">
+                  <div className="vh-mobile-role-img-container">
+                    <img
+                      src="/AmDEMO2.jpeg"
+                      alt="Area Manager"
+                      className="vh-mobile-role-img"
+                      style={{ objectPosition: 'center 35%' }}
+                    />
+                    <span className="vh-mobile-role-num-badge">R—01</span>
+                  </div>
+                  <div className="vh-mobile-role-info">
+                    <h3 className="vh-mobile-role-title">Area Manager</h3>
+                    <p className="vh-mobile-role-desc">
+                      Người quản lý khu vực điều phối toàn bộ hoạt động bưu cục. Đảm nhận quản trị vận hành, tuyển dụng & phát triển đội ngũ, kiểm soát ngân sách và giám sát chất lượng dịch vụ.
+                    </p>
+                    <Link href="/am" className="vh-mobile-role-btn-cta">
+                      <span>Xem quy trình</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Mobile Card 2: Nhân viên Xử lý */}
                 <div className="vh-mobile-role-card">
                   <div className="vh-mobile-role-img-container">
                     <img src="/NVXL 1.JPG" alt="Nhân viên Xử lý" className="vh-mobile-role-img" />
-                    <span className="vh-mobile-role-num-badge">R—01</span>
+                    <span className="vh-mobile-role-num-badge">R—02</span>
                   </div>
                   <div className="vh-mobile-role-info">
                     <h3 className="vh-mobile-role-title">Nhân viên Xử lý</h3>
@@ -2236,16 +2310,16 @@ export default function KhoiThiTruongPage() {
                   </div>
                 </div>
 
-                {/* Mobile Card 2: Nhân viên Phát triển Thị trường */}
+                {/* Mobile Card 3: Nhân viên Phát triển Thị trường */}
                 <div className="vh-mobile-role-card">
                   <div className="vh-mobile-role-img-container">
-                    <img 
-                      src="/Ship 1.JPG" 
-                      alt="Nhân viên Phát triển Thị trường" 
-                      className="vh-mobile-role-img" 
-                      style={{ objectPosition: 'center 15%' }} 
+                    <img
+                      src="/Ship 1.JPG"
+                      alt="Nhân viên Phát triển Thị trường"
+                      className="vh-mobile-role-img"
+                      style={{ objectPosition: 'center 15%' }}
                     />
-                    <span className="vh-mobile-role-num-badge">R—02</span>
+                    <span className="vh-mobile-role-num-badge">R—03</span>
                   </div>
                   <div className="vh-mobile-role-info">
                     <h3 className="vh-mobile-role-title">Nhân viên Phát triển Thị trường</h3>
@@ -2259,11 +2333,11 @@ export default function KhoiThiTruongPage() {
                   </div>
                 </div>
 
-                {/* Mobile Card 3: Nhân viên Phân hàng */}
+                {/* Mobile Card 4: Nhân viên Phân hàng */}
                 <div className="vh-mobile-role-card">
                   <div className="vh-mobile-role-img-container">
                     <img src="/NVPH.jpg" alt="Nhân viên Phân hàng" className="vh-mobile-role-img" />
-                    <span className="vh-mobile-role-num-badge">R—03</span>
+                    <span className="vh-mobile-role-num-badge">R—04</span>
                   </div>
                   <div className="vh-mobile-role-info">
                     <h3 className="vh-mobile-role-title">Nhân viên Phân hàng</h3>
@@ -2294,7 +2368,7 @@ export default function KhoiThiTruongPage() {
                   src={roleData[activeMobileRole].image} 
                   alt={roleData[activeMobileRole].name} 
                   className="vh-drawer-img" 
-                  style={activeMobileRole === 'nvpttt' ? { objectPosition: 'center 15%' } : undefined}
+                  style={activeMobileRole === 'nvpttt' ? { objectPosition: 'center 15%' } : activeMobileRole === 'am' ? { objectPosition: 'center 35%' } : undefined}
                 />
                 <div className="vh-drawer-content-area">
                   <h3 className="vh-drawer-title">{roleData[activeMobileRole].name}</h3>
