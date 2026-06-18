@@ -168,18 +168,18 @@ export default function Section5Featured() {
           zIndex: 5,
           textAlign: "center",
         }}>
-          Sự kiện{" "}
+          SỰ KIỆN{" "}
           <span style={{
             background: "#FF5200",
             color: "#ffffff",
-            padding: "0.08em 0.28em 0.12em",
+            padding: "0.22em 0.30em 0.18em",
             borderRadius: "6px",
             display: "inline-block",
             lineHeight: "1.1",
             verticalAlign: "baseline",
             position: "relative",
             top: "-0.03em",
-          }}>nổi bật</span>
+          }}>NỔI BẬT</span>
         </div>
 
         <div className={styles.container}>

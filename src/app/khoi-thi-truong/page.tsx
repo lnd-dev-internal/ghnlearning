@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 
 // Helper hook for counting up animation when scrolled into view
@@ -337,11 +338,10 @@ export default function KhoiThiTruongPage() {
   ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
     setTooltip(prev => ({
       ...prev,
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      x: e.clientX,
+      y: e.clientY
     }));
   };
 
@@ -1625,6 +1625,7 @@ export default function KhoiThiTruongPage() {
           width: 100%;
           height: 180px;
           object-fit: cover;
+          object-position: center 20%;
           border-bottom: 1.5px solid rgba(255, 82, 0, 0.3);
           flex-shrink: 0;
         }
@@ -2115,16 +2116,16 @@ export default function KhoiThiTruongPage() {
                     </g>
                   </svg>
 
-                  {/* High-end floating details tooltip */}
-                  {tooltip.visible && tooltip.role && (
+                  {/* High-end floating details tooltip — rendered via portal to escape overflow clipping */}
+                  {tooltip.visible && tooltip.role && typeof document !== 'undefined' && createPortal(
                     <div 
                       className="vh-diagram-tooltip"
                       style={{
-                        position: 'absolute',
+                        position: 'fixed',
                         left: `${tooltip.x > 620 ? tooltip.x - 380 : tooltip.x + 20}px`,
                         top: `${tooltip.y + 20}px`,
                         pointerEvents: 'none',
-                        zIndex: 100,
+                        zIndex: 10000,
                       }}
                     >
                       <div className="vh-tooltip-content">
@@ -2138,7 +2139,8 @@ export default function KhoiThiTruongPage() {
                           <p className="vh-tooltip-desc">{roleData[tooltip.role].function}</p>
                         </div>
                       </div>
-                    </div>
+                    </div>,
+                    document.body
                   )}
                 </div>
               </div>

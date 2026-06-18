@@ -63,7 +63,7 @@ export default function Page() {
         </div>
 
         {/* Section 4 — Gallery, enters viewport at scroll ~400vh (placed at top:500vh) */}
-        <div id="section-4" role="region" aria-label="Khoảnh khắc đáng nhớ">
+        <div id="section-4" role="region" aria-label="Khoảnh khắc đáng nhớ" style={{ scrollMarginTop: "100px" }}>
           <Section4Gallery />
         </div>
 

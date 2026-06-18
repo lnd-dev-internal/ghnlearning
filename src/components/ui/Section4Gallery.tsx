@@ -89,10 +89,10 @@ export default function Section4Gallery() {
       {/* Heading — stacked layout */}
       <div ref={headerRef} className={styles.headerBlock}>
         <h2 className={styles.heading} id="gallery-heading">
-          <span className={styles.headingGray}>Khoảnh khắc </span>
+          <span className={styles.headingGray}>KHOẢNH KHẮC </span>
           <span className={styles.headingHighlight} aria-label="đáng nhớ">
             <span className={styles.highlightBg} aria-hidden="true" />
-            <span className={styles.highlightText}>đáng nhớ</span>
+            <span className={styles.highlightText}>ĐÁNG NHỚ</span>
           </span>
         </h2>
         {/* Subtitle directly below heading — bold */}
