@@ -57,12 +57,12 @@ export default function IntroLoader() {
     gsap.fromTo(
       brandRef.current,
       { opacity: 0, y: 8 },
-      { opacity: 1, y: 0, duration: 0.4, delay: 0.2, ease: "power2.out" }
+      { opacity: 1, y: 0, duration: 0.25, delay: 0.1, ease: "power2.out" }
     );
 
-    // 2. Opening sequence (after ~2.2s hold)
+    // 2. Opening sequence (after brief hold)
     const tl = gsap.timeline({
-      delay: 1.0,
+      delay: 0.45,
       onComplete: () => {
         document.body.style.overflow = "";
         dispatchIntroComplete();   // ← signal: site animations may now start
@@ -72,13 +72,13 @@ export default function IntroLoader() {
 
     tl
       // Fade brand out
-      .to(brandRef.current, { opacity: 0, y: -5, duration: 0.28, ease: "power2.in" })
+      .to(brandRef.current, { opacity: 0, y: -5, duration: 0.18, ease: "power2.in" })
       // Seam flares up then fades as doors open
-      .to(seamRef.current, { scaleX: 1.08, filter: "brightness(2)", duration: 0.18 }, "<0.1")
-      .to(seamRef.current, { scaleX: 1, filter: "brightness(1)", opacity: 0, duration: 0.5 }, ">0.05")
+      .to(seamRef.current, { scaleX: 1.08, filter: "brightness(2)", duration: 0.1 }, "<0.05")
+      .to(seamRef.current, { scaleX: 1, filter: "brightness(1)", opacity: 0, duration: 0.3 }, ">0.02")
       // Doors slide apart
-      .to(topRef.current,    { yPercent: -100, duration: 0.65, ease: "power4.inOut" }, "open")
-      .to(bottomRef.current, { yPercent:  100, duration: 0.65, ease: "power4.inOut" }, "open");
+      .to(topRef.current,    { yPercent: -100, duration: 0.4, ease: "power4.inOut" }, "open")
+      .to(bottomRef.current, { yPercent:  100, duration: 0.4, ease: "power4.inOut" }, "open");
 
     return () => {
       document.body.style.overflow = "";
