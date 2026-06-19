@@ -84,7 +84,7 @@
 /* ── Title ── */
 .cardTitle {
   font-family: 'Anton', sans-serif;
-  font-size: clamp(0.78rem, 1.1vw, 1.05rem);
+  font-size: clamp(0.95rem, 1.35vw, 1.25rem);
   font-weight: 400;
   color: #3d3d3d;
   line-height: 1.2;
@@ -123,6 +123,6 @@
   }
   .cardTitle {
     white-space: normal;
-    font-size: clamp(0.7rem, 2.5vw, 0.95rem);
+    font-size: clamp(0.92rem, 3.2vw, 1.15rem);
   }
 }

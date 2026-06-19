@@ -19,6 +19,7 @@
 .logoImg {
   width: auto;
   height: auto;
+  max-width: 100%;        /* never bleed past the viewport on narrow screens */
   max-height: 130px;
   object-fit: contain;
   mix-blend-mode: multiply;
@@ -118,8 +119,46 @@
 }
 
 @media (max-width: 768px) {
-  .center {
-    transform: translateX(-4px);
+  .hero {
+    padding: 1.5rem 1.25rem 1.75rem;
+  }
+  /* Logo strip: scale down so the 5-logo row fits the screen */
+  .logoImg {
+    max-height: 64px;
+  }
+  /* Title: shrink and allow "LEADERS" / "TALK" to wrap onto two lines */
+  .title {
+    font-size: clamp(2.6rem, 14vw, 4.2rem);
+    flex-wrap: wrap;
+    gap: 0 0.12em;
+  }
+  /* Tagline: ease the letter-spacing so it doesn't run off the edge */
+  .tagline {
+    letter-spacing: 0.10em;
+    padding: 0 0.5rem;
+  }
+  /* CTAs: wrap onto multiple lines instead of overflowing */
+  .ctaGroup {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .ctaPrimary,
+  .ctaSecondary {
+    padding: 0.64rem 1.25rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* Very small phones: stack the CTAs full-width for comfortable tap targets */
+@media (max-width: 400px) {
+  .ctaGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+  .ctaPrimary,
+  .ctaSecondary {
+    width: 100%;
+    justify-content: center;
   }
 }
 
