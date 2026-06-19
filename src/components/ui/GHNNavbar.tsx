@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // --- Main nav items (default view) ---
 const mainNavItems = [
@@ -61,54 +61,6 @@ export default function GHNNavbar() {
     setActiveMobileDropdown(null);
   }, [pathname, isTechnicalPage]);
 
-  /* ── Auto-hide navbar on Leaders Talk page ── */
-  const isLeadersTalkPage = pathname === '/leaders-talk';
-  const [navVisible, setNavVisible] = useState(!isLeadersTalkPage);
-  const navRef = useRef<HTMLElement>(null);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const showNav = useCallback(() => {
-    if (hideTimerRef.current) { clearTimeout(hideTimerRef.current); hideTimerRef.current = null; }
-    setNavVisible(true);
-  }, []);
-
-  const scheduleHide = useCallback(() => {
-    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    hideTimerRef.current = setTimeout(() => setNavVisible(false), 400);
-  }, []);
-
-  useEffect(() => {
-    if (!isLeadersTalkPage) { setNavVisible(true); return; }
-    // Start hidden
-    setNavVisible(false);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      // Check if mouse is hovering over the nav itself
-      const nav = navRef.current;
-      if (nav && nav.contains(e.target as Node)) {
-        showNav();
-        return;
-      }
-      if (e.clientY <= 80) {
-        showNav();
-      } else if (e.clientY > 120) {
-        scheduleHide();
-      }
-    };
-
-    const handleMouseLeave = () => {
-      scheduleHide();
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    document.documentElement.addEventListener('mouseleave', handleMouseLeave);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    };
-  }, [isLeadersTalkPage, showNav, scheduleHide]);
-
   // Toggle mode + navigate to default page of that side
   const handleModeSwitch = (mode: 'main' | 'technical') => {
     setNavMode(mode);
@@ -144,9 +96,8 @@ export default function GHNNavbar() {
     <>
       <style>{`
         .ghn-navbar {
-          position: fixed !important;
+          position: sticky !important;
           top: 0 !important;
-          left: 0 !important;
           z-index: 100 !important;
           display: flex !important;
           flex-direction: row !important;
@@ -159,18 +110,6 @@ export default function GHNNavbar() {
           border-bottom: 1px solid rgba(0,0,0,0.08) !important;
           box-shadow: none !important;
           overflow: visible !important;
-          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease !important;
-        }
-        .ghn-navbar--hidden {
-          transform: translateY(-100%) !important;
-          opacity: 0 !important;
-          pointer-events: none !important;
-        }
-        .ghn-navbar--visible {
-          transform: translateY(0) !important;
-          opacity: 1 !important;
-          pointer-events: auto !important;
-          box-shadow: 0 2px 16px rgba(0,0,0,0.08) !important;
         }
         .ghn-logo {
           font-family: 'Inter', sans-serif !important;
@@ -597,12 +536,7 @@ export default function GHNNavbar() {
       `}</style>
 
       {/* ── Desktop Navbar ── */}
-      <nav
-        ref={navRef}
-        className={`ghn-navbar ${isLeadersTalkPage ? (navVisible ? 'ghn-navbar--visible' : 'ghn-navbar--hidden') : ''}`}
-        onMouseEnter={isLeadersTalkPage ? showNav : undefined}
-        onMouseLeave={isLeadersTalkPage ? scheduleHide : undefined}
-      >
+      <nav className="ghn-navbar">
         <Link href="/onboarding" className="ghn-logo">
           <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
         </Link>
