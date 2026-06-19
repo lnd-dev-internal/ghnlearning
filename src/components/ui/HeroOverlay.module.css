@@ -139,12 +139,14 @@
   padding: 0.72rem 1.65rem;
   background: #FF5200;
   color: #fff;
+  border: none;
   border-radius: 999px;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 0.88rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-decoration: none;
+  cursor: pointer;
   transition: background 220ms ease, transform 220ms ease, box-shadow 220ms ease;
   pointer-events: auto;
   box-shadow: 0 4px 20px rgba(255, 82, 0, 0.30);
@@ -159,7 +161,9 @@
 .ctaSecondary {
   display: flex;
   align-items: center;
+  gap: 0.45rem;
   padding: 0.72rem 1.65rem;
+  background: transparent;
   border: 1.5px solid rgba(61, 61, 61, 0.18);
   color: rgba(61, 61, 61, 0.60);
   border-radius: 999px;
@@ -167,6 +171,7 @@
   font-size: 0.88rem;
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer;
   transition: border-color 220ms ease, color 220ms ease, transform 220ms ease;
   pointer-events: auto;
   backdrop-filter: blur(4px);

@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { onIntroComplete } from "@/lib/introEvents";
 import styles from "./HeroOverlay.module.css";
+import RegistrationModal from "./RegistrationModal";
+
+gsap.registerPlugin(ScrollToPlugin);
 
 
 export default function HeroOverlay() {
+  const [showRegModal, setShowRegModal] = useState(false);
   const lineRef     = useRef<HTMLDivElement>(null);
   const taglineRef  = useRef<HTMLParagraphElement>(null);
   const bottomRef   = useRef<HTMLDivElement>(null);
@@ -75,8 +80,19 @@ export default function HeroOverlay() {
     return cleanup;
   }, []);
 
+  const handleScrollToUpcoming = useCallback(() => {
+    const target = document.getElementById("section-5");
+    if (target) {
+      gsap.to(window, {
+        scrollTo: { y: target, offsetY: 0 },
+        duration: 0.8,
+        ease: "power3.inOut",
+      });
+    }
+  }, []);
 
   return (
+    <>
     <div className={styles.hero}>
       {/* ── Top-center logo ── */}
       <div ref={logoRef} className={styles.logoMark}>
@@ -114,17 +130,30 @@ export default function HeroOverlay() {
       {/* ── Bottom zone: CTA buttons + scroll indicator ── */}
       <div ref={bottomRef} className={styles.bottomZone}>
         <div className={styles.ctaGroup}>
-          <a
-            href="#section-5"
+          <button
+            type="button"
             className={styles.ctaPrimary}
             id="hero-cta-register"
+            onClick={() => setShowRegModal(true)}
           >
             Đăng ký ngay
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"
                 stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </a>
+          </button>
+          <button
+            type="button"
+            className={styles.ctaSecondary}
+            id="hero-cta-upcoming"
+            onClick={handleScrollToUpcoming}
+          >
+            Sự kiện sắp đến
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M7 2.5v9M3.5 8L7 11.5 10.5 8"
+                stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
           <a
             href="/ky-truoc"
             className={styles.ctaSecondary}
@@ -142,5 +171,9 @@ export default function HeroOverlay() {
         </div>
       </div>
     </div>
+
+    {/* Registration modal */}
+    {showRegModal && <RegistrationModal onClose={() => setShowRegModal(false)} />}
+    </>
   );
 }
