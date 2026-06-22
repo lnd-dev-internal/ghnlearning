@@ -5,6 +5,8 @@ import { useFormConfig } from '@/lib/formStore';
 import type { FormField } from '@/lib/formStore';
 import styles from './RegistrationModal.module.css';
 
+const EMAIL_SUFFIX = '@ghn.vn';
+
 /* ─── Props ─────────────────────────────────────────────────────────────── */
 
 interface RegistrationModalProps {
@@ -88,9 +90,9 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
       if (field.required && !val) {
         newErrors[field.id] = 'Trường này là bắt buộc';
       } else if (field.type === 'email' && val) {
-        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRe.test(val)) {
-          newErrors[field.id] = 'Email không hợp lệ';
+        // Chỉ cần check username part (không chứa @ hay khoảng trắng)
+        if (/[\s@]/.test(val)) {
+          newErrors[field.id] = 'Chỉ nhập phần trước @, không cần nhập @ghn.vn';
         }
       }
     }
@@ -109,11 +111,14 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
 
     // Build payload: { fields: [{ value, sheetHeader }] }
     const payload = {
-      fields: formConfig.fields.map(field => ({
-        id: field.id,
-        value: (values[field.id] ?? '').trim(),
-        sheetHeader: field.sheetHeader,
-      })),
+      fields: formConfig.fields.map(field => {
+        let value = (values[field.id] ?? '').trim();
+        // Append @ghn.vn suffix for email fields
+        if (field.type === 'email' && value) {
+          value = value + EMAIL_SUFFIX;
+        }
+        return { id: field.id, value, sheetHeader: field.sheetHeader };
+      }),
     };
 
     try {
@@ -154,8 +159,21 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
     const hasError = !!errors[field.id];
 
     switch (field.type) {
-      case 'text':
       case 'email':
+        return (
+          <div className={styles.emailGroup}>
+            <input
+              type="text"
+              className={`${styles.input} ${styles.emailInput} ${hasError ? styles.inputError : ''}`}
+              placeholder={field.placeholder ?? 'username'}
+              value={val}
+              onChange={e => handleChange(field.id, e.target.value.replace(/@.*$/, ''))}
+            />
+            <span className={styles.emailSuffix}>{EMAIL_SUFFIX}</span>
+          </div>
+        );
+
+      case 'text':
         return (
           <input
             type={field.type}

@@ -300,6 +300,57 @@
   color: #6b7280;
 }
 
+/* ── Email input with suffix ───────────────────────────────────────────── */
+.emailGroup {
+  display: flex;
+  align-items: stretch;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #eaeaef;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition:
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.emailGroup:hover {
+  border-color: #d5d5de;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.emailGroup:focus-within {
+  border-color: #FF5200;
+  box-shadow: 0 0 0 4px rgba(255, 82, 0, 0.08), 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.emailInput {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  flex: 1;
+  min-width: 0;
+}
+
+.emailInput:focus {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.emailSuffix {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #FF5200;
+  background: rgba(255, 82, 0, 0.05);
+  border-left: 1px solid #eaeaef;
+  white-space: nowrap;
+  user-select: none;
+  letter-spacing: -0.01em;
+}
+
 /* ── Textarea ──────────────────────────────────────────────────────────── */
 .textarea {
   resize: vertical;
