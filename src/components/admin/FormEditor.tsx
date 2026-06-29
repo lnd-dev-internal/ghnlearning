@@ -2,9 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { FormField, FormConfig } from '@/lib/formStore';
-import { useFormConfig, updateFormConfig, createFormConfig } from '@/lib/formStore';
+import { getAdminFormConfig, updateFormConfig, createFormConfig } from '@/lib/formStore';
 import styles from './FormEditor.module.css';
-import { supabase } from '@/lib/supabase';
 
 // ── Default fields for first-time creation ────────────────────────────────
 const DEFAULT_FIELDS: FormField[] = [
@@ -264,9 +263,18 @@ function FieldCard({ field, index, total, onChange, onDelete, onMove }: FieldCar
 type SaveState = 'saved' | 'unsaved' | 'saving' | 'error';
 
 export default function FormEditor() {
-  const { config: formConfig, loaded: formLoaded } = useFormConfig();
+  // Load the FULL config (incl. apps_script_url) via the guarded admin route.
+  // undefined = still loading, null = no config yet, FormConfig = loaded.
+  const [formConfig, setFormConfig] = useState<FormConfig | null | undefined>(undefined);
+  const formLoaded = formConfig !== undefined;
   const [initialized, setInitialized] = useState(false);
   const [creating, setCreating] = useState(false);
+
+  useEffect(() => {
+    getAdminFormConfig()
+      .then(c => setFormConfig(c))
+      .catch(() => setFormConfig(null));
+  }, []);
 
   // Local editable state
   const [title, setTitle] = useState('');
@@ -497,15 +505,18 @@ export default function FormEditor() {
                 }
                 setUploading(true);
                 try {
-                  const path = `header/${Date.now()}_${file.name}`;
-                  const { error } = await supabase.storage.from('form-assets').upload(path, file);
-                  if (error) {
-                    setUploadError(`Upload thất bại: ${error.message}`);
+                  const fd = new FormData();
+                  fd.append('file', file);
+                  fd.append('bucket', 'form-assets');
+                  fd.append('prefix', 'header');
+                  const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+                  const out = await res.json().catch(() => ({}));
+                  if (!res.ok) {
+                    setUploadError(`Upload thất bại: ${out?.error ?? res.status}`);
                     setUploading(false);
                     return;
                   }
-                  const { data: { publicUrl } } = supabase.storage.from('form-assets').getPublicUrl(path);
-                  handleHeaderImageChange(publicUrl);
+                  handleHeaderImageChange(out.publicUrl);
                 } catch (err: unknown) {
                   setUploadError(`Upload thất bại: ${err instanceof Error ? err.message : 'Unknown error'}`);
                 } finally {

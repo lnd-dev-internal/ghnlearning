@@ -1,88 +1,56 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from './supabase';
+import { fromDB, type FormConfig, type FormField } from './formTypes';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
-
-export interface FormField {
-  id: string;
-  label: string;
-  type: 'text' | 'email' | 'select' | 'radio' | 'textarea';
-  required: boolean;
-  placeholder?: string;
-  options?: string[];       // for select/radio
-  sheetHeader: string;      // maps to Google Sheet column name
-}
-
-export interface FormConfig {
-  id: string;
-  title: string;
-  description: string;
-  headerImage: string;
-  fields: FormField[];
-  appsScriptUrl: string;
-  isActive: boolean;
-}
-
-/* ─── DB ↔ App mappers ───────────────────────────────────────────────────── */
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function fromDB(row: any): FormConfig {
-  return {
-    id:            row.id,
-    title:         row.title           ?? '',
-    description:   row.description     ?? '',
-    headerImage:   row.header_image    ?? '',
-    fields:        row.fields          ?? [],
-    appsScriptUrl: row.apps_script_url ?? '',
-    isActive:      row.is_active       ?? false,
-  };
-}
-
-function toDB(c: Partial<FormConfig>) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const db: any = {};
-  if (c.id            !== undefined) db.id              = c.id;
-  if (c.title         !== undefined) db.title           = c.title;
-  if (c.description   !== undefined) db.description     = c.description;
-  if (c.headerImage   !== undefined) db.header_image    = c.headerImage;
-  if (c.fields        !== undefined) db.fields          = c.fields;
-  if (c.appsScriptUrl !== undefined) db.apps_script_url = c.appsScriptUrl;
-  if (c.isActive      !== undefined) db.is_active       = c.isActive;
-  return db;
-}
+// Types + DB mappers live in ./formTypes (shared with server routes).
+export type { FormConfig, FormField };
 
 /* ─── CRUD ───────────────────────────────────────────────────────────────── */
+// Public read uses the anon client but DELIBERATELY excludes apps_script_url
+// so the Apps Script endpoint URL never reaches the browser bundle.
+// Writes (create/update) and the full config (with URL, for the editor) go
+// through guarded server API routes.
+
+const PUBLIC_COLUMNS = 'id, title, description, header_image, fields, is_active, updated_at';
 
 export async function getActiveFormConfig(): Promise<FormConfig | null> {
   const { data, error } = await supabase
     .from('registration_form')
-    .select('*')
+    .select(PUBLIC_COLUMNS)
     .eq('is_active', true)
     .order('updated_at', { ascending: false })
     .limit(1);
   if (error) throw error;
   const row = data?.[0];
-  return row ? fromDB(row) : null;
+  return row ? fromDB(row) : null; // appsScriptUrl resolves to '' (column not selected)
+}
+
+/** Admin-only: full config INCLUDING apps_script_url, via the guarded route. */
+export async function getAdminFormConfig(): Promise<FormConfig | null> {
+  const res = await fetch('/api/admin/form', { cache: 'no-store' });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({})))?.error ?? `HTTP ${res.status}`);
+  return res.json();
 }
 
 export async function updateFormConfig(id: string, updates: Partial<FormConfig>): Promise<void> {
-  const { error } = await supabase
-    .from('registration_form')
-    .update(toDB(updates))
-    .eq('id', id);
-  if (error) throw error;
+  const res = await fetch('/api/admin/form', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, updates }),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({})))?.error ?? `HTTP ${res.status}`);
 }
 
 export async function createFormConfig(data: Omit<FormConfig, 'id'>): Promise<FormConfig> {
-  const id = crypto.randomUUID();
-  const { data: row, error } = await supabase
-    .from('registration_form')
-    .insert({ ...toDB(data as FormConfig), id })
-    .select()
-    .single();
-  if (error) throw error;
-  return fromDB(row);
+  const res = await fetch('/api/admin/form', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({})))?.error ?? `HTTP ${res.status}`);
+  return res.json();
 }
 
 /* ─── React hook ─────────────────────────────────────────────────────────── */

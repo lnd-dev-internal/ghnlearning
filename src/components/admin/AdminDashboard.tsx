@@ -47,12 +47,24 @@ export default function AdminDashboard() {
           <Image src="/5 logos.png" alt="Leaders Talk" width={140} height={28} className={styles.headerLogo} />
           <span className={styles.headerTag}>ADMIN</span>
         </div>
-        <a href="/ky-truoc" className={styles.headerLink}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M8.5 2.5L3.5 7L8.5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Về những kỳ trước
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <a href="/ky-truoc" className={styles.headerLink}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M8.5 2.5L3.5 7L8.5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Về những kỳ trước
+          </a>
+          <button
+            className={styles.headerLink}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}
+            onClick={async () => {
+              await fetch('/api/admin/logout', { method: 'POST' });
+              window.location.href = '/admin';
+            }}
+          >
+            Đăng xuất
+          </button>
+        </div>
       </header>
 
       {/* Tabs */}

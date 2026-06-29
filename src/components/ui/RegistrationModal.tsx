@@ -109,27 +109,29 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
 
     setState('submitting');
 
-    // Build payload: { fields: [{ value, sheetHeader }] }
+    // Send raw values to our own server route. The server whitelists fields,
+    // applies the @ghn.vn email suffix, attaches the shared secret, and
+    // forwards to Apps Script — the Apps Script URL is never in the browser.
     const payload = {
-      fields: formConfig.fields.map(field => {
-        let value = (values[field.id] ?? '').trim();
-        // Append @ghn.vn suffix for email fields
-        if (field.type === 'email' && value) {
-          value = value + EMAIL_SUFFIX;
-        }
-        return { id: field.id, value, sheetHeader: field.sheetHeader };
-      }),
+      fields: formConfig.fields.map(field => ({
+        id: field.id,
+        value: (values[field.id] ?? '').trim(),
+      })),
     };
 
     try {
-      const params = new URLSearchParams();
-      params.append('payload', JSON.stringify(payload));
-
-      await fetch(formConfig.appsScriptUrl, {
+      const res = await fetch('/api/register', {
         method: 'POST',
-        mode: 'no-cors',
-        body: params,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
+
+      if (!res.ok) {
+        const msg = (await res.json().catch(() => ({})))?.error ?? 'Gửi đăng ký thất bại, vui lòng thử lại.';
+        setErrors(prev => ({ ...prev, _form: msg }));
+        setState('idle');
+        return;
+      }
 
       setState('success');
 
@@ -293,6 +295,10 @@ export default function RegistrationModal({ onClose }: RegistrationModalProps) {
                   <span className={styles.errorMsg}>{errors[field.id] ?? ''}</span>
                 </div>
               ))}
+
+              {errors._form && (
+                <span className={styles.errorMsg} role="alert">{errors._form}</span>
+              )}
 
               <button
                 type="submit"

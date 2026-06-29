@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Article, createArticle, updateArticle } from '@/lib/articleStore';
-import { supabase } from '@/lib/supabase';
 import RichTextEditor from './RichTextEditor';
 import styles from './ArticleEditor.module.css';
 
@@ -108,20 +107,15 @@ export default function ArticleEditor({ article, defaultOrder = 1, onClose, onSa
     setUploading(true);
     setUploadError('');
     try {
-      const ext = file.name.split('.').pop();
-      const fileName = `covers/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('bucket', 'article-covers');
+      fd.append('prefix', 'covers');
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(out?.error ?? `HTTP ${res.status}`);
 
-      const { error: upErr } = await supabase.storage
-        .from('article-covers')
-        .upload(fileName, file, { upsert: false });
-
-      if (upErr) throw upErr;
-
-      const { data: urlData } = supabase.storage
-        .from('article-covers')
-        .getPublicUrl(fileName);
-
-      setCoverImage(urlData.publicUrl);
+      setCoverImage(out.publicUrl);
       setPreviewError(false);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -143,7 +137,11 @@ export default function ArticleEditor({ article, defaultOrder = 1, onClose, onSa
         const idx = coverImage.indexOf(marker);
         if (idx !== -1) {
           const filePath = coverImage.slice(idx + marker.length);
-          await supabase.storage.from('article-covers').remove([filePath]);
+          await fetch('/api/admin/upload', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ bucket: 'article-covers', path: filePath }),
+          });
         }
       } catch {
         // Bỏ qua lỗi xóa file — vẫn xóa khỏi form

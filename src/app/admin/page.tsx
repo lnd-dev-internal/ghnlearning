@@ -4,30 +4,44 @@ import Image from 'next/image';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 import styles from './page.module.css';
 
-const PASSWORD = '321654';
-const SESSION_KEY = 'lt_admin_auth';
-
 export default function AdminPage() {
   const [authed, setAuthed]   = useState(false);
   const [input, setInput]     = useState('');
   const [error, setError]     = useState('');
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
+  // Auth state is decided server-side via the httpOnly session cookie.
   useEffect(() => {
-    const ok = sessionStorage.getItem(SESSION_KEY) === PASSWORD;
-    setAuthed(ok);
-    setLoading(false);
+    fetch('/api/admin/session', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(d => setAuthed(!!d.authed))
+      .catch(() => setAuthed(false))
+      .finally(() => setLoading(false));
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (input === PASSWORD) {
-      sessionStorage.setItem(SESSION_KEY, PASSWORD);
-      setAuthed(true);
-      setError('');
-    } else {
-      setError('Mật khẩu không đúng. Vui lòng thử lại.');
-      setInput('');
+    setSubmitting(true);
+    setError('');
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: input }),
+      });
+      if (res.ok) {
+        setAuthed(true);
+        setInput('');
+      } else {
+        const msg = (await res.json().catch(() => ({})))?.error ?? 'Đăng nhập thất bại.';
+        setError(msg);
+        setInput('');
+      }
+    } catch {
+      setError('Không kết nối được tới máy chủ.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -66,8 +80,8 @@ export default function AdminPage() {
 
           {error && <p className={styles.error}>{error}</p>}
 
-          <button type="submit" className={styles.submitBtn} disabled={!input}>
-            Đăng nhập
+          <button type="submit" className={styles.submitBtn} disabled={!input || submitting}>
+            {submitting ? 'Đang kiểm tra…' : 'Đăng nhập'}
           </button>
         </form>
 
