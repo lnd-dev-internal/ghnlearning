@@ -541,33 +541,17 @@ export default function AmPage() {
           z-index: 5;
         }
 
-        /* Blurred, zoomed copy used purely to fill the wide banner behind the
-           subject so there are no empty side gaps. */
+        /* Cover image on a flipped pseudo-element so the character sits on the
+           right (away from the text box) while the content stays unflipped. */
         .hn-hero-banner::before {
           content: '';
           position: absolute;
           inset: 0;
           background-image: url('/AmDEMO2.jpeg');
           background-size: cover;
-          background-position: center 30%;
-          filter: blur(28px) brightness(0.82);
-          transform: scaleX(-1) scale(1.12);
-          z-index: 0;
-        }
-
-        /* Sharp, fully-visible subject sized to fit the banner height and
-           anchored to the right (away from the text box). Flipped so the
-           character faces inward. */
-        .hn-hero-banner::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background-image: url('/AmDEMO2.jpeg');
-          background-size: contain;
-          background-position: left center;
-          background-repeat: no-repeat;
+          background-position: center 18%;
           transform: scaleX(-1);
-          z-index: 1;
+          z-index: 0;
         }
 
         .hn-hero-overlay {
@@ -906,11 +890,6 @@ export default function AmPage() {
           }
           .hn-hero-banner::before {
             background-position: center;
-            filter: none;
-            transform: scaleX(-1);
-          }
-          .hn-hero-banner::after {
-            display: none;
           }
           .hn-hero-content {
             padding: 24px;
