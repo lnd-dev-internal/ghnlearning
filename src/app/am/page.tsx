@@ -103,6 +103,16 @@ const navTabs = [
         <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
       </svg>
     )
+  },
+  {
+    label: 'Kỹ năng chăm sóc Khách hàng',
+    href: '#am-10',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+      </svg>
+    )
   }
 ];
 
@@ -115,7 +125,7 @@ const modules = [
     image: '/am-quytrinhnvxl.png',
     fallbackText: 'NĂNG LỰC QUẢN LÝ // QUY TRÌNH NVXL',
     meta: 'Thời lượng: 15 phút // Cấp độ: Quản lý',
-    href: '#'
+    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=693641e1a0840ad458c460e0'
   },
   {
     index: '02',
@@ -125,7 +135,7 @@ const modules = [
     image: '/am-quytrinhnvpttt.png',
     fallbackText: 'NĂNG LỰC QUẢN LÝ // QUY TRÌNH NVPTTT',
     meta: 'Thời lượng: 15 phút // Cấp độ: Quản lý',
-    href: '#'
+    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=6939537e287afe5ae547e753'
   },
   {
     index: '03',
@@ -155,7 +165,7 @@ const modules = [
     image: '/am-nghiphep.png',
     fallbackText: 'NĂNG LỰC QUẢN LÝ // NGHỈ PHÉP',
     meta: 'Thời lượng: 10 phút // Cấp độ: Nhân sự',
-    href: '#'
+    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=692d85a7be01e485ec6b82d4'
   },
   {
     index: '06',
@@ -175,7 +185,7 @@ const modules = [
     image: '/am-ngansach.png',
     fallbackText: 'NĂNG LỰC QUẢN LÝ // NGÂN SÁCH',
     meta: 'Thời lượng: 15 phút // Cấp độ: Tài chính',
-    href: '#'
+    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=692eadc6c025d3f2a964a1bb'
   },
   {
     index: '08',
@@ -195,7 +205,17 @@ const modules = [
     image: '/am-camera.png',
     fallbackText: 'NĂNG LỰC QUẢN LÝ // QUY ĐỊNH CAMERA',
     meta: 'Thời lượng: 10 phút // Cấp độ: Vận hành',
-    href: '#'
+    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=6952346a9214afa9be91ecca'
+  },
+  {
+    index: '10',
+    tag: 'Chất lượng // CSKH',
+    title: 'Kỹ năng chăm sóc Khách hàng',
+    desc: 'Kỹ năng tiếp nhận, xử lý phản ánh và khiếu nại của khách hàng tại bưu cục — giao tiếp chuyên nghiệp, giải quyết tình huống và nâng cao trải nghiệm dịch vụ trong khu vực phụ trách.',
+    image: '/kd-cskh.png',
+    fallbackText: 'NĂNG LỰC QUẢN LÝ // CHĂM SÓC KHÁCH HÀNG',
+    meta: 'Thời lượng: 15 phút // Cấp độ: Chất lượng',
+    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=692ebc93c025d3f2a964a1ed'
   }
 ];
 
@@ -521,17 +541,33 @@ export default function AmPage() {
           z-index: 5;
         }
 
-        /* Cover image on a flipped pseudo-element so the character sits on the
-           right (away from the text box) while the content stays unflipped. */
+        /* Blurred, zoomed copy used purely to fill the wide banner behind the
+           subject so there are no empty side gaps. */
         .hn-hero-banner::before {
           content: '';
           position: absolute;
           inset: 0;
           background-image: url('/AmDEMO2.jpeg');
           background-size: cover;
-          background-position: center 18%;
-          transform: scaleX(-1);
+          background-position: center 30%;
+          filter: blur(28px) brightness(0.82);
+          transform: scaleX(-1) scale(1.12);
           z-index: 0;
+        }
+
+        /* Sharp, fully-visible subject sized to fit the banner height and
+           anchored to the right (away from the text box). Flipped so the
+           character faces inward. */
+        .hn-hero-banner::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image: url('/AmDEMO2.jpeg');
+          background-size: contain;
+          background-position: left center;
+          background-repeat: no-repeat;
+          transform: scaleX(-1);
+          z-index: 1;
         }
 
         .hn-hero-overlay {
@@ -870,6 +906,11 @@ export default function AmPage() {
           }
           .hn-hero-banner::before {
             background-position: center;
+            filter: none;
+            transform: scaleX(-1);
+          }
+          .hn-hero-banner::after {
+            display: none;
           }
           .hn-hero-content {
             padding: 24px;
@@ -932,10 +973,16 @@ export default function AmPage() {
                 <h2 className="hn-row-title">{mod.title}</h2>
                 <p className="hn-row-desc">{mod.desc}</p>
                 <div className="hn-row-meta">{mod.meta}</div>
-                <a className="hn-btn" href={mod.href} target="_blank" rel="noopener noreferrer">
-                  <span>Bắt đầu học</span>
-                  <span className="hn-btn-arrow">→</span>
-                </a>
+                {mod.href && mod.href !== '#' ? (
+                  <a className="hn-btn" href={mod.href} target="_blank" rel="noopener noreferrer">
+                    <span>Bắt đầu học</span>
+                    <span className="hn-btn-arrow">→</span>
+                  </a>
+                ) : (
+                  <button className="hn-btn" style={{ opacity: 0.6, cursor: 'not-allowed' }} disabled>
+                    <span>Sắp ra mắt</span>
+                  </button>
+                )}
               </div>
             </section>
           ))}
