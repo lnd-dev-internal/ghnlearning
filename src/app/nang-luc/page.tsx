@@ -44,7 +44,7 @@ const TRACKS: {
   {
     key: 'hieu-suat',
     name: 'Quản trị hiệu suất',
-    color: '#006FAD',
+    color: '#F8B200',
     tag: 'Performance',
     desc: 'Mục tiêu, đo lường và tối ưu hiệu suất đội ngũ theo từng chu kỳ vận hành.',
     image: '/nl-hieu-suat.png',
@@ -58,7 +58,7 @@ const TRACKS: {
   {
     key: 'ai',
     name: 'AI & Công nghệ',
-    color: '#F8B200',
+    color: '#006FAD',
     tag: 'Artificial Intelligence',
     desc: 'Ứng dụng AI để làm việc nhanh hơn, thông minh hơn và tự động hoá công việc lặp lại.',
     image: '/nl-ai.png',
@@ -81,6 +81,7 @@ type Course = {
   desc: string;
   href: string; // ← LMS URL (placeholder '#' for now)
   cover?: string; // ← 16:9 thumbnail (a normal photo; the 3D look comes from the card frame). Swap for the real per-lesson image.
+  lessons?: string; // ← e.g. "4 bài học" — shown instead of level when present
 };
 
 // temporary placeholder covers (cycle through the 3 sample images) — replace per course with the real photo
@@ -107,7 +108,7 @@ const COURSES: Course[] = [
   { id: 'hs4', track: 'hieu-suat', title: 'Quản lý thời gian & Ưu tiên', short: 'Ưu tiên', level: 'Cơ bản', duration: '40 phút', desc: 'Sắp xếp công việc theo mức độ quan trọng và khẩn cấp.', href: '#' },
 
   // ── AI & Công nghệ ──
-  { id: 'ai1', track: 'ai', title: 'Nhập môn AI cho người đi làm', short: 'Nhập môn AI', level: 'Cơ bản', duration: '60 phút', desc: 'Hiểu AI là gì và có thể giúp gì cho công việc hằng ngày.', href: '#' },
+  { id: 'ai1', track: 'ai', title: 'Thay đổi tư duy, Tự tay kiến tạo công cụ số', short: 'AntiGravity 2.0', level: 'Cơ bản', lessons: '4 bài học', duration: '60 phút', desc: 'Đến với khóa học, bạn sẽ có ngay trợ lý AntiGravity 2.0 tự động làm thay mọi việc mang tính lặp lại trên máy tính và các hệ thống. Hãy để AI làm việc, còn bạn cứ thảnh thơi sáng tạo nhé!', href: 'https://lndghn.space/for-you/491e881b-74bb-4156-a1b3-8ab2a1790306', cover: '/hvnl-antigravity.png' },
   { id: 'ai2', track: 'ai', title: 'Ứng dụng ChatGPT trong công việc', short: 'ChatGPT', level: 'Cơ bản', duration: '55 phút', desc: 'Viết prompt hiệu quả để soạn thảo, tổng hợp và phân tích nhanh.', href: '#' },
   { id: 'ai3', track: 'ai', title: 'Phân tích dữ liệu với AI', short: 'Data + AI', level: 'Nâng cao', duration: '90 phút', desc: 'Dùng công cụ AI để làm sạch, phân tích và trực quan hoá dữ liệu.', href: '#' },
   { id: 'ai4', track: 'ai', title: 'Tự động hoá quy trình với AI', short: 'Tự động hoá', level: 'Chuyên gia', duration: '120 phút', desc: 'Thiết kế luồng tự động hoá công việc lặp lại bằng AI & no-code.', href: '#' }
@@ -527,14 +528,6 @@ export default function NangLucPage() {
         .nl-fc-img { position: relative; height: 210px; flex-shrink: 0; overflow: hidden; background: #dcdcdc; }
         .nl-fc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .nl-fc-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.35), transparent 55%); }
-        .nl-fc-badge {
-          position: absolute; top: 14px; left: 14px; z-index: 2;
-          display: inline-flex; align-items: center; gap: 6px;
-          font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em;
-          color: #fff; background: color-mix(in srgb, var(--accent) 78%, #000);
-          padding: 5px 11px; border-radius: 20px;
-        }
-        .nl-fc-badge svg { width: 12px; height: 12px; }
 
         .nl-fc-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
         .nl-fc-label { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin: 0; }
@@ -811,7 +804,6 @@ export default function NangLucPage() {
                 >
                   <div className="nl-fc-img">
                     <img src={cover} alt={c.title} loading="lazy" />
-                    <span className="nl-fc-badge">{t.icon} Bài học {String(i + 1).padStart(2, '0')}</span>
                   </div>
                   <div className="nl-fc-body">
                     <p className="nl-fc-label">{t.name}</p>
@@ -820,7 +812,7 @@ export default function NangLucPage() {
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
                       </svg>
-                      {c.duration} · {c.level}
+                      {c.duration} · {c.lessons ?? c.level}
                     </span>
                     <div className="nl-fc-actions">
                       <a
@@ -861,7 +853,7 @@ export default function NangLucPage() {
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M3 20h4V10H3zM10 20h4V4h-4zM17 20h4v-7h-4z" />
                     </svg>
-                    {activeCourse.level}
+                    {activeCourse.lessons ?? activeCourse.level}
                   </span>
                 </div>
                 <p className="nl-detail-desc">{activeCourse.desc}</p>
