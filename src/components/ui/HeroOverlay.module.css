@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-self: center;   /* center in the grid row */
-  opacity: 0;
+  opacity: 1;
 }
 .logoImg {
   width: auto;
@@ -43,7 +43,7 @@
   text-transform: uppercase;
   line-height: 1;
   text-align: center;
-  opacity: 0;           /* GSAP animates in after intro */
+  opacity: 1;
   pointer-events: none;
   user-select: none;
   display: flex;
@@ -76,15 +76,15 @@
   background: #FF5200;
   border-radius: 4px;
   transform-origin: left center;
-  transform: scaleX(0);   /* GSAP animates to scaleX(1) */
+  transform: scaleX(1);
   z-index: 0;
 }
 
-/* TALK letters — start dark, GSAP switches to white after box slides in */
+/* TALK letters — white on the orange box */
 .talkText {
   position: relative;
   z-index: 1;
-  color: #3d3d3d;
+  color: #ffffff;
 }
 
 @keyframes talkBgSlide {
@@ -102,7 +102,7 @@
   height: 1.5px;
   background: linear-gradient(90deg, transparent, rgba(255, 82, 0, 0.65), transparent);
   transform-origin: center;
-  transform: scaleX(0);
+  transform: scaleX(1);
 }
 
 /* ── Sub-tagline ── */
@@ -115,7 +115,7 @@
   text-transform: uppercase;
   color: rgba(61, 61, 61, 0.40);
   text-align: center;
-  opacity: 0;
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
@@ -142,16 +142,23 @@
     flex-wrap: wrap;
     gap: 0.6rem;
   }
-  .ctaPrimary,
   .ctaSecondary {
     padding: 0.64rem 1.25rem;
     font-size: 0.82rem;
+  }
+  .ctaPrimary {
+    padding: 0.8rem 1.7rem;
+    font-size: 1rem;
   }
 }
 
 /* Very small phones: stack the CTAs full-width for comfortable tap targets */
 @media (max-width: 400px) {
   .ctaGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+  .ctaRow {
     flex-direction: column;
     width: 100%;
   }
@@ -165,6 +172,14 @@
 /* ── CTA group ── */
 .ctaGroup {
   display: flex;
+  flex-direction: column;   /* pyramid: primary on top, two secondary below */
+  gap: 0.85rem;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.ctaRow {
+  display: flex;
   gap: 0.85rem;
   align-items: center;
   justify-content: center;
@@ -174,15 +189,15 @@
 .ctaPrimary {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.72rem 1.65rem;
+  gap: 0.6rem;
+  padding: 0.95rem 2.3rem;
   background: #FF5200;
   color: #fff;
   border: none;
   border-radius: 999px;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 1.18rem;
+  font-weight: 700;
   letter-spacing: 0.01em;
   text-decoration: none;
   cursor: pointer;
@@ -196,6 +211,7 @@
   box-shadow: 0 6px 28px rgba(255, 82, 0, 0.42);
 }
 .ctaPrimary:active { transform: translateY(0); }
+.ctaPrimary svg { width: 18px; height: 18px; }
 
 .ctaSecondary {
   display: flex;
@@ -229,7 +245,7 @@
   align-items: center;
   gap: 1.6rem;
   padding-bottom: 0.5rem;
-  opacity: 0;
+  opacity: 1;
 }
 
 /* ── Scroll indicator — orange ── */

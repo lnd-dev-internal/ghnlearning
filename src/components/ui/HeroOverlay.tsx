@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { onIntroComplete } from "@/lib/introEvents";
 import styles from "./HeroOverlay.module.css";
 import RegistrationModal from "./RegistrationModal";
 
@@ -13,6 +12,7 @@ gsap.registerPlugin(ScrollToPlugin);
 
 export default function HeroOverlay() {
   const [showRegModal, setShowRegModal] = useState(false);
+  // Hero content is fully visible from the start — no intro/opening animation.
   const lineRef     = useRef<HTMLDivElement>(null);
   const taglineRef  = useRef<HTMLParagraphElement>(null);
   const bottomRef   = useRef<HTMLDivElement>(null);
@@ -20,65 +20,6 @@ export default function HeroOverlay() {
   const titleRef    = useRef<HTMLHeadingElement>(null);
   const talkBgRef   = useRef<HTMLSpanElement>(null);
   const talkTextRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    // Hide everything initially (CSS has opacity:0 on title already; make sure others are hidden too)
-    gsap.set(
-      [logoRef.current, lineRef.current, taglineRef.current, bottomRef.current],
-      { opacity: 0 }
-    );
-    // Ensure orange box is collapsed and text starts dark
-    gsap.set(talkBgRef.current,   { scaleX: 0 });
-    gsap.set(talkTextRef.current, { color: "#3d3d3d" });
-
-    // Wait for intro doors to fully open, THEN run all hero animations
-    const cleanup = onIntroComplete(() => {
-      const tl = gsap.timeline({ delay: 0.15 });
-
-      // 1. Logo drops in
-      tl.fromTo(logoRef.current,
-        { opacity: 0, y: -12 },
-        { opacity: 1, y: 0, duration: 0.75, ease: "power2.out" }
-      )
-      // 2. Title fades in
-      .fromTo(titleRef.current,
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
-        "-=0.3"
-      )
-      // 3. Orange box slides in (scaleX 0 → 1)
-      .to(talkBgRef.current, {
-        scaleX: 1,
-        duration: 0.42,
-        ease: "cubic.bezier(0.22, 1, 0.36, 1)",
-      }, "-=0.05")
-      // 4. TALK text turns white
-      .to(talkTextRef.current, {
-        color: "#ffffff",
-        duration: 0,
-      }, "-=0.22")
-      // 5. Divider line expands
-      .fromTo(lineRef.current,
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.65, ease: "power2.inOut" },
-        "-=0.1"
-      )
-      // 6. Tagline fades up
-      .fromTo(taglineRef.current,
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
-        "-=0.35"
-      )
-      // 7. CTAs + scroll hint
-      .fromTo(bottomRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
-        "-=0.25"
-      );
-    });
-
-    return cleanup;
-  }, []);
 
   const handleScrollToUpcoming = useCallback(() => {
     const target = document.getElementById("section-5");
@@ -142,25 +83,27 @@ export default function HeroOverlay() {
                 stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <button
-            type="button"
-            className={styles.ctaSecondary}
-            id="hero-cta-upcoming"
-            onClick={handleScrollToUpcoming}
-          >
-            Sự kiện sắp đến
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M7 2.5v9M3.5 8L7 11.5 10.5 8"
-                stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-          <a
-            href="/ky-truoc"
-            className={styles.ctaSecondary}
-            id="hero-cta-issues"
-          >
-            Những kỳ trước
-          </a>
+          <div className={styles.ctaRow}>
+            <button
+              type="button"
+              className={styles.ctaSecondary}
+              id="hero-cta-upcoming"
+              onClick={handleScrollToUpcoming}
+            >
+              Sự kiện sắp đến
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M7 2.5v9M3.5 8L7 11.5 10.5 8"
+                  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <a
+              href="/ky-truoc"
+              className={styles.ctaSecondary}
+              id="hero-cta-issues"
+            >
+              Những kỳ trước
+            </a>
+          </div>
         </div>
 
         <div className={styles.scrollHint}>
