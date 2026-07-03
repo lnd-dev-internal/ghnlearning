@@ -67,7 +67,7 @@ const modules = [
     image: '/nvpttt-pod.png',
     fallbackText: 'QUY ĐỊNH POD // NVPTTT',
     meta: 'Thời lượng: 10 phút // Cấp độ: Cơ bản',
-    href: '#'
+    href: 'https://docs.google.com/presentation/d/1KwJTmB_NOdNYQSgmd-89DuEf373KZGFy4KwduC6rTgQ/edit?slide=id.p#slide=id.p'
   },
   {
     index: '04',
