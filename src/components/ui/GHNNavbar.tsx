@@ -12,7 +12,8 @@ const mainNavItems = [
 ];
 
 // --- Technical Skills nav items (secondary view) ---
-const technicalNavItems = [
+type NavItem = { label: string; defaultHref: string; children?: { label: string; href: string }[] };
+const technicalNavItems: NavItem[] = [
   // {
   //   label: 'Khối Văn Phòng',
   //   defaultHref: '/newbie',
@@ -32,13 +33,18 @@ const technicalNavItems = [
       { label: 'Nhân viên Phân hàng', href: '/nvph' },
     ],
   },
+  {
+    label: 'Học viện Năng lực',
+    defaultHref: '/nang-luc',
+  },
 ];
 
 // All technical hrefs for auto-detection
 const technicalHrefs = [
-  ...technicalNavItems.flatMap((g) => g.children.map((c) => c.href)),
+  ...technicalNavItems.flatMap((g) => (g.children ?? []).map((c) => c.href)),
   '/newbie',
-  '/khoi-thi-truong'
+  '/khoi-thi-truong',
+  '/nang-luc'
 ];
 
 export default function GHNNavbar() {
@@ -557,28 +563,32 @@ export default function GHNNavbar() {
                 <div key={item.label} className="ghn-nav-item">
                   <Link href={item.defaultHref} className={`ghn-nav-link${isActive(item.defaultHref) || isDropdownActive(item.children) ? ' active' : ''}`}>
                     {item.label}
-                    <svg
-                      className="ghn-nav-caret"
-                      viewBox="0 0 10 10" fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{ display: 'inline-block' }}
-                    >
-                      <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                    {item.children && item.children.length > 0 && (
+                      <svg
+                        className="ghn-nav-caret"
+                        viewBox="0 0 10 10" fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{ display: 'inline-block' }}
+                      >
+                        <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    )}
                   </Link>
-                  <div className="ghn-nav-menu">
-                    <div className="ghn-nav-menu-inner">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className={isActive(child.href) ? 'active' : ''}
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
+                  {item.children && item.children.length > 0 && (
+                    <div className="ghn-nav-menu">
+                      <div className="ghn-nav-menu-inner">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className={isActive(child.href) ? 'active' : ''}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               ))}
         </div>
@@ -673,7 +683,8 @@ export default function GHNNavbar() {
                       {item.label}
                     </Link>
 
-                    {/* Arrow Toggle Button (opens dropdown) */}
+                    {/* Arrow Toggle Button (opens dropdown) — only when the item has children */}
+                    {item.children && item.children.length > 0 && (
                     <button
                       onClick={() => setActiveMobileDropdown(activeMobileDropdown === item.label ? null : item.label)}
                       style={{
@@ -704,8 +715,9 @@ export default function GHNNavbar() {
                         <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </button>
+                    )}
 
-                    {activeMobileDropdown === item.label && (
+                    {item.children && item.children.length > 0 && activeMobileDropdown === item.label && (
                       <div 
                         className="ghn-mobile-dropdown-menu"
                         style={{

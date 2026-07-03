@@ -97,7 +97,7 @@ const modules = [
     image: '/nvpttt-zns.png',
     fallbackText: 'GIẢI TRÌNH ZNS // NVPTTT',
     meta: 'Thời lượng: 10 phút // Cấp độ: Cơ bản',
-    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=692670dd7ee3a500ac6bf5e9'
+    href: 'https://app-driver-web.ghn.vn/survey-detail?surveyId=6a44b820ac3f25865e5f3c2d'
   }
 ];
 
