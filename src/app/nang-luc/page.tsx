@@ -96,12 +96,14 @@ const DETAIL_POINTS = [
 
 const COURSES: Course[] = [
   // ── Lãnh đạo ──
+  { id: 'ld0', track: 'lanh-dao', title: 'Nền tảng quản lý - Thiết lập mục tiêu & Ủy thác công việc', short: 'Mục tiêu & Ủy thác', level: 'Cơ bản', duration: '60 phút', desc: 'Nền tảng quản lý cốt lõi: cách thiết lập mục tiêu rõ ràng cho đội ngũ và ủy thác công việc hiệu quả để phát triển năng lực từng thành viên.', href: 'https://lndghn.space/add-in/23be49b9-d568-449b-9e63-7a1fc45d9e34', cover: '/hvnl-dele.png' },
   { id: 'ld1', track: 'lanh-dao', title: 'Tư duy Lãnh đạo', short: 'Tư duy LĐ', level: 'Cơ bản', duration: '60 phút', desc: 'Nền tảng tư duy của người lãnh đạo: tầm nhìn, trách nhiệm và làm gương.', href: '#' },
   { id: 'ld2', track: 'lanh-dao', title: 'Giao tiếp & Truyền cảm hứng', short: 'Giao tiếp', level: 'Cơ bản', duration: '45 phút', desc: 'Kỹ năng truyền đạt thông điệp, lắng nghe và tạo động lực cho đội ngũ.', href: '#' },
   { id: 'ld3', track: 'lanh-dao', title: 'Ra quyết định & Giải quyết vấn đề', short: 'Ra quyết định', level: 'Nâng cao', duration: '90 phút', desc: 'Khung tư duy phân tích tình huống và ra quyết định dưới áp lực.', href: '#' },
   { id: 'ld4', track: 'lanh-dao', title: 'Coaching & Phát triển đội ngũ', short: 'Coaching', level: 'Nâng cao', duration: '75 phút', desc: 'Kèm cặp, phản hồi và phát triển năng lực cho từng thành viên.', href: '#' },
 
   // ── Quản trị hiệu suất ──
+  { id: 'hs0', track: 'hieu-suat', title: 'Cẩm nang Quản lý hiệu suất', short: 'Cẩm nang QLHS', level: 'Cơ bản', duration: '60 phút', desc: 'Cẩm nang toàn diện giúp quản lý theo dõi, đánh giá và cải thiện hiệu suất đội ngũ theo chu kỳ, gắn kết mục tiêu cá nhân với kết quả chung.', href: 'https://lndghn.space/add-in/a84cfee7-6ddb-42fc-8ffe-d23cd4688da5', cover: '/hvnl-pm.png' },
   { id: 'hs1', track: 'hieu-suat', title: 'Thiết lập mục tiêu OKR / KPI', short: 'OKR / KPI', level: 'Cơ bản', duration: '50 phút', desc: 'Xây dựng mục tiêu rõ ràng, đo lường được và gắn với chiến lược.', href: '#' },
   { id: 'hs2', track: 'hieu-suat', title: 'Quản trị hiệu suất đội ngũ', short: 'Hiệu suất', level: 'Nâng cao', duration: '80 phút', desc: 'Theo dõi, phân tích và cải thiện hiệu suất công việc theo chu kỳ.', href: '#' },
   { id: 'hs3', track: 'hieu-suat', title: 'Phản hồi & Đánh giá nhân sự', short: 'Đánh giá', level: 'Cơ bản', duration: '45 phút', desc: 'Nghệ thuật phản hồi mang tính xây dựng và đánh giá công bằng.', href: '#' },
