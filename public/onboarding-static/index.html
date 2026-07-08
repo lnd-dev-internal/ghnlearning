@@ -3732,7 +3732,10 @@
     .ld-inf {
       position: absolute;
       top: 44%; left: 50%;
-      width: 920px;
+      /* vw (not px) so the loop scales WITH the slide/panel below — keeps the
+         whole composition aligned at any window width or browser zoom.
+         63.9vw ≡ the original 920px at the 1440px design width. */
+      width: 63.9vw;
       transform: translate(-50%, -50%);
       transition: transform 0.85s cubic-bezier(0.6, 0, 0.25, 1);
       z-index: 2;
@@ -3858,7 +3861,7 @@
       position: absolute;
       top: 50%;
       width: 36%;
-      max-width: 480px;
+      max-width: 33.3vw;   /* vw (not 480px) so panel width stays proportional at any width/zoom */
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s ease 0.4s, transform 0.7s cubic-bezier(0.6, 0, 0.25, 1) 0.3s;
@@ -3866,8 +3869,8 @@
     }
     /* Inner edge is held clear of the loop's pills (which sit at ~6vw from centre),
        outer edge hugs the viewport so the text never overlaps the pill column. */
-    .ld-panel-left  { left: auto; right: calc(6vw + 820px); width: auto; text-align: right; transform: translate(-30px, -50%); }
-    .ld-panel-right { right: 3%; left:  calc(6vw + 820px); width: auto; transform: translate(30px, -50%); }
+    .ld-panel-left  { left: auto; right: 62.9vw; width: auto; text-align: right; transform: translate(-30px, -50%); }
+    .ld-panel-right { right: 3%; left:  62.9vw; width: auto; transform: translate(30px, -50%); }
     .ld-stage.open-left  .ld-panel-left  { opacity: 1; pointer-events: auto; transform: translate(0, -50%); }
     .ld-stage.open-right .ld-panel-right { opacity: 1; pointer-events: auto; transform: translate(0, -50%); }
 
@@ -3968,9 +3971,13 @@
     }
     .ld-section.in-view .ld-pillar:nth-child(2) { transition-delay: 0.12s; }
 
-    /* Tablet / mobile — hide the infinity, stack both groups as static content */
+    /* Tablet / mobile — hide the infinity, stack both groups as static content.
+       The loop (with its item-switching pills) is hidden here, so we must reveal
+       EVERY .ld-item — otherwise only each group's default item would show. */
     @media (max-width: 1280px) {
-      .ld-stage { height: auto; overflow: visible; }
+      /* drop the desktop full-bleed so the stack respects the section's side padding
+         (otherwise the text sits flush against the screen edge) */
+      .ld-stage { height: auto; overflow: visible; width: 100%; margin-left: 0; }
       .ld-stage-hint, .ld-inf, .ld-glow, .ld-close { display: none; }
       .ld-panel {
         position: relative;
@@ -3980,7 +3987,17 @@
         opacity: 1 !important;
         pointer-events: auto !important;
         transform: none !important;
+        text-align: left !important;   /* left panel is right-aligned on desktop; reset for the stack */
         margin-bottom: 40px;
+      }
+      /* the per-item "Tìm hiểu thêm" links are redundant in the stacked view */
+      .ld-panel .ld-cta { display: none; }
+      /* pills live inside the hidden loop → show all items instead of just the active one */
+      .ld-panel .ld-item { display: block !important; }
+      .ld-panel .ld-item + .ld-item {
+        margin-top: 22px;
+        padding-top: 22px;
+        border-top: 1px solid rgba(255,255,255,.12);
       }
       .ld-panel-inner,
       .ld-panel-right .ld-panel-inner { flex-direction: column !important; align-items: stretch; gap: 20px; }
@@ -4190,18 +4207,17 @@
         position: relative;
         overflow: visible;
         margin-top: 0;
-        margin-bottom: -80px;
+        margin-bottom: 20px;   /* was -80px: the pull-up made the quote overlap the CEO name — stack cleanly instead */
       }
       .ceo-img-wrap {
-        max-width: 80%;
+        max-width: 70%;
         margin: 0 auto;
       }
       .ceo-img {
         width: 100%;
         height: auto;
         object-fit: contain;
-        -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-        mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        /* no bottom fade — with the overlap removed it would just leave an empty gap above the name */
       }
       .ceo-glow {
         width: 100%;
