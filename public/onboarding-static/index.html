@@ -879,7 +879,7 @@
       flex-direction: column !important;
       justify-content: flex-start !important;
       align-items: center !important;
-      padding: 72px 60px 48px 60px !important;
+      padding: 40px 60px 48px 60px !important;
       background-color: var(--bg);
       border-bottom: 1px solid var(--border);
       position: relative;
@@ -898,7 +898,7 @@
       max-width: 1400px;
       margin: 0 auto 10px auto;
       padding-top: 20px;
-      height: 140px;
+      height: 118px;
     }
 
     .timeline-line {
@@ -1021,7 +1021,7 @@
     /* Active milestone detail card */
     .milestone-active-card {
       width: 100%;
-      max-width: 540px;
+      max-width: 900px;
       margin: 10px auto 0 auto;
       background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(12px);
@@ -1038,7 +1038,7 @@
 
     .card-fade-target {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       width: 100%;
       gap: 0;
       align-items: stretch;
@@ -1047,7 +1047,11 @@
     }
 
     .active-card-text {
-      padding: clamp(12px, 1.5vh, 20px) 24px clamp(12px, 1.5vh, 24px) 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(20px, 3vh, 36px) clamp(24px, 3vw, 40px);
     }
 
     .active-card-year {
@@ -1076,10 +1080,12 @@
     }
 
     .active-card-image-wrap {
-      width: 100%;
-      height: clamp(120px, 18vh, 160px);
+      flex: 0 0 46%;
+      width: 46%;
+      align-self: stretch;
+      min-height: 260px;
       background: rgba(0, 0, 0, 0.02);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      border-right: 1px solid rgba(0, 0, 0, 0.06);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -3275,6 +3281,259 @@
       color: var(--text-dim);
     }
 
+    /* ═══════════ COMPANY ORG CHART ═══════════ */
+    .orgchart-section {
+      padding: 40px 60px 90px 60px;
+      background: linear-gradient(180deg, var(--bg) 0%, #F6ECE4 100%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Faint square-grid backdrop (kept in brand orange, very subtle) */
+    .orgchart-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 82, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 82, 0, 0.05) 1px, transparent 1px);
+      background-size: 46px 46px;
+      pointer-events: none;
+      z-index: 0;
+      -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 42%, #000 55%, transparent 100%);
+      mask-image: radial-gradient(ellipse 78% 72% at 50% 42%, #000 55%, transparent 100%);
+    }
+    .orgchart-header {
+      text-align: center;
+      margin-bottom: 46px;
+      position: relative;
+      z-index: 1;
+    }
+    .orgchart-title {
+      font-family: 'Exo', sans-serif;
+      font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+      font-weight: 900;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+    }
+    .orgchart-sub {
+      font-family: 'Exo', sans-serif;
+      font-size: clamp(0.95rem, 2vw, 1.2rem);
+      color: #3d3d3d;
+      margin-top: 8px;
+    }
+    .orgchart {
+      max-width: 1180px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    /* CEO node — minimal squared card, thin border, orange top rule */
+    .org-ceo {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      background: linear-gradient(135deg, #FF5200 0%, #FF7A2E 55%, #FF9A3D 100%);
+      border: none;
+      border-radius: 12px;
+      padding: 26px 34px 24px;
+      text-align: center;
+      box-shadow: 0 18px 42px rgba(255, 82, 0, 0.30);
+    }
+    .org-ceo-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 auto 12px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+    .org-ceo-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .org-ceo-role {
+      display: block;
+      font-family: 'Exo', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .org-ceo-rule {
+      width: 54px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 2px;
+      margin: 12px auto;
+    }
+    .org-ceo-name {
+      display: block;
+      font-family: 'Exo', sans-serif;
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: rgba(255, 255, 255, 0.95);
+      letter-spacing: 0.02em;
+    }
+    /* Connectors — gradient lines */
+    .org-trunk {
+      position: relative;
+      width: 2px;
+      height: 32px;
+      background: linear-gradient(to bottom, #FF5200, rgba(255, 82, 0, 0.35));
+      border-radius: 2px;
+    }
+    .org-branch {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .org-cell {
+      flex: 1 1 0;
+      max-width: 218px;
+      position: relative;
+      padding-top: 32px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+    .org-cell::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: rgba(255, 82, 0, 0.40);
+    }
+    .org-cell:first-child::before { left: 50%; }
+    .org-cell:last-child::before  { right: 50%; }
+    .org-cell::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      width: 2px;
+      height: 32px;
+      background: linear-gradient(to bottom, rgba(255, 82, 0, 0.40), #FF5200);
+      transform: translateX(-50%);
+    }
+    /* Flowing particles: from CEO down the trunk, then distributed into each block */
+    .org-spark {
+      position: absolute;
+      top: 0; left: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff 0%, #FFB067 45%, rgba(255, 82, 0, 0) 75%);
+      box-shadow: 0 0 8px 2px rgba(255, 140, 60, 0.75);
+      transform: translate(-50%, 0);
+      pointer-events: none;
+      z-index: 4;
+    }
+    .org-trunk .org-spark { animation: orgSparkTrunk 2.2s linear infinite; }
+    .org-cell  .org-spark { animation: orgSparkDrop 2.2s linear infinite; }
+    .org-cell:nth-child(1) .org-spark { animation-delay: 0.50s; }
+    .org-cell:nth-child(2) .org-spark { animation-delay: 0.65s; }
+    .org-cell:nth-child(3) .org-spark { animation-delay: 0.80s; }
+    .org-cell:nth-child(4) .org-spark { animation-delay: 0.95s; }
+    .org-cell:nth-child(5) .org-spark { animation-delay: 1.10s; }
+    @keyframes orgSparkTrunk {
+      0%   { transform: translate(-50%, -4px); opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translate(-50%, 32px); opacity: 0; }
+    }
+    @keyframes orgSparkDrop {
+      0%   { transform: translate(-50%, 0); opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translate(-50%, 34px); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .org-spark { display: none; }
+    }
+    /* Division card — minimal squared, thin border, left-aligned text */
+    .org-node {
+      position: relative;
+      width: 100%;
+      margin: 0 9px;
+      background: linear-gradient(165deg, #ffffff 0%, #FFF4EC 100%);
+      border: 1px solid rgba(255, 82, 0, 0.20);
+      border-radius: 10px;
+      padding: 20px 16px 20px;
+      text-align: left;
+      overflow: hidden;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .org-node::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #FF5200, #FFA24D);
+    }
+    .org-node:hover {
+      border-color: transparent;
+      box-shadow: 0 16px 32px rgba(255, 82, 0, 0.22);
+      transform: translateY(-5px);
+    }
+    .org-node-index {
+      display: block;
+      font-family: 'Exo', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .org-node-title {
+      font-family: 'Exo', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+    .org-node-rule {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255, 82, 0, 0.55), rgba(255, 82, 0, 0.05));
+      margin: 13px 0;
+    }
+    .org-node-role {
+      display: block;
+      font-family: 'Exo', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .org-node-name {
+      display: block;
+      font-family: 'Exo', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+    /* Responsive: stack vertically on narrow screens */
+    @media (max-width: 860px) {
+      .orgchart-section { padding: 30px 24px 70px; }
+      .org-branch { flex-direction: column; align-items: center; }
+      .org-cell {
+        width: 100%;
+        max-width: 360px;
+        padding-top: 24px;
+      }
+      .org-cell::before { display: none; }
+      .org-cell::after { height: 24px; }
+      .org-node { margin: 0; }
+    }
+
     /* Leadership initial states */
     .leadership-title-main,
     .leadership-title-sub {
@@ -4849,7 +5108,7 @@
         <div class="active-card-text">
           <span class="active-card-year">2012</span>
           <h3 class="active-card-title">Thành lập & Đặt nền móng</h3>
-          <p class="active-card-desc">Chính thức thành lập, đặt nền móng xây dựng hệ thống logistics linh hoạt, hiện đại tại Việt Nam.</p>
+          <p class="active-card-desc">Thương hiệu Giao Hàng Nhanh (GHN) chính thức gia nhập thị trường với mục tiêu cốt lõi là xây dựng một mô hình logistics hiện đại, linh hoạt và được "may đo" riêng để giải quyết các bài toán đặc thù của thương mại điện tử Việt Nam.</p>
         </div>
       </div>
     </div>
@@ -5120,6 +5379,80 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ═══════════ COMPANY ORG CHART ═══════════ -->
+  <section class="orgchart-section" id="orgchart">
+    <div class="orgchart-header">
+      <h2 class="orgchart-title">Cơ cấu tổ chức</h2>
+      <p class="orgchart-sub">Bộ máy điều hành Giao Hàng Nhanh</p>
+    </div>
+    <div class="orgchart">
+      <div class="org-ceo">
+        <span class="org-ceo-role">Tổng Giám Đốc</span>
+        <div class="org-ceo-rule"></div>
+        <span class="org-ceo-name">Lương Duy Hoài</span>
+      </div>
+      <div class="org-trunk"><span class="org-spark"></span></div>
+      <div class="org-branch">
+
+        <div class="org-cell">
+          <span class="org-spark"></span>
+          <div class="org-node">
+            <span class="org-node-index">01</span>
+            <h3 class="org-node-title">Khối Khách Hàng</h3>
+            <div class="org-node-rule"></div>
+            <span class="org-node-role">Kiêm nhiệm: TGĐ</span>
+            <span class="org-node-name">Lương Duy Hoài</span>
+          </div>
+        </div>
+
+        <div class="org-cell">
+          <span class="org-spark"></span>
+          <div class="org-node">
+            <span class="org-node-index">02</span>
+            <h3 class="org-node-title">Khối Thị Trường</h3>
+            <div class="org-node-rule"></div>
+            <span class="org-node-role">Phụ trách: Phó TGĐ</span>
+            <span class="org-node-name">Mai Hoàng</span>
+          </div>
+        </div>
+
+        <div class="org-cell">
+          <span class="org-spark"></span>
+          <div class="org-node">
+            <span class="org-node-index">03</span>
+            <h3 class="org-node-title">Khối Nhân Lực</h3>
+            <div class="org-node-rule"></div>
+            <span class="org-node-role">Phụ trách: Phó TGĐ</span>
+            <span class="org-node-name">Lê Thị Đoan Trinh</span>
+          </div>
+        </div>
+
+        <div class="org-cell">
+          <span class="org-spark"></span>
+          <div class="org-node">
+            <span class="org-node-index">04</span>
+            <h3 class="org-node-title">Khối Tài Chính</h3>
+            <div class="org-node-rule"></div>
+            <span class="org-node-role">Phụ trách: Phó TGĐ</span>
+            <span class="org-node-name">Hoàng Long</span>
+          </div>
+        </div>
+
+        <div class="org-cell">
+          <span class="org-spark"></span>
+          <div class="org-node">
+            <span class="org-node-index">05</span>
+            <h3 class="org-node-title">Khối Công Nghệ</h3>
+            <div class="org-node-rule"></div>
+            <span class="org-node-role">Phụ trách: Giám đốc</span>
+            <span class="org-node-name">Nguyễn Phước Thanh Hải</span>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -6088,31 +6421,31 @@
       {
         year: '2012',
         title: 'Thành lập & Đặt nền móng',
-        desc: 'Chính thức thành lập, đặt nền móng xây dựng hệ thống logistics linh hoạt, hiện đại tại Việt Nam.',
+        desc: 'Thương hiệu Giao Hàng Nhanh (GHN) chính thức gia nhập thị trường với mục tiêu cốt lõi là xây dựng một mô hình logistics hiện đại, linh hoạt và được "may đo" riêng để giải quyết các bài toán đặc thù của thương mại điện tử Việt Nam.',
         image: 'time/2012.jpg' // Thêm URL ảnh tại đây nếu muốn hiển thị (Ví dụ: 'image.jpg')
       },
       {
         year: '2015',
         title: 'Ahamove & Đột phá công suất',
-        desc: 'Nâng công suất lên 500k đơn/ngày. Đồng thời ra mắt Ahamove, đa dạng hóa dịch vụ giao nhận.',
+        desc: 'Doanh nghiệp ghi nhận cột mốc vận hành mới khi nâng hiệu suất xử lý lên nửa triệu đơn hàng mỗi ngày. Cùng thời điểm này, sự ra đời của Ahamove đã giúp GHN đa dạng hóa danh mục dịch vụ và linh hoạt hóa hệ sinh thái giao nhận của mình.',
         image: 'time/2015.jpg' // Thêm URL ảnh tại đây nếu muốn hiển thị (Ví dụ: 'image.jpg')
       },
       {
         year: '2019',
         title: 'Hệ thống phân loại tự động',
-        desc: 'Vận hành hệ thống phân loại tự động đầu tiên tại Hà Nội, đột phá tốc độ và độ chính xác.',
+        desc: 'GHN tạo bước đột phá trong việc số hóa và tự động hóa bằng cách triển khai hệ thống phân loại hàng hóa tự động đầu tiên ở Hà Nội. Cải tiến này giúp tối ưu hóa tốc độ, độ chính xác và tăng cường khả năng quản trị vận hành trên diện rộng.',
         image: 'time/2019.jpg' // Thêm URL ảnh tại đây nếu muốn hiển thị (Ví dụ: 'image.jpg')
       },
       {
         year: '2023',
         title: 'Kho trung chuyển Xuyên Á',
-        desc: 'Mở kho trung chuyển Xuyên Á (43.000 m²), nâng năng lực phân loại lên 5,5 triệu đơn/ngày.',
+        desc: 'Năng suất xử lý toàn hệ thống đạt mức kỷ lục 5,5 triệu bưu kiện/ngày. Sự kiện khánh thành Kho trung chuyển Xuyên Á tại miền Nam (diện tích lên tới 43.000 m²) đã trở thành đòn bẩy vững chắc, khẳng định năng lực hạ tầng kho vận trên toàn quốc.',
         image: 'time/2023.jpg' // Thêm URL ảnh tại đây nếu muốn hiển thị (Ví dụ: 'image.jpg')
       },
       {
         year: '2025',
         title: 'Giao Hàng Nặng & Kho Hưng Yên',
-        desc: 'Ra mắt Giao Hàng Nặng và vận hành kho Hưng Yên 90.000 m² lớn nhất nước.',
+        desc: 'Chính thức tạo bước ngoặt chiến lược khi ra mắt thương hiệu Giao Hàng NẶNG, làm chủ phân khúc vận chuyển hàng cồng kềnh trên 20kg. Đồng thời đưa vào vận hành Trung tâm trung chuyển Hưng Yên với diện tích 90.000 m², chính thức trở thành kho phân loại lớn nhất toàn quốc.',
         image: 'time/2025.jpg' // Thêm URL ảnh tại đây nếu muốn hiển thị (Ví dụ: 'image.jpg')
       }
     ];
