@@ -95,7 +95,7 @@
     .hero-canvas {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 5.5;
+      aspect-ratio: 16 / 5.2;
       overflow: hidden;
     }
 
@@ -139,6 +139,41 @@
     .hero-slideshow img.active {
       opacity: 1;
       z-index: 2;
+    }
+
+    /* ── Hero slideshow dots ── */
+    .hero-dots {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 6;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+    .hero-dots.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .hero-dot {
+      width: 11px;
+      height: 11px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease, width 0.3s ease;
+    }
+    .hero-dot:hover { background: rgba(255, 255, 255, 0.85); }
+    .hero-dot.active {
+      background: var(--accent);
+      width: 26px;
+      border-radius: 6px;
     }
 
     .hero-canvas .gallery-scene {
@@ -251,7 +286,7 @@
     }
 
     .hero-text {
-      padding: 60px 50px 0 50px;
+      padding: 28px 50px 0 50px;
       text-align: center;
     }
 
@@ -458,7 +493,7 @@
     .brand-story {
       background-color: #1a1a1a;
       color: #ffffff;
-      padding: 120px 60px;
+      padding: 72px 60px;
       position: relative;
       overflow: hidden;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -637,7 +672,7 @@
     .vision-mission-container {
       display: flex;
       width: 100%;
-      height: 600px;
+      height: 500px;
       border-bottom: 1px solid var(--border);
       background: var(--white);
       overflow: hidden;
@@ -839,12 +874,12 @@
        2.7. MILESTONES TIMELINE
     ═══════════════════════════════════════ */
     .milestones-section {
-      height: calc(100vh - 60px) !important;
+      height: auto !important;
       display: flex !important;
       flex-direction: column !important;
       justify-content: flex-start !important;
       align-items: center !important;
-      padding: clamp(80px, 12vh, 200px) 60px 30px 60px !important;
+      padding: 72px 60px 48px 60px !important;
       background-color: var(--bg);
       border-bottom: 1px solid var(--border);
       position: relative;
@@ -2440,13 +2475,13 @@
 
     /* ── Trải nghiệm vận hành: 5 thanh chéo (vị trí) → sân khấu nhân vật ── */
     .ops-section {
-      padding: 84px 40px 28px;
+      padding: 52px 40px 28px;
       background: #1c1d22;
       color: #fff;
       position: relative;
       overflow: hidden;
     }
-    .ops-head { text-align: center; margin-bottom: 150px; }   /* room for the tall sprites sitting on top of the slats */
+    .ops-head { text-align: center; margin-bottom: 110px; }   /* room for the tall sprites sitting on top of the slats */
     .ops-head .section-label { color: var(--accent); }
     .ops-title {
       margin-top: 12px;
@@ -2657,7 +2692,7 @@
 
     /* ── Main customers (attached under the stats band) ── */
     .customers-section {
-      padding: 20px 60px 0;
+      padding: 20px 60px 60px;
       background: #222222;            /* continues seamlessly from the stats band */
       color: var(--white);
       position: relative;
@@ -2679,72 +2714,103 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-      max-width: 1120px;
-      margin: 0 auto 64px;
+      max-width: 1160px;
+      margin: 0 auto;
     }
     .customer-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.10);
-      border-radius: 16px;
-      padding: 32px 26px;
-      transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+      border-radius: 20px;
+      padding: 30px 28px;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.25,1,0.5,1), border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
     }
     .customer-card:hover {
       transform: translateY(-6px);
       border-color: rgba(255, 82, 0, 0.55);
       background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 22px 44px rgba(0, 0, 0, 0.35);
     }
+
     .customer-ico {
-      width: 54px; height: 54px;
-      border-radius: 13px;
+      width: 60px; height: 60px;
+      border-radius: 16px;
       display: flex; align-items: center; justify-content: center;
       background: rgba(255, 82, 0, 0.15);
       color: var(--accent);
-      margin-bottom: 18px;
+      border: 1px solid rgba(255, 82, 0, 0.22);
+      margin-bottom: 20px;
     }
-    .customer-ico svg { width: 26px; height: 26px; }
+    .customer-ico svg { width: 28px; height: 28px; }
+
     .customer-card h3 {
       font-family: 'Exo', sans-serif;
-      font-size: 1.15rem; font-weight: 800;
-      color: #fff; margin-bottom: 10px;
+      font-size: clamp(1.3rem, 2vw, 1.7rem); font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.08;
+      color: #fff; margin-bottom: 12px;
     }
-    .customer-card p { font-size: 0.93rem; line-height: 1.6; color: #b9b6b0; }
+    .customer-card p {
+      font-size: 0.92rem; line-height: 1.6;
+      color: rgba(255, 255, 255, 0.72);
+      margin-bottom: 22px;
+    }
 
-    /* Logo marquee — full-bleed white band, infinite scroll */
-    .brand-marquee {
-      position: relative;
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      background: #ffffff;
-      padding: 26px 0;
-      overflow: hidden;
+    /* Pill tag */
+    .customer-tag {
+      display: flex; align-items: center; gap: 9px;
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 20px;
     }
-    .brand-track {
+    .customer-tag { color: var(--accent); background: rgba(255, 82, 0, 0.07); border-color: rgba(255, 82, 0, 0.28); }
+    .customer-tag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--accent); }
+
+    /* Logo cluster pinned to the bottom of each card — auto-scrolling marquee */
+    .customer-logos {
+      margin-top: auto;
+      overflow: hidden;
+      position: relative;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%);
+    }
+    .logo-track {
       display: flex;
       align-items: center;
-      gap: 66px;
+      gap: 8px;
       width: max-content;
-      animation: brand-scroll 16s linear infinite;
+      animation: logo-scroll 20s linear infinite;
     }
-    .brand-track + .brand-track { margin-top: 22px; }
-    .brand-track.reverse { animation-direction: reverse; }   /* second row runs the other way */
-    .brand-marquee:hover .brand-track { animation-play-state: paused; }
-    .brand-track img {
-      height: 42px; width: auto;
-      object-fit: contain;
-      transition: transform 0.3s ease;
+    .logo-track.reverse { animation-direction: reverse; }
+    .customer-logos:hover .logo-track { animation-play-state: paused; }
+    @keyframes logo-scroll { to { transform: translateX(-33.3333%); } }
+
+    .customer-logos .logo-chip {
+      flex: none;
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 42px; padding: 7px 13px;
+      background: #ffffff;
+      border-radius: 11px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
     }
-    .brand-track img:hover { transform: scale(1.12); }
-    @keyframes brand-scroll { to { transform: translateX(-50%); } }
+    .customer-logos .logo-chip img {
+      height: 22px; width: auto; max-width: 96px;
+      object-fit: contain; display: block;
+    }
 
     @media (max-width: 860px) {
-      .customers-grid { grid-template-columns: 1fr; max-width: 420px; }
-      .customers-section { padding: 16px 24px 0; }
-      .brand-track img { height: 34px; }
+      .customers-grid { grid-template-columns: 1fr; max-width: 440px; }
+      .customers-section { padding: 16px 24px 40px; }
     }
 
     .stats-section {
-      padding: 80px 60px 50px;
+      padding: 34px 60px 30px;
       border-top: 1px solid var(--border);
       background: #222222; /* Darker gray background */
       color: var(--white);
@@ -2764,7 +2830,7 @@
     }
 
     .stats-header {
-      margin-bottom: 80px;
+      margin-bottom: 26px;
       text-align: center;
     }
 
@@ -2795,7 +2861,7 @@
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: var(--radius-md);
-      padding: 40px 30px;
+      padding: 26px 24px;
       overflow: hidden;
       transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease;
       display: flex;
@@ -2903,10 +2969,10 @@
     }
 
     .stat-number-wrap {
-      height: 4.5rem;
+      height: 3.5rem;
       display: flex;
       align-items: baseline;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       position: relative;
       z-index: 2;
     }
@@ -2917,9 +2983,9 @@
     }
 
     .stat-digit {
-      font-size: 3.5rem;
+      font-size: 2.7rem;
       font-weight: 900;
-      line-height: 4.5rem;
+      line-height: 3.5rem;
       letter-spacing: -0.04em;
       background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
       -webkit-background-clip: text;
@@ -2929,7 +2995,7 @@
     }
 
     .stat-suffix {
-      font-size: 2rem;
+      font-size: 1.55rem;
       font-weight: 300;
       color: var(--accent);
       vertical-align: baseline;
@@ -2948,7 +3014,7 @@
 
     .stat-bar {
       margin-top: auto;
-      padding-top: 20px;
+      padding-top: 14px;
       height: 2px;
       position: relative;
       z-index: 2;
@@ -3283,7 +3349,7 @@
        CULTURE & REGULATIONS (Văn hoá & Quy định)
     ═══════════════════════════════════════ */
     .culture-section {
-      padding: 80px 60px;
+      padding: 52px 60px;
       background-color: var(--bg);
       border-bottom: 1px solid var(--border);
       position: relative;
@@ -3303,7 +3369,7 @@
 
     .culture-header {
       text-align: center;
-      margin-bottom: 64px;
+      margin-bottom: 36px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -3336,18 +3402,18 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 24px;
-      max-width: 1180px;
+      gap: 16px;
+      max-width: 1340px;
       margin: 0 auto;
       position: relative;
       z-index: 1;
     }
 
-    /* ── Flip card ── */
+    /* ── Flip card — 5 per row on desktop ── */
     .culture-card {
       position: relative;
-      width: calc((100% - 48px) / 3);
-      height: 600px;
+      width: calc((100% - 64px) / 5);
+      height: 380px;
       perspective: 1500px;
       cursor: pointer;
     }
@@ -3390,7 +3456,7 @@
     .culture-img {
       flex: none;
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 4 / 3;
       background-color: #ffffff;
       background-size: contain;
       background-repeat: no-repeat;
@@ -3399,11 +3465,11 @@
     }
 
     .culture-front-info {
-      padding: 18px 18px 22px;
+      padding: 14px 12px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: #ffffff;
     }
 
@@ -3417,7 +3483,7 @@
 
     .culture-front-title {
       font-family: 'Exo', sans-serif;
-      font-size: 1.18rem;
+      font-size: 0.98rem;
       font-weight: 800;
       color: var(--accent); /* Brand orange #ff5200 */
       text-transform: uppercase;
@@ -3441,22 +3507,22 @@
     /* ── Back face ── */
     .culture-face-back {
       transform: rotateY(180deg);
-      padding: 22px 20px;
+      padding: 16px 15px;
     }
 
     .culture-back-head {
       display: flex;
       align-items: baseline;
       gap: 8px;
-      padding-bottom: 12px;
-      margin-bottom: 12px;
+      padding-bottom: 9px;
+      margin-bottom: 10px;
       border-bottom: 2px solid var(--accent);
       flex-shrink: 0;
     }
 
     .culture-back-title {
       font-family: 'Exo', sans-serif;
-      font-size: 1.15rem;
+      font-size: 0.98rem;
       font-weight: 800;
       color: var(--accent);
       text-transform: uppercase;
@@ -3470,7 +3536,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 14px;
+      gap: 10px;
       padding-right: 4px;
     }
 
@@ -3482,26 +3548,26 @@
 
     .culture-sub {
       font-family: 'Exo', sans-serif;
-      font-size: 1.08rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 0.02em;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     .culture-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
     }
 
     .culture-list li {
       position: relative;
-      padding-left: 16px;
-      font-size: 1.02rem;
-      line-height: 1.5;
+      padding-left: 14px;
+      font-size: 0.82rem;
+      line-height: 1.45;
       color: var(--text);
     }
 
@@ -3519,8 +3585,8 @@
     .culture-list li b { font-weight: 700; color: #1a1a1a; }
 
     /* 5S — emphasised name + quote */
-    .culture-5s { display: flex; flex-direction: column; gap: 7px; }
-    .culture-5s-item { font-size: 0.95rem; line-height: 1.4; color: var(--text); }
+    .culture-5s { display: flex; flex-direction: column; gap: 6px; }
+    .culture-5s-item { font-size: 0.8rem; line-height: 1.4; color: var(--text); }
     .culture-5s-name {
       font-family: 'Exo', sans-serif;
       font-weight: 800;
@@ -3531,10 +3597,10 @@
     .culture-5s-quote { font-style: italic; color: #1a1a1a; }
 
     .culture-note {
-      font-size: 0.92rem;
+      font-size: 0.76rem;
       font-style: italic;
       color: var(--text-dim);
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     /* Reveal initial states */
@@ -3542,20 +3608,23 @@
     .culture-title-sub { opacity: 0; transform: translateY(20px); }
     .culture-card { opacity: 0; transform: translateY(30px); }
 
-    @media (max-width: 900px) {
-      .culture-card { width: calc((100% - 24px) / 2); }
+    /* Tablet / small desktop → 3 per row */
+    @media (max-width: 1120px) {
+      .culture-card { width: calc((100% - 32px) / 3); height: 430px; }
     }
 
-    @media (max-width: 768px) {
-      .culture-section { padding: 60px 24px; }
-      .culture-card { height: 560px; }
+    /* → 2 per row */
+    @media (max-width: 820px) {
+      .culture-section { padding: 48px 24px; }
+      .culture-card { width: calc((100% - 16px) / 2); height: 470px; }
       /* Top-align on small screens so dense cards never clip when scrolling */
       .culture-back-body { justify-content: flex-start; }
     }
 
-    @media (max-width: 560px) {
+    /* → 1 per row */
+    @media (max-width: 520px) {
       .culture-grid { gap: 18px; }
-      .culture-card { width: 100%; max-width: 380px; height: 540px; }
+      .culture-card { width: 100%; max-width: 360px; height: 440px; }
     }
 
     /* ═══════════════════════════════════════
@@ -4013,7 +4082,7 @@
        NEW: CELEBRATION / QUOTE SECTION
     ═══════════════════════════════════════ */
     .quote-section {
-      padding: 28px 60px 72px;   /* bottom padding so the caption never touches the footer */
+      padding: 24px 60px 48px;   /* bottom padding so the caption never touches the footer */
       background: #1c1d22;
       color: var(--white);
       position: relative;
@@ -4270,7 +4339,7 @@
     }
 
     .vm-section-header {
-      padding: 70px 60px 40px;
+      padding: 44px 60px 28px;
       background: var(--bg);
       border-bottom: none;
       text-align: center;
@@ -4600,51 +4669,20 @@
             Your browser does not support the video tag.
           </video>
           <div class="hero-slideshow">
-            <img src="Hero.jpeg" alt="Hero banner" class="active">
-            <img src="public/ship 2.jpg" alt="Nhân viên giao hàng GHN" style="object-position: center 64%;">
-            <img src="public/KTC 2.jpeg" alt="Kho trung chuyển SCommerce">
+            <img src="Hero.jpeg" alt="Hero banner" class="active" style="object-position: center 30%;">
+            <img src="public/ship 2.jpg" alt="Nhân viên giao hàng GHN" style="object-position: center 58%;">
+            <img src="public/KTC 2.jpeg" alt="Kho trung chuyển SCommerce" style="object-position: center 48%;">
             <img src="public/NVPH 1.jpeg" alt="Nhân viên điều phối SCommerce">
-            <img src="public/NVXL 2.JPG" alt="Nhân viên xử lý hàng hóa SCommerce">
+            <img src="public/NVXL 2.JPG" alt="Nhân viên xử lý hàng hóa SCommerce" style="object-position: center 34%;">
             <img src="public/xetai1.jpeg" alt="Đội xe tải vận chuyển SCommerce">
           </div>
+          <div class="hero-dots" id="heroDots" role="tablist" aria-label="Chọn ảnh hero"></div>
         </div>
         <div class="hero-text">
           <h1 class="hero-title"><span class="hero-line-1">Chào mừng bạn đến với</span><span class="accent-word-wrap"><span class="accent-word">GIAO HÀNG NHANH</span></span></h1>
           <div style="margin: 20px auto 0; width: 400px; max-width: 80%; height: 1px; background: var(--border);"></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ═══════════ MARQUEE TICKER ═══════════ -->
-  <section class="marquee-section">
-    <div class="marquee-row marquee-row-1">
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
-    </div>
-    <div class="marquee-row marquee-row-2 marquee-row-outline">
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">NHANH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">THÔNG MINH HƠN</span></div>
-      <div class="marquee-item"><span class="m-dot"></span><span class="m-text">VỚI GIÁ TỐT HƠN</span></div>
     </div>
   </section>
 
@@ -4694,13 +4732,13 @@
   </section>
 
   <!-- ═══════════ VISION AND MISSION HEADER ═══════════ -->
-  <div class="vm-section-header">
+  <div class="vm-section-header" id="vision-mission">
     <span class="section-label">TẦM NHÌN &amp; SỨ MỆNH</span>
     <h2 class="vm-section-title">TẦM NHÌN &amp; <span class="accent-text">SỨ MỆNH</span></h2>
   </div>
 
   <!-- ═══════════ VISION AND MISSION ═══════════ -->
-  <section class="vision-mission-section" id="vision-mission">
+  <section class="vision-mission-section">
     <div class="vision-mission-container">
       
       <!-- PANEL 1: TẦM NHÌN -->
@@ -4906,7 +4944,8 @@
     </div>
 
     <div class="customers-grid">
-      <div class="customer-card">
+      <!-- Card 1 · Sàn TMĐT -->
+      <div class="customer-card cc-teal">
         <div class="customer-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -4915,9 +4954,21 @@
         </div>
         <h3>Sàn thương mại điện tử</h3>
         <p>Đối tác chiến lược của các sàn TMĐT lớn tại Việt Nam (Shopee, Lazada, TikTok Shop...).</p>
+        <div class="customer-tag">Sàn TMĐT</div>
+        <div class="customer-logos">
+          <div class="logo-track">
+            <span class="logo-chip"><img src="brands/tiktok.png" alt="TikTok Shop"></span>
+            <span class="logo-chip"><img src="brands/shopee.png" alt="Shopee"></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/tiktok.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/shopee.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/tiktok.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/shopee.png" alt=""></span>
+          </div>
+        </div>
       </div>
 
-      <div class="customer-card">
+      <!-- Card 2 · Doanh nghiệp / chuỗi bán lẻ -->
+      <div class="customer-card cc-blue">
         <div class="customer-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/>
@@ -4926,9 +4977,42 @@
         </div>
         <h3>Khách hàng doanh nghiệp (B2B)</h3>
         <p>Các thương hiệu, chuỗi bán lẻ, nhãn hàng lớn cần giải pháp vận chuyển toàn quốc.</p>
+        <div class="customer-tag">B2B &amp; Retail</div>
+        <div class="customer-logos">
+          <div class="logo-track reverse">
+            <span class="logo-chip"><img src="brands/concung.png" alt="Con Cưng"></span>
+            <span class="logo-chip"><img src="brands/longchau.png" alt="Nhà thuốc Long Châu"></span>
+            <span class="logo-chip"><img src="brands/canifa.png" alt="Canifa"></span>
+            <span class="logo-chip"><img src="brands/nem.png" alt="NEM"></span>
+            <span class="logo-chip"><img src="brands/thieuhoa.png" alt="Thiều Hoa"></span>
+            <span class="logo-chip"><img src="brands/juno.svg" alt="Juno"></span>
+            <span class="logo-chip"><img src="brands/hasaki.png" alt="Hasaki"></span>
+            <span class="logo-chip"><img src="brands/innisfree.png" alt="innisfree"></span>
+            <span class="logo-chip"><img src="brands/sofia.png" alt="Sofia"></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/concung.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/longchau.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/canifa.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/nem.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/thieuhoa.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/juno.svg" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/hasaki.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/innisfree.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/sofia.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/concung.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/longchau.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/canifa.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/nem.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/thieuhoa.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/juno.svg" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/hasaki.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/innisfree.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/sofia.png" alt=""></span>
+          </div>
+        </div>
       </div>
 
-      <div class="customer-card">
+      <!-- Card 3 · Thương hiệu & nhà bán online -->
+      <div class="customer-card cc-gold">
         <div class="customer-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
@@ -4937,20 +5021,7 @@
         </div>
         <h3>Chủ shop kinh doanh online</h3>
         <p>Hàng triệu nhà bán hàng cá nhân (SMEs / Social sellers) trên toàn quốc.</p>
-      </div>
-    </div>
-
-    <!-- Logo marquee -->
-    <div class="brand-marquee" aria-label="Các thương hiệu đồng hành cùng GHN">
-      <!-- Row 1 → scrolls left -->
-      <div class="brand-track">
-        <img src="brands/tiktok.png" alt="TikTok Shop"><img src="brands/shopee.png" alt="Shopee"><img src="brands/concung.png" alt="Con Cưng"><img src="brands/canifa.png" alt="Canifa"><img src="brands/longchau.png" alt="Nhà thuốc Long Châu"><img src="brands/sofia.png" alt="Sofia">
-        <img src="brands/tiktok.png" alt="TikTok Shop"><img src="brands/shopee.png" alt="Shopee"><img src="brands/concung.png" alt="Con Cưng"><img src="brands/canifa.png" alt="Canifa"><img src="brands/longchau.png" alt="Nhà thuốc Long Châu"><img src="brands/sofia.png" alt="Sofia">
-      </div>
-      <!-- Row 2 → scrolls right (reverse) -->
-      <div class="brand-track reverse">
-        <img src="brands/juno.svg" alt="Juno"><img src="brands/hasaki.png" alt="Hasaki"><img src="brands/nem.png" alt="NEM"><img src="brands/thieuhoa.png" alt="Thiều Hoa"><img src="brands/innisfree.png" alt="innisfree">
-        <img src="brands/juno.svg" alt="Juno"><img src="brands/hasaki.png" alt="Hasaki"><img src="brands/nem.png" alt="NEM"><img src="brands/thieuhoa.png" alt="Thiều Hoa"><img src="brands/innisfree.png" alt="innisfree">
+        <div class="customer-tag">SMEs &amp; Social sellers</div>
       </div>
     </div>
   </section>
@@ -6129,140 +6200,46 @@
     // Set initial card state
     updateActiveCard(0);
 
-    // Scroll progress animation for timeline (using matchMedia for responsiveness)
-    const timelineMM = gsap.matchMedia();
+    // ── Milestones: click-to-select (no scroll pinning; scrolling just moves the page) ──
+    const lastMilestoneIdx = timelineNodes.length - 1;
 
-    // Desktop: Horizontal progress line and node coloring tied to scroll pinning
-    timelineMM.add("(min-width: 769px)", () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.milestones-section',
-          start: 'top 60px',
-          end: '+=1500', // Increased scroll distance to accommodate a longer, more noticeable pause
-          pin: true,
-          scrub: 0.05, // Almost instant follow to keep tracker in sync with scroll position
-          id: 'milestones-desktop-trigger',
-          snap: {
-            snapTo: [0, 0.15625, 0.3125, 0.46875, 0.625, 1.0], // Snaps to milestones and the end buffer
-            duration: { min: 0.1, max: 0.3 },
-            delay: 0.02,
-            ease: 'power1.inOut'
-          },
-          onUpdate: (self) => {
-            const progress = self.progress;
-            let activeIdx = 0;
-            if (progress < 0.078) activeIdx = 0;
-            else if (progress < 0.234) activeIdx = 1;
-            else if (progress < 0.391) activeIdx = 2;
-            else if (progress < 0.547) activeIdx = 3;
-            else activeIdx = 4;
-            
-            updateActiveCard(activeIdx);
-          }
-        }
-      });
-
-      // Reset initial state
-      gsap.set('.timeline-progress', { width: '0%' });
-      gsap.set('.timeline-tracker', { left: '0%' });
-      
-      // Animate progress line and tracker dot over the duration of 1.0
-      tl.to('.timeline-progress', { width: '100%', duration: 1, ease: 'none' })
-        .to('.timeline-tracker', { left: '100%', duration: 1, ease: 'none' }, 0)
-        .to({}, { duration: 0.6 }); // Empty dummy tween to create scroll buffer (pause) at 2025
-    });
-
-    // Mobile: Vertical progress line and node coloring
-    timelineMM.add("(max-width: 768px)", () => {
-      // Hide timeline content initially, reveal when header scrolls past half screen
-      gsap.set('.timeline-wrapper', { opacity: 0 });
-      gsap.set('.milestone-active-card', { opacity: 0 });
-
-      ScrollTrigger.create({
-        trigger: '.milestones-header',
-        start: 'bottom 40%',
-        once: true,
-        onEnter: () => {
-          gsap.to('.timeline-wrapper', { opacity: 1, duration: 0.5, ease: 'power2.out' });
-          gsap.to('.milestone-active-card', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', delay: 0.2 });
-          gsap.from('.timeline-node', {
-            opacity: 0,
-            x: -20,
-            duration: 0.5,
-            stagger: 0.1,
-            ease: 'power2.out',
-            delay: 0.1
-          });
-        }
-      });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.timeline-wrapper',
-          start: 'top 35%',
-          end: 'bottom 35%',
-          scrub: 0.05,
-          id: 'milestones-mobile-trigger',
-          snap: {
-            snapTo: [0, 0.25, 0.5, 0.75, 1.0],
-            duration: { min: 0.1, max: 0.3 },
-            delay: 0.02,
-            ease: 'power1.inOut'
-          },
-          onUpdate: (self) => {
-            const progress = self.progress;
-            let activeIdx = 0;
-            if (progress < 0.125) activeIdx = 0;
-            else if (progress < 0.375) activeIdx = 1;
-            else if (progress < 0.625) activeIdx = 2;
-            else if (progress < 0.875) activeIdx = 3;
-            else activeIdx = 4;
-
-            updateActiveCard(activeIdx);
-          }
-        }
-      });
-
-      tl.to('.timeline-progress', { height: '100%', duration: 1, ease: 'none' });
-    });
-
-    // Desktop: Staggered fade-in of timeline nodes
-    if (window.innerWidth > 768) {
-      gsap.from('.timeline-node', {
-        scrollTrigger: {
-          trigger: '.timeline-wrapper',
-          start: 'top 80%',
-        },
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out'
-      });
+    function setTimelineProgress(idx) {
+      const pct = lastMilestoneIdx > 0 ? (idx / lastMilestoneIdx) * 100 : 0;
+      if (window.innerWidth > 768) {
+        gsap.to('.timeline-progress', { width: pct + '%', duration: 0.5, ease: 'power2.out' });
+        gsap.to('.timeline-tracker', { left: pct + '%', duration: 0.5, ease: 'power2.out' });
+      } else {
+        gsap.to('.timeline-progress', { height: pct + '%', duration: 0.5, ease: 'power2.out' });
+      }
     }
 
-    // Smooth scroll when clicking a timeline node
+    // Initialise the progress line/tracker on the first node
+    if (window.innerWidth > 768) {
+      gsap.set('.timeline-progress', { width: '0%' });
+      gsap.set('.timeline-tracker', { left: '0%' });
+    } else {
+      gsap.set('.timeline-progress', { height: '0%' });
+    }
+
+    // Entrance fade-in of the nodes (does not hijack scroll)
+    gsap.from('.timeline-node', {
+      scrollTrigger: {
+        trigger: '.timeline-wrapper',
+        start: 'top 80%',
+      },
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: 'power3.out'
+    });
+
+    // Click a node / year to switch the active milestone
     timelineNodes.forEach(node => {
       node.addEventListener('click', () => {
         const idx = parseInt(node.getAttribute('data-index'), 10);
-        const isDesktop = window.innerWidth > 768;
-        const triggerId = isDesktop ? 'milestones-desktop-trigger' : 'milestones-mobile-trigger';
-        const st = ScrollTrigger.getById(triggerId);
-        
-        if (st) {
-          let progress;
-          if (isDesktop) {
-            const bufferDuration = 0.6; // Matches dummy tween duration
-            progress = (idx * 0.25) / (1.0 + bufferDuration);
-          } else {
-            progress = idx * 0.25;
-          }
-          const scrollPos = st.start + (st.end - st.start) * progress + 2;
-          window.scrollTo({
-            top: scrollPos,
-            behavior: 'smooth'
-          });
-        }
+        updateActiveCard(idx);
+        setTimelineProgress(idx);
       });
     });
 
@@ -6276,14 +6253,47 @@
       let slideshowInterval;
       let slideshowStarted = false;
 
+      // Build the dot indicators (one per slide)
+      const dotsWrap = document.getElementById('heroDots');
+      const dots = [];
+      if (dotsWrap && slides.length > 1) {
+        slides.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+          dot.setAttribute('aria-label', 'Ảnh ' + (i + 1));
+          dot.addEventListener('click', () => goToSlide(i));
+          dotsWrap.appendChild(dot);
+          dots.push(dot);
+        });
+      }
+
+      function syncDots() {
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+      }
+
+      function goToSlide(i) {
+        if (i === currentSlide) return;
+        slides[currentSlide].classList.remove('active');
+        currentSlide = i;
+        slides[currentSlide].classList.add('active');
+        syncDots();
+        // restart the timer so the chosen slide gets a full interval
+        if (slideshowInterval) {
+          clearInterval(slideshowInterval);
+          slideshowInterval = setInterval(nextSlide, 4000);
+        }
+      }
+
       function startSlideshow() {
         if (slideshowStarted) return; // prevent double-start
         slideshowStarted = true;
         if (slides.length === 0) return;
         
-        // Show slideshow container
+        // Show slideshow container + dots
         heroSlideshow.style.opacity = '1';
         heroSlideshow.style.display = 'block';
+        if (dotsWrap) dotsWrap.classList.add('visible');
         
         // Hide video
         heroVideo.style.opacity = '0';
@@ -6302,6 +6312,7 @@
         slides[currentSlide].classList.remove('active');
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add('active');
+        syncDots();
       }
 
       // Transition to slideshow when video ends
