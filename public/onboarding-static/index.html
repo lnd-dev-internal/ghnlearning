@@ -3794,7 +3794,9 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      /* Top-align: with overflow, justify-content:center clips the top of tall
+         content (first line / its diacritics) and makes it unreachable. */
+      justify-content: flex-start;
       gap: 10px;
       padding-right: 4px;
     }
@@ -3876,8 +3878,6 @@
     @media (max-width: 820px) {
       .culture-section { padding: 48px 24px; }
       .culture-card { width: calc((100% - 16px) / 2); height: 470px; }
-      /* Top-align on small screens so dense cards never clip when scrolling */
-      .culture-back-body { justify-content: flex-start; }
     }
 
     /* → 1 per row */
