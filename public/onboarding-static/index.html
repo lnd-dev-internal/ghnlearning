@@ -2815,6 +2815,56 @@
       .customers-section { padding: 16px 24px 40px; }
     }
 
+    .overview-section {
+      padding: 80px 60px 90px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .overview-header {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .overview-header .section-label {
+      color: var(--accent);
+    }
+
+    .overview-title {
+      font-size: clamp(1.8rem, 4vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .overview-title .accent-text { color: var(--accent); }
+
+    .overview-video-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+      background: #000;
+    }
+
+    .overview-video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .overview-section { padding: 56px 24px 64px; }
+      .overview-header { margin-bottom: 28px; }
+    }
+
+    @media (max-width: 480px) {
+      .overview-section { padding: 44px 16px 50px; }
+    }
+
     .stats-section {
       padding: 34px 60px 30px;
       border-top: 1px solid var(--border);
@@ -3519,19 +3569,67 @@
       font-weight: 800;
       color: var(--accent);
       margin-top: 4px;
+      text-wrap: balance;      /* cân đều các dòng — tránh rớt 1 chữ xuống dòng riêng */
     }
-    /* Responsive: stack vertically on narrow screens */
+    /* Responsive: keep the branching tree on narrow screens as a left-rail tree —
+       a vertical spine down the left with a branch stub into the top of each block. */
     @media (max-width: 860px) {
       .orgchart-section { padding: 30px 24px 70px; }
-      .org-branch { flex-direction: column; align-items: center; }
+      .orgchart { align-items: flex-start; }
+
+      /* CEO banner spans the full width at the top of the tree */
+      .org-ceo { width: 100%; max-width: none; }
+
+      /* trunk drops from the CEO down to the top of the left rail */
+      .org-trunk {
+        align-self: flex-start;
+        margin-left: 8px;
+        height: 22px;
+      }
+
+      /* children stack in a column, each hanging off the shared left rail */
+      .org-branch {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
       .org-cell {
         width: 100%;
-        max-width: 360px;
-        padding-top: 24px;
+        max-width: none;
+        padding: 20px 0 0 30px;   /* top gap + room for the rail and stub */
+        justify-content: flex-start;
       }
-      .org-cell::before { display: none; }
-      .org-cell::after { height: 24px; }
+
+      /* vertical rail: stacking each cell's segment forms one continuous line */
+      .org-cell::after {
+        left: 9px;
+        top: 0;
+        bottom: auto;
+        height: 100%;
+        width: 2px;
+        transform: none;
+        background: rgba(255, 82, 0, 0.40);
+      }
+      /* the last child's rail stops at its branch point (top of the card) */
+      .org-cell:last-child::after { height: 20px; }
+
+      /* horizontal branch stub from the rail into the top of each card */
+      .org-cell::before {
+        display: block;
+        top: 20px;
+        left: 9px;
+        right: auto;
+        width: 21px;
+        height: 2px;
+        background: rgba(255, 82, 0, 0.40);
+      }
+      .org-cell:first-child::before,
+      .org-cell:last-child::before { left: 9px; right: auto; }
+
       .org-node { margin: 0; }
+
+      /* the drop-sparks are choreographed for the desktop fan-out — hide on mobile */
+      .org-cell .org-spark { display: none; }
     }
 
     /* Leadership initial states */
@@ -4655,7 +4753,7 @@
     @media (max-width: 1024px) {
       .section-pad, .signals, .work-archive, .method, .rooms, .evidence { padding: 60px 30px; }
       .hero { padding: 24px; }
-      .hero-text { padding: 36px; }
+      .hero-text { padding: 36px 36px 0; }
       .action-bar {
         padding: 20px 36px;
         flex-direction: column;
@@ -4688,7 +4786,7 @@
       .nav-center { display: none; }
       .hero { padding: 16px; }
       .hero-canvas { aspect-ratio: 4 / 3; }
-      .hero-text { padding: 28px 24px; }
+      .hero-text { padding: 28px 24px 0; }
       .hero-title { font-size: clamp(2rem, 8vw, 3.5rem); max-width: 100%; }
       .hero-title .hero-line-1 { font-size: clamp(1.4rem, 5vw, 2rem) !important; }
       .hero-title .accent-word-wrap { word-break: keep-all; overflow-wrap: normal; }
@@ -4847,14 +4945,15 @@
       <li><a class="toc-link" data-target="brand-story"><span class="toc-num">02</span>Hành trình bứt phá</a></li>
       <li><a class="toc-link" data-target="vision-mission"><span class="toc-num">03</span>Tầm nhìn &amp; Sứ mệnh</a></li>
       <li><a class="toc-link" data-target="milestones"><span class="toc-num">04</span>Hành trình kiến tạo</a></li>
-      <li><a class="toc-link" data-target="stats"><span class="toc-num">05</span>Quy mô &amp; Thành tựu</a></li>
-      <li><a class="toc-link" data-target="customers"><span class="toc-num">06</span>Khách hàng của GHN</a></li>
-      <li><a class="toc-link" data-target="leadership"><span class="toc-num">07</span>Đội ngũ lãnh đạo</a></li>
-      <li><a class="toc-link" data-target="culture"><span class="toc-num">08</span>Văn hoá &amp; Quy định</a></li>
-      <li><a class="toc-link" data-target="learning-development"><span class="toc-num">09</span>Learning &amp; Development</a></li>
-      <li><a class="toc-link" data-target="onboarding-lessons"><span class="toc-num">10</span>Bài học Onboarding</a></li>
-      <li><a class="toc-link" data-target="ops"><span class="toc-num">11</span>Trải nghiệm vận hành</a></li>
-      <li><a class="toc-link" data-target="day-one"><span class="toc-num">12</span>It&rsquo;s Always Day One</a></li>
+      <li><a class="toc-link" data-target="overview"><span class="toc-num">05</span>Toàn cảnh Giao Hàng Nhanh</a></li>
+      <li><a class="toc-link" data-target="stats"><span class="toc-num">06</span>Quy mô &amp; Thành tựu</a></li>
+      <li><a class="toc-link" data-target="customers"><span class="toc-num">07</span>Khách hàng của GHN</a></li>
+      <li><a class="toc-link" data-target="leadership"><span class="toc-num">08</span>Đội ngũ lãnh đạo</a></li>
+      <li><a class="toc-link" data-target="culture"><span class="toc-num">09</span>Văn hoá &amp; Quy định</a></li>
+      <li><a class="toc-link" data-target="learning-development"><span class="toc-num">10</span>Learning &amp; Development</a></li>
+      <li><a class="toc-link" data-target="onboarding-lessons"><span class="toc-num">11</span>Bài học Onboarding</a></li>
+      <li><a class="toc-link" data-target="ops"><span class="toc-num">12</span>Trải nghiệm vận hành</a></li>
+      <li><a class="toc-link" data-target="day-one"><span class="toc-num">13</span>It&rsquo;s Always Day One</a></li>
     </ul>
   </nav>
 
@@ -5111,6 +5210,20 @@
           <p class="active-card-desc">Thương hiệu Giao Hàng Nhanh (GHN) chính thức gia nhập thị trường với mục tiêu cốt lõi là xây dựng một mô hình logistics hiện đại, linh hoạt và được "may đo" riêng để giải quyết các bài toán đặc thù của thương mại điện tử Việt Nam.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TOÀN CẢNH GIAO HÀNG NHANH ═══════════ -->
+  <section class="overview-section" id="overview">
+    <div class="overview-header">
+      <span class="section-label">TOÀN CẢNH</span>
+      <h2 class="overview-title"><span class="accent-text">GIAO HÀNG NHANH</span></h2>
+    </div>
+    <div class="overview-video-wrap">
+      <video class="overview-video" autoplay muted loop playsinline controls preload="metadata" poster="Hero.jpeg">
+        <source src="toan-canh-ghn.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
   </section>
 
@@ -5447,7 +5560,7 @@
             <span class="org-node-index">05</span>
             <h3 class="org-node-title">Khối Công Nghệ</h3>
             <div class="org-node-rule"></div>
-            <span class="org-node-role">Phụ trách: Giám đốc</span>
+            <span class="org-node-role">Phụ trách: Phó TGĐ</span>
             <span class="org-node-name">Nguyễn Phước Thanh Hải</span>
           </div>
         </div>
