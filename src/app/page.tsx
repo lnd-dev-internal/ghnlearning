@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import ScommerceLobby from "@/components/lobby/ScommerceLobby";
 
 export default function RootPage() {
-  redirect("/onboarding");
+  return <ScommerceLobby />;
 }

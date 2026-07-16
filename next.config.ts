@@ -28,6 +28,20 @@ const nextConfig: NextConfig = {
       { source: "/newbie.html", destination: "/newbie", permanent: true },
       { source: "/workshop.html", destination: "/workshop", permanent: true },
       { source: "/leaders-talk.html", destination: "/leaders-talk", permanent: true },
+
+      // ── Site B2B (mount dưới /b2b) — redirect URL .html/legacy cũ ──
+      { source: "/b2b/index.html", destination: "/b2b", permanent: true },
+      { source: "/b2b/vanhanh", destination: "/b2b/van-hanh", permanent: true },
+      { source: "/b2b/vanhanh.html", destination: "/b2b/van-hanh", permanent: true },
+      { source: "/b2b/van-hanh.html", destination: "/b2b/van-hanh", permanent: true },
+      { source: "/b2b/kinhdoanh", destination: "/b2b/kinh-doanh", permanent: true },
+      { source: "/b2b/kinhdoanh.html", destination: "/b2b/kinh-doanh", permanent: true },
+      { source: "/b2b/kinh-doanh.html", destination: "/b2b/kinh-doanh", permanent: true },
+      ...["nvxl", "nvxl-lay", "nvxl-tra", "nvxl-luanchuyen", "nvxl-khac", "nvxl-kinhdoanh", "nvxl-botchat", "nvgn", "nvgn-kinhdoanh"].map((route) => ({
+        source: `/b2b/${route}.html`,
+        destination: `/b2b/${route}`,
+        permanent: true,
+      })),
     ];
   },
 

@@ -2,7 +2,7 @@ export default function OnboardingPage() {
   return (
     <div style={{ margin: '0 -0px', padding: 0, overflow: 'hidden' }}>
       <iframe
-        src="/onboarding-static/index.html?v=20260715a"
+        src="/onboarding-static/index.html?v=20260716a"
         allow="autoplay"
         style={{
           width: '100%',

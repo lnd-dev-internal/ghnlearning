@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import SiteSwitcher from './SiteSwitcher';
 
 // --- Main nav items (default view) ---
 const mainNavItems = [
@@ -543,9 +544,12 @@ export default function GHNNavbar() {
 
       {/* ── Desktop Navbar ── */}
       <nav className="ghn-navbar">
-        <Link href="/onboarding" className="ghn-logo">
-          <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
+          <Link href="/onboarding" className="ghn-logo">
+            <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
+          </Link>
+          <SiteSwitcher />
+        </div>
 
         {/* Center — animated swap */}
         <div className="ghn-nav-links" key={navMode}>
@@ -617,10 +621,13 @@ export default function GHNNavbar() {
 
       {/* ── Mobile Header ── */}
       <div className="ghn-mobile-header">
-        <Link href="/onboarding" className="ghn-logo">
-          <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
-        </Link>
-        
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+          <Link href="/onboarding" className="ghn-logo">
+            <img src="/Learning GHN dam.png?v=2" alt="GHN Learning" />
+          </Link>
+          <SiteSwitcher compact />
+        </div>
+
         {/* Toggle Mode Button on top right */}
         <button
           className={`ghn-tech-btn-mobile${navMode === 'technical' ? ' active' : ''}`}

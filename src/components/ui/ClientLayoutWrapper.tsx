@@ -10,6 +10,15 @@ export default function ClientLayoutWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  // Trang sảnh SCommerce (/) và site b2b (/b2b/*) dùng chrome riêng — bỏ hẳn
+  // navbar/footer của GHN Land.
+  const isB2B = pathname === '/b2b' || pathname.startsWith('/b2b/');
+  const isLobby = pathname === '/';
+  if (isB2B || isLobby) {
+    return <>{children}</>;
+  }
+
   const hideFooter = ['/onboarding', '/leaders-talk', '/trai-nghiem-van-hanh'].includes(pathname);
 
   return (

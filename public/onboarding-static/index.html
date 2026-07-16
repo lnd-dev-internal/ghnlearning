@@ -4915,6 +4915,23 @@
     .toc-link.active { background: rgba(255, 82, 0, 0.14); color: #fff; }
     .toc-link.active .toc-num { color: var(--accent); }
 
+    /* Nút kín đáo quay về sảnh SCommerce, nằm cuối mục lục */
+    .toc-foot {
+      margin-top: auto;
+      padding: 14px 20px 2px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .toc-back {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      color: #8b8984; font-size: 0.82rem; font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .toc-back svg { width: 14px; height: 14px; flex: none; }
+    .toc-back:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+
     @media (max-width: 860px) {
       .toc-panel { width: 76vw; max-width: 300px; }
       body.toc-open .toc-toggle { left: min(76vw, 300px); }
@@ -4955,6 +4972,14 @@
       <li><a class="toc-link" data-target="ops"><span class="toc-num">12</span>Trải nghiệm vận hành</a></li>
       <li><a class="toc-link" data-target="day-one"><span class="toc-num">13</span>It&rsquo;s Always Day One</a></li>
     </ul>
+    <div class="toc-foot">
+      <a class="toc-back" href="/" target="_top" aria-label="Quay về sảnh SCommerce">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path>
+        </svg>
+        Về SCommerce
+      </a>
+    </div>
   </nav>
 
   <script>
@@ -5220,7 +5245,7 @@
       <h2 class="overview-title"><span class="accent-text">GIAO HÀNG NHANH</span></h2>
     </div>
     <div class="overview-video-wrap">
-      <video class="overview-video" autoplay muted loop playsinline controls preload="metadata" poster="Hero.jpeg">
+      <video class="overview-video" autoplay muted loop playsinline controls preload="auto" poster="Hero.jpeg">
         <source src="toan-canh-ghn.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
@@ -5328,13 +5353,16 @@
         <p>Đối tác chiến lược của các sàn TMĐT lớn tại Việt Nam (Shopee, Lazada, TikTok Shop...).</p>
         <div class="customer-tag">Sàn TMĐT</div>
         <div class="customer-logos">
-          <div class="logo-track">
+          <div class="logo-track" style="animation-duration: 11s;">
             <span class="logo-chip"><img src="brands/tiktok.png" alt="TikTok Shop"></span>
             <span class="logo-chip"><img src="brands/shopee.png" alt="Shopee"></span>
+            <span class="logo-chip"><img src="brands/lazada.jpg" alt="Lazada"></span>
             <span class="logo-chip" aria-hidden="true"><img src="brands/tiktok.png" alt=""></span>
             <span class="logo-chip" aria-hidden="true"><img src="brands/shopee.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/lazada.jpg" alt=""></span>
             <span class="logo-chip" aria-hidden="true"><img src="brands/tiktok.png" alt=""></span>
             <span class="logo-chip" aria-hidden="true"><img src="brands/shopee.png" alt=""></span>
+            <span class="logo-chip" aria-hidden="true"><img src="brands/lazada.jpg" alt=""></span>
           </div>
         </div>
       </div>
@@ -5351,7 +5379,7 @@
         <p>Các thương hiệu, chuỗi bán lẻ, nhãn hàng lớn cần giải pháp vận chuyển toàn quốc.</p>
         <div class="customer-tag">B2B &amp; Retail</div>
         <div class="customer-logos">
-          <div class="logo-track reverse">
+          <div class="logo-track" style="animation-duration: 25s;">
             <span class="logo-chip"><img src="brands/concung.png" alt="Con Cưng"></span>
             <span class="logo-chip"><img src="brands/longchau.png" alt="Nhà thuốc Long Châu"></span>
             <span class="logo-chip"><img src="brands/canifa.png" alt="Canifa"></span>
