@@ -1,0 +1,37 @@
+# Dependencies & build output (build lại trong image)
+node_modules
+.next
+out
+build
+
+# Git & CI
+.git
+.gitignore
+.gitlab-ci.yml
+
+# Env & secrets (KHÔNG đưa vào image)
+.env
+.env.*
+*.pem
+
+# OS / editor
+.DS_Store
+.vscode
+.idea
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Tài liệu & file nguồn không cần cho app
+*.md
+HVNL
+OB
+noiquy
+Logo_Brand
+"Hero Scom"
+"Logo SComerce"
+__MACOSX*
+backup_images
+tmp

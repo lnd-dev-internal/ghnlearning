@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Xuất bản standalone để đóng gói Docker gọn nhẹ (chỉ copy file cần thiết)
+  output: "standalone",
+
   // Transpile Three.js and related packages for proper Next.js support
   transpilePackages: ["three", "@react-three/fiber", "@react-three/drei"],
 
