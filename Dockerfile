@@ -3,6 +3,10 @@
 # ---------- deps: cài dependencies theo lockfile ----------
 FROM node:22-alpine AS deps
 WORKDIR /app
+# Lockfile được sinh bằng npm 11 (local). node:22-alpine đi kèm npm 10.9.8,
+# vốn resolve peerDeps optional (@emnapi/*) khác đi và làm `npm ci` báo lệch lock.
+# Ghim npm về đúng major 11 để resolve giống hệt lockfile.
+RUN npm i -g npm@11.6.2
 COPY package.json package-lock.json ./
 RUN npm ci
 
